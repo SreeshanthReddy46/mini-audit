@@ -1,6 +1,14 @@
 import { getStoredToken } from './auth';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+function getBaseUrl(): string {
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+  if (typeof window !== 'undefined' && window.location.hostname) {
+    return `http://${window.location.hostname}:8000`;
+  }
+  return 'http://localhost:8000';
+}
 
 class ApiClient {
   private getHeaders(isMultipart = false): HeadersInit {
@@ -30,7 +38,8 @@ class ApiClient {
   }
 
   async get<T>(path: string): Promise<T> {
-    const res = await fetch(`${BASE_URL}${path}`, {
+    const baseUrl = getBaseUrl();
+    const res = await fetch(`${baseUrl}${path}`, {
       method: 'GET',
       headers: this.getHeaders(),
       credentials: 'include',
@@ -39,7 +48,8 @@ class ApiClient {
   }
 
   async post<T>(path: string, body?: any): Promise<T> {
-    const res = await fetch(`${BASE_URL}${path}`, {
+    const baseUrl = getBaseUrl();
+    const res = await fetch(`${baseUrl}${path}`, {
       method: 'POST',
       headers: this.getHeaders(),
       credentials: 'include',
@@ -49,7 +59,8 @@ class ApiClient {
   }
 
   async upload<T>(path: string, formData: FormData): Promise<T> {
-    const res = await fetch(`${BASE_URL}${path}`, {
+    const baseUrl = getBaseUrl();
+    const res = await fetch(`${baseUrl}${path}`, {
       method: 'POST',
       headers: this.getHeaders(true),
       credentials: 'include',
@@ -59,11 +70,13 @@ class ApiClient {
   }
 
   getFileUrl(path: string): string {
-    return `${BASE_URL}${path}`;
+    const baseUrl = getBaseUrl();
+    return `${baseUrl}${path}`;
   }
 
   async downloadFile(path: string, filename: string): Promise<void> {
-    const res = await fetch(`${BASE_URL}${path}`, {
+    const baseUrl = getBaseUrl();
+    const res = await fetch(`${baseUrl}${path}`, {
       method: 'GET',
       headers: this.getHeaders(),
       credentials: 'include',

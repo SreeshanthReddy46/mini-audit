@@ -139,49 +139,51 @@ export default function RootLandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white text-black selection:bg-black selection:text-white">
-      {/* Top Navigation */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-xs border-b border-neutral-200">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <div className="min-h-screen bg-white text-neutral-900 selection:bg-neutral-900 selection:text-white">
+      <div className="sticky top-4 z-50 px-4 sm:px-6 w-full pointer-events-none">
+        <header className="max-w-6xl mx-auto pointer-events-auto group relative rounded-2xl border border-neutral-200/90 bg-white/85 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.05)] px-4 sm:px-6 py-2.5 flex items-center justify-between transition-all duration-300 hover:border-neutral-400/80 hover:shadow-[0_12px_36px_rgb(0,0,0,0.08)]">
+          <CornerStars size="sm" />
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-black text-white flex items-center justify-center font-black text-sm shadow-xs animate-float-slow">
+            <div className="w-8 h-8 rounded-xl bg-neutral-900 text-white flex items-center justify-center font-black text-sm shadow-xs transition-transform group-hover:scale-105">
               A
             </div>
             <div>
-              <span className="font-black tracking-tight text-base text-black">MINI AUDIT</span>
-              <span className="ml-2 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-neutral-100 text-black border border-neutral-300">
-                Enterprise CA System
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="font-black tracking-tight text-sm text-neutral-900">MINI AUDIT</span>
+                <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-mono text-neutral-500 pl-2 border-l border-neutral-200">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  Enterprise CA
+                </span>
+              </div>
             </div>
           </div>
 
-          <nav className="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-wider text-neutral-600">
-            <a href="#workflow" className="hover:text-black transition-colors">Workflow</a>
-            <a href="#pillars" className="hover:text-black transition-colors">Core Pillars</a>
-            <a href="#architecture" className="hover:text-black transition-colors">Architecture</a>
-            <a href="#checklist" className="hover:text-black transition-colors">Checklist</a>
-            <a href="#personas" className="hover:text-black transition-colors">Personas</a>
+          <nav className="hidden md:flex items-center gap-1 bg-neutral-100/80 p-1 rounded-xl border border-neutral-200/70">
+            <a href="#workflow" className="px-3 py-1.5 rounded-lg text-xs font-bold tracking-wide text-neutral-600 hover:text-neutral-900 hover:bg-white transition-all">Workflow</a>
+            <a href="#pillars" className="px-3 py-1.5 rounded-lg text-xs font-bold tracking-wide text-neutral-600 hover:text-neutral-900 hover:bg-white transition-all">Pillars</a>
+            <a href="#architecture" className="px-3 py-1.5 rounded-lg text-xs font-bold tracking-wide text-neutral-600 hover:text-neutral-900 hover:bg-white transition-all">Architecture</a>
+            <a href="#checklist" className="px-3 py-1.5 rounded-lg text-xs font-bold tracking-wide text-neutral-600 hover:text-neutral-900 hover:bg-white transition-all">Checklist</a>
+            <a href="#personas" className="px-3 py-1.5 rounded-lg text-xs font-bold tracking-wide text-neutral-600 hover:text-neutral-900 hover:bg-white transition-all">Personas</a>
           </nav>
 
           <div className="flex items-center gap-3">
             <Link href="/login">
-              <Button size="sm" className="gap-2">
+              <Button size="sm" className="gap-2 rounded-xl text-xs font-bold">
                 Get Started
                 <ArrowRight className="w-3.5 h-3.5" />
               </Button>
             </Link>
           </div>
-        </div>
-      </header>
+        </header>
+      </div>
 
-      {/* Hero Section */}
-      <section className="py-20 md:py-28 px-6 max-w-7xl mx-auto text-center border-b border-neutral-200">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-neutral-300 bg-neutral-50 text-xs font-bold text-black mb-6 animate-float-slow">
-          <ShieldCheck className="w-4 h-4 text-black" />
+      <section className="pt-24 pb-20 md:pt-32 md:pb-28 px-6 max-w-7xl mx-auto text-center border-b border-neutral-200">
+        <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-neutral-900 mb-6">
+          <ShieldCheck className="w-4 h-4 text-neutral-900" />
           <span>Chartered Accountant Document Review & Verification System</span>
         </div>
 
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-black max-w-4xl mx-auto leading-tight">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-neutral-900 max-w-4xl mx-auto leading-tight">
           Deterministic Audit Document Review & Verification
         </h1>
 
@@ -189,14 +191,13 @@ export default function RootLandingPage() {
           A production-grade, zero-trust audit review platform for CA firms. Deterministic backend rules control access, tenant boundaries, state transitions, and append-only audit logging.
         </p>
 
-        {/* The Golden Principle Callout with CornerStars */}
-        <div className="group relative mt-10 max-w-2xl mx-auto p-6 rounded-2xl border-2 border-black bg-white shadow-sm text-left hover-lift">
+        <div className="group relative mt-10 max-w-2xl mx-auto p-6 rounded-2xl border-2 border-neutral-900 bg-white shadow-sm text-left hover-lift">
           <CornerStars size="lg" />
-          <div className="flex items-center gap-2 font-black text-xs uppercase tracking-widest text-black mb-2">
-            <Sparkles className="w-4 h-4 text-black animate-pulse-subtle" />
+          <div className="flex items-center gap-2 font-black text-xs uppercase tracking-widest text-neutral-900 mb-2">
+            <Sparkles className="w-4 h-4 text-neutral-900 animate-pulse-subtle" />
             Core Architectural Invariant
           </div>
-          <p className="text-xl sm:text-2xl font-black text-black">
+          <p className="text-xl sm:text-2xl font-black text-neutral-900">
             &ldquo;AI can recommend. The backend decides.&rdquo;
           </p>
           <p className="mt-2 text-xs text-neutral-600 leading-relaxed font-medium">
@@ -206,26 +207,25 @@ export default function RootLandingPage() {
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
           <Link href="/login">
-            <Button size="lg" className="gap-2 px-7 py-3.5 text-sm shadow-md">
+            <Button size="lg" className="gap-2 px-7 py-3.5 text-sm shadow-md rounded-xl">
               Get Started (Sign In)
               <ArrowRight className="w-4 h-4" />
             </Button>
           </Link>
           <a href="#architecture">
-            <Button variant="outline" size="lg" className="gap-2 px-6 py-3.5 text-sm">
+            <Button variant="outline" size="lg" className="gap-2 px-6 py-3.5 text-sm rounded-xl">
               View Architecture Blueprint
             </Button>
           </a>
         </div>
       </section>
 
-      {/* Interactive Workflow State Machine */}
       <section id="workflow" className="py-20 px-6 max-w-7xl mx-auto border-b border-neutral-200">
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-neutral-100 text-[11px] font-bold uppercase tracking-wider text-black mb-3">
-            <Workflow className="w-3.5 h-3.5 text-black" /> Deterministic State Transitions
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-500 mb-3">
+            <Workflow className="w-3.5 h-3.5 text-neutral-900" /> Deterministic State Transitions
           </div>
-          <h2 className="text-3xl font-black text-black tracking-tight">
+          <h2 className="text-3xl font-black text-neutral-900 tracking-tight">
             5-Stage Document Lifecycle Pipeline
           </h2>
           <p className="mt-3 text-sm text-neutral-600 font-medium">
@@ -237,34 +237,33 @@ export default function RootLandingPage() {
           {workflowStages.map((stage) => (
             <div
               key={stage.step}
-              className="group relative p-5 rounded-xl border border-neutral-300 bg-white hover:border-black transition-all duration-200 hover-lift flex flex-col justify-between"
+              className="group relative p-5 rounded-xl border border-neutral-300 bg-white hover:border-neutral-900 transition-all duration-200 hover-lift flex flex-col justify-between"
             >
               <CornerStars size="sm" />
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-black font-mono text-neutral-400 group-hover:text-black transition-colors">{stage.step}</span>
-                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-black text-white">
+                  <span className="text-xs font-black font-mono text-neutral-400 group-hover:text-neutral-900 transition-colors">{stage.step}</span>
+                  <span className="text-xs font-mono font-bold text-neutral-600">
                     {stage.actor}
                   </span>
                 </div>
-                <h3 className="text-sm font-black text-black tracking-tight mb-2">{stage.title}</h3>
+                <h3 className="text-sm font-black text-neutral-900 tracking-tight mb-2">{stage.title}</h3>
                 <p className="text-xs text-neutral-600 leading-relaxed">{stage.description}</p>
               </div>
               <div className="mt-4 pt-3 border-t border-neutral-200">
-                <p className="text-[10px] font-mono text-black font-bold">Rule: {stage.rule}</p>
+                <p className="text-[10px] font-mono text-neutral-900 font-bold">Rule: {stage.rule}</p>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Core Architectural Pillars */}
       <section id="pillars" className="py-20 px-6 max-w-7xl mx-auto border-b border-neutral-200">
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-neutral-100 text-[11px] font-bold uppercase tracking-wider text-black mb-3">
-            <Layers className="w-3.5 h-3.5 text-black" /> System Invariants
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-500 mb-3">
+            <Layers className="w-3.5 h-3.5 text-neutral-900" /> System Invariants
           </div>
-          <h2 className="text-3xl font-black text-black tracking-tight">
+          <h2 className="text-3xl font-black text-neutral-900 tracking-tight">
             Built for Real-World CA Compliance
           </h2>
           <p className="mt-3 text-sm text-neutral-600 font-medium">
@@ -278,15 +277,15 @@ export default function RootLandingPage() {
             return (
               <div
                 key={pillar.title}
-                className="group relative p-6 rounded-2xl border border-neutral-300 bg-white hover:border-black transition-all duration-200 hover-lift"
+                className="group relative p-6 rounded-2xl border border-neutral-300 bg-white hover:border-neutral-900 transition-all duration-200 hover-lift"
               >
                 <CornerStars />
-                <div className="w-10 h-10 rounded-lg bg-black text-white flex items-center justify-center mb-4 transition-transform group-hover:scale-105">
+                <div className="w-10 h-10 rounded-xl bg-neutral-900 text-white flex items-center justify-center mb-4 transition-transform group-hover:scale-105">
                   <Icon className="w-5 h-5" />
                 </div>
                 <div className="flex items-center justify-between gap-2 mb-2">
-                  <h3 className="text-base font-bold text-black">{pillar.title}</h3>
-                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-neutral-100 text-black border border-neutral-300">
+                  <h3 className="text-base font-bold text-neutral-900">{pillar.title}</h3>
+                  <span className="text-xs font-mono font-medium text-neutral-500">
                     {pillar.badge}
                   </span>
                 </div>
@@ -299,13 +298,12 @@ export default function RootLandingPage() {
         </div>
       </section>
 
-      {/* Architecture Blueprint Section */}
       <section id="architecture" className="py-20 px-6 max-w-7xl mx-auto border-b border-neutral-200">
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-neutral-100 text-[11px] font-bold uppercase tracking-wider text-black mb-3">
-            <Server className="w-3.5 h-3.5 text-black" /> Complete Technical Stack
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-500 mb-3">
+            <Server className="w-3.5 h-3.5 text-neutral-900" /> Complete Technical Stack
           </div>
-          <h2 className="text-3xl font-black text-black tracking-tight">
+          <h2 className="text-3xl font-black text-neutral-900 tracking-tight">
             System Architecture Blueprint
           </h2>
           <p className="mt-3 text-sm text-neutral-600 font-medium">
@@ -313,40 +311,40 @@ export default function RootLandingPage() {
           </p>
         </div>
 
-        <div className="group relative p-8 rounded-2xl border-2 border-black bg-white font-mono text-xs overflow-x-auto shadow-sm hover-lift">
+        <div className="group relative p-8 rounded-2xl border-2 border-neutral-900 bg-white font-mono text-xs overflow-x-auto shadow-sm hover-lift">
           <CornerStars size="lg" />
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
-            <div className="group/item relative p-4 rounded-xl border border-neutral-300 bg-neutral-50 hover:border-black transition-colors">
+            <div className="group/item relative p-4 rounded-xl border border-neutral-300 bg-neutral-50 hover:border-neutral-900 transition-colors">
               <CornerStars size="sm" />
               <span className="text-[10px] font-black uppercase text-neutral-500">Presentation Layer</span>
-              <h4 className="font-bold text-black text-sm mt-1">Next.js 14 App Router</h4>
+              <h4 className="font-bold text-neutral-900 text-sm mt-1">Next.js 14 App Router</h4>
               <p className="text-[11px] text-neutral-600 mt-2 font-sans">
                 TypeScript, Tailwind CSS, Lucide Icons, Persona Switcher.
               </p>
             </div>
 
-            <div className="group/item relative p-4 rounded-xl border border-neutral-300 bg-neutral-50 hover:border-black transition-colors">
+            <div className="group/item relative p-4 rounded-xl border border-neutral-300 bg-neutral-50 hover:border-neutral-900 transition-colors">
               <CornerStars size="sm" />
               <span className="text-[10px] font-black uppercase text-neutral-500">API Gateway</span>
-              <h4 className="font-bold text-black text-sm mt-1">FastAPI Backend</h4>
+              <h4 className="font-bold text-neutral-900 text-sm mt-1">FastAPI Backend</h4>
               <p className="text-[11px] text-neutral-600 mt-2 font-sans">
                 Auth, RBAC, Validation, Security Headers, Rate Limiting.
               </p>
             </div>
 
-            <div className="group/item relative p-4 rounded-xl border border-neutral-300 bg-neutral-50 hover:border-black transition-colors">
+            <div className="group/item relative p-4 rounded-xl border border-neutral-300 bg-neutral-50 hover:border-neutral-900 transition-colors">
               <CornerStars size="sm" />
               <span className="text-[10px] font-black uppercase text-neutral-500">Data & Storage</span>
-              <h4 className="font-bold text-black text-sm mt-1">PostgreSQL + Storage</h4>
+              <h4 className="font-bold text-neutral-900 text-sm mt-1">PostgreSQL + Storage</h4>
               <p className="text-[11px] text-neutral-600 mt-2 font-sans">
                 Firms, Users, Clients, Documents, DocumentVersions, Reviews.
               </p>
             </div>
 
-            <div className="group/item relative p-4 rounded-xl border border-neutral-300 bg-neutral-50 hover:border-black transition-colors">
+            <div className="group/item relative p-4 rounded-xl border border-neutral-300 bg-neutral-50 hover:border-neutral-900 transition-colors">
               <CornerStars size="sm" />
               <span className="text-[10px] font-black uppercase text-neutral-500">Audit & AI</span>
-              <h4 className="font-bold text-black text-sm mt-1">Append-Only + AI Agent</h4>
+              <h4 className="font-bold text-neutral-900 text-sm mt-1">Append-Only + AI Agent</h4>
               <p className="text-[11px] text-neutral-600 mt-2 font-sans">
                 Append-only event ledger & advisory document analyzer.
               </p>
@@ -359,13 +357,12 @@ export default function RootLandingPage() {
         </div>
       </section>
 
-      {/* Checklist Showcase */}
       <section id="checklist" className="py-20 px-6 max-w-7xl mx-auto border-b border-neutral-200">
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-neutral-100 text-[11px] font-bold uppercase tracking-wider text-black mb-3">
-            <FileCheck2 className="w-3.5 h-3.5 text-black" /> Standardized Audit Checklist
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-500 mb-3">
+            <FileCheck2 className="w-3.5 h-3.5 text-neutral-900" /> Standardized Audit Checklist
           </div>
-          <h2 className="text-3xl font-black text-black tracking-tight">
+          <h2 className="text-3xl font-black text-neutral-900 tracking-tight">
             5 Required Compliance Documents
           </h2>
           <p className="mt-3 text-sm text-neutral-600 font-medium">
@@ -375,16 +372,16 @@ export default function RootLandingPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {checklistDocs.map((doc) => (
-            <div key={doc.name} className="group relative p-4 rounded-xl border border-neutral-300 bg-white hover:border-black transition-all duration-200 hover-lift">
+            <div key={doc.name} className="group relative p-4 rounded-xl border border-neutral-300 bg-white hover:border-neutral-900 transition-all duration-200 hover-lift">
               <CornerStars size="sm" />
               <div className="flex items-center gap-2 mb-2">
-                <FileText className="w-4 h-4 text-black shrink-0" />
-                <h3 className="text-sm font-bold text-black">{doc.name}</h3>
+                <FileText className="w-4 h-4 text-neutral-900 shrink-0" />
+                <h3 className="text-sm font-bold text-neutral-900">{doc.name}</h3>
               </div>
               <p className="text-xs text-neutral-600 font-medium">{doc.check}</p>
             </div>
           ))}
-          <div className="group relative p-4 rounded-xl border border-dashed border-neutral-400 bg-neutral-50 hover:border-black flex items-center justify-center text-center transition-colors">
+          <div className="group relative p-4 rounded-xl border border-dashed border-neutral-400 bg-neutral-50 hover:border-neutral-900 flex items-center justify-center text-center transition-colors">
             <CornerStars size="sm" />
             <p className="text-xs font-bold text-neutral-700">
               + Custom Client Documents Supported
@@ -393,13 +390,12 @@ export default function RootLandingPage() {
         </div>
       </section>
 
-      {/* Evaluator Persona Cards */}
       <section id="personas" className="py-20 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-neutral-100 text-[11px] font-bold uppercase tracking-wider text-black mb-3">
-            <UserCheck className="w-3.5 h-3.5 text-black" /> Ready for Evaluator Demo
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-500 mb-3">
+            <UserCheck className="w-3.5 h-3.5 text-neutral-900" /> Ready for Evaluator Demo
           </div>
-          <h2 className="text-3xl font-black text-black tracking-tight">
+          <h2 className="text-3xl font-black text-neutral-900 tracking-tight">
             Pre-Seeded Evaluation Accounts
           </h2>
           <p className="mt-3 text-sm text-neutral-600 font-medium">
@@ -411,17 +407,17 @@ export default function RootLandingPage() {
           {personas.map((p) => (
             <div
               key={p.email}
-              className="group relative p-6 rounded-2xl border-2 border-neutral-300 bg-white hover:border-black transition-all duration-200 hover-lift flex flex-col justify-between"
+              className="group relative p-6 rounded-2xl border-2 border-neutral-300 bg-white hover:border-neutral-900 transition-all duration-200 hover-lift flex flex-col justify-between"
             >
               <CornerStars />
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-bold uppercase tracking-wider text-neutral-500">{p.firm}</span>
-                  <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-black text-white">
+                  <span className="text-xs font-mono font-bold text-neutral-600">
                     {p.role}
                   </span>
                 </div>
-                <h3 className="text-lg font-black text-black tracking-tight">{p.name}</h3>
+                <h3 className="text-lg font-black text-neutral-900 tracking-tight">{p.name}</h3>
                 <p className="text-xs font-mono text-neutral-500 mt-0.5">{p.email}</p>
                 <p className="text-xs text-neutral-600 mt-4 leading-relaxed font-medium">{p.action}</p>
               </div>
@@ -431,7 +427,7 @@ export default function RootLandingPage() {
                   href={`/login?email=${encodeURIComponent(p.email)}`}
                   className="w-full block"
                 >
-                  <Button variant="primary" size="sm" className="w-full gap-2 group/btn">
+                  <Button variant="primary" size="sm" className="w-full gap-2 group/btn rounded-xl">
                     Sign In as {p.name}
                     <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
                   </Button>
@@ -442,20 +438,19 @@ export default function RootLandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="border-t border-neutral-200 bg-white py-12 px-6">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-600">
           <div className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded bg-black text-white font-black text-xs flex items-center justify-center">
+            <div className="w-5 h-5 rounded-lg bg-neutral-900 text-white font-black text-xs flex items-center justify-center">
               A
             </div>
-            <span className="font-bold text-black">MINI AUDIT</span>
+            <span className="font-bold text-neutral-900">MINI AUDIT</span>
             <span>— CA Document Review & Compliance Verification</span>
           </div>
 
-          <div className="flex items-center gap-6 text-black font-bold">
+          <div className="flex items-center gap-6 text-neutral-900 font-bold">
             <Link href="/login">
-              <Button size="sm" variant="outline" className="gap-1.5">
+              <Button size="sm" variant="outline" className="gap-1.5 rounded-xl">
                 Get Started →
               </Button>
             </Link>

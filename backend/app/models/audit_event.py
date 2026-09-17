@@ -30,7 +30,6 @@ class AuditEvent(Base):
 
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False, index=True)
 
-    # Relationships
     firm = relationship("Firm", back_populates="audit_events")
     document = relationship("Document", back_populates="audit_events")
     actor = relationship("User", back_populates="audit_events")

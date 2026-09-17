@@ -1,18 +1,15 @@
 #!/usr/bin/env bash
-# Mini Audit - One-click Local Startup Script (POSIX)
 
 echo "============================================================"
 echo "       MINI AUDIT DOCUMENT REVIEW SYSTEM - STARTUP          "
 echo "============================================================"
 
-# Check Python and Node
 if [ -d "backend/.venv" ]; then
     PYTHON_CMD="backend/.venv/bin/python"
 else
     PYTHON_CMD="python3"
 fi
 
-# Run seed if needed
 $PYTHON_CMD -m app.seed --help > /dev/null 2>&1
 
 echo "[1/2] Starting FastAPI Backend on http://localhost:8000..."

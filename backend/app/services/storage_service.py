@@ -6,7 +6,7 @@ from fastapi import UploadFile, HTTPException, status
 from app.core.config import settings
 
 ALLOWED_EXTENSIONS = {".pdf", ".csv", ".xlsx"}
-MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
+MAX_FILE_SIZE = 10 * 1024 * 1024
 
 
 def validate_file(file: UploadFile) -> str:
@@ -37,12 +37,10 @@ def save_file_locally(firm_id: uuid.UUID, file: UploadFile) -> Tuple[str, int]:
     firm_dir = storage_root / str(firm_id)
     firm_dir.mkdir(parents=True, exist_ok=True)
 
-    # Server-generated UUID identifier (never trust client filename for storage)
     file_uuid = uuid.uuid4()
     storage_filename = f"{file_uuid}{ext}"
     target_path = firm_dir / storage_filename
 
-    # Read and validate size
     content = file.file.read()
     file_size = len(content)
     if file_size > MAX_FILE_SIZE:
@@ -64,7 +62,6 @@ def get_file_path(firm_id: uuid.UUID, storage_filename: str) -> Path:
     storage_root = Path(settings.STORAGE_DIR).resolve()
     target_path = (storage_root / str(firm_id) / storage_filename).resolve()
 
-    # Prevent directory traversal attacks
     firm_dir = (storage_root / str(firm_id)).resolve()
     if not str(target_path).startswith(str(firm_dir)):
         raise HTTPException(
@@ -87,7 +84,6 @@ class StorageService:
         storage_root = Path(settings.STORAGE_DIR).resolve()
         target_path = (storage_root / storage_key).resolve()
         if not target_path.is_file():
-            # Try searching directly in firm folders
             matches = list(storage_root.glob(f"**/{Path(storage_key).name}"))
             if matches and matches[0].is_file():
                 target_path = matches[0]

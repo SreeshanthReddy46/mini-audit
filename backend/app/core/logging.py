@@ -18,13 +18,11 @@ def setup_logging():
     root_logger = logging.getLogger()
     root_logger.setLevel(logging.INFO)
 
-    # Avoid duplicate handlers if called multiple times
     if not root_logger.handlers:
         root_logger.addHandler(handler)
     else:
         root_logger.handlers = [handler]
 
-    # Silence noisy libraries if necessary
     logging.getLogger("uvicorn.access").setLevel(logging.INFO)
     logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
 

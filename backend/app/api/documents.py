@@ -203,7 +203,6 @@ def get_document_audit_history(
     Retrieve chronological audit trail for this document.
     Strictly scoped by firm_id. Append-only (no modification endpoints).
     """
-    # Verify document exists in this firm
     get_document_by_id(db, document_id, current_user.firm_id)
     return get_audit_history_for_document(db, document_id, current_user.firm_id)
 
@@ -218,7 +217,6 @@ def get_document_versions(
     Retrieve all immutable versions for a document.
     Enforces firm boundary.
     """
-    # Verify document ownership
     get_document_by_id(db, document_id, current_user.firm_id)
     repo = DocumentRepository(db)
     versions = repo.get_versions(document_id, current_user.firm_id)

@@ -29,12 +29,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (token && stored) {
         setUser(stored);
         try {
-          // Verify with backend
           const me = await api.get<User>('/api/auth/me');
           setUser(me);
           setStoredUser(me);
         } catch {
-          // Token expired or invalid
           removeStoredToken();
           setUser(null);
         }
@@ -61,7 +59,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await api.post('/api/auth/logout');
     } catch {
-      // Continue cleanup regardless
     }
     removeStoredToken();
     setUser(null);

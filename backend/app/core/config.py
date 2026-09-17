@@ -11,7 +11,6 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440
     STORAGE_DIR: str = "./storage"
 
-    # Optional Supabase settings
     SUPABASE_URL: Optional[str] = None
     SUPABASE_SERVICE_ROLE_KEY: Optional[str] = None
     SUPABASE_STORAGE_BUCKET: str = "audit-documents"

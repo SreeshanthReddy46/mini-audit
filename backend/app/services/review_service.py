@@ -40,7 +40,6 @@ class ReviewService:
         if not doc:
             raise TenantIsolationError("Document not found")
 
-        # State transition check
         if doc.status not in [DocumentStatus.UPLOADED.value, DocumentStatus.CORRECTION_REQUIRED.value]:
             raise InvalidWorkflowStateError(
                 f"Cannot start review: Document status is '{doc.status}', expected 'UPLOADED'."
@@ -50,7 +49,6 @@ class ReviewService:
         doc.reviewed_by = reviewer_id
         doc.updated_at = datetime.now(timezone.utc)
 
-        # Append immutable audit event
         self.audit_repo.create(
             firm_id=firm_id,
             action=AuditAction.REVIEW_STARTED.value,
@@ -89,13 +87,11 @@ class ReviewService:
                 f"Cannot request correction: Document status is '{doc.status}', expected 'UNDER_REVIEW'."
             )
 
-        # 1. Update Document state
         doc.status = DocumentStatus.CORRECTION_REQUIRED.value
         doc.review_comment = comment.strip()
         doc.reviewed_by = reviewer_id
         doc.updated_at = datetime.now(timezone.utc)
 
-        # 2. Record official Review decision
         self.review_repo.create(
             firm_id=firm_id,
             document_id=doc.id,
@@ -104,7 +100,6 @@ class ReviewService:
             comment=comment.strip(),
         )
 
-        # 3. Append immutable audit event
         self.audit_repo.create(
             firm_id=firm_id,
             action=AuditAction.CORRECTION_REQUESTED.value,
@@ -144,13 +139,11 @@ class ReviewService:
                 f"Cannot approve document: Status is '{doc.status}', must be 'UNDER_REVIEW'."
             )
 
-        # 1. Update Document state
         doc.status = DocumentStatus.APPROVED.value
         doc.review_comment = comment.strip() if comment else None
         doc.reviewed_by = reviewer_id
         doc.updated_at = datetime.now(timezone.utc)
 
-        # 2. Record official Review decision
         self.review_repo.create(
             firm_id=firm_id,
             document_id=doc.id,
@@ -159,7 +152,6 @@ class ReviewService:
             comment=comment.strip() if comment else "Approved without additional comments.",
         )
 
-        # 3. Append immutable audit event
         self.audit_repo.create(
             firm_id=firm_id,
             action=AuditAction.DOCUMENT_APPROVED.value,
@@ -182,7 +174,6 @@ class ReviewService:
         return doc
 
     def list_reviews_by_document(self, document_id: UUID, firm_id: UUID) -> List[Review]:
-        # Tenant check
         doc = self.doc_repo.get_by_id(document_id, firm_id)
         if not doc:
             raise TenantIsolationError("Document not found")

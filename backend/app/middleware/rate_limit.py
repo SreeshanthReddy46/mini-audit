@@ -21,7 +21,6 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         self.client_records: Dict[str, List[float]] = defaultdict(list)
 
     async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
-        # Don't rate limit health checks or docs
         if request.url.path in ["/api/health", "/docs", "/openapi.json", "/redoc"]:
             return await call_next(request)
 
@@ -29,11 +28,9 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         current_time = time.time()
         window_start = current_time - self.window_seconds
 
-        # Clean old timestamps
         timestamps = self.client_records[client_ip]
         self.client_records[client_ip] = [t for t in timestamps if t > window_start]
 
-        # Check limit
         if len(self.client_records[client_ip]) >= self.requests_per_minute:
             return format_error_response(
                 request=request,

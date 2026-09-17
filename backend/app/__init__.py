@@ -1,1 +1,0 @@
-# Mini Audit Backend Application

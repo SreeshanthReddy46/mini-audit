@@ -26,16 +26,13 @@ def test_review_history_and_isolation():
     headers_reviewer = {"Authorization": f"Bearer {reviewer_token}"}
     headers_b = {"Authorization": f"Bearer {b_reviewer_token}"}
 
-    # 1. Get ABC Traders client
     clients_resp = client.get("/api/clients", headers=headers_staff)
     client_a = next(c for c in clients_resp.json() if c["name"] == "ABC Traders Pvt. Ltd.")
 
-    # 2. Get Bank Statement
     docs_resp = client.get(f"/api/clients/{client_a['id']}/documents", headers=headers_staff)
     bank_doc = next(d for d in docs_resp.json() if d["name"] == "Bank Statement")
     doc_id = bank_doc["id"]
 
-    # 3. Staff uploads file
     upload_resp = client.post(
         f"/api/documents/{doc_id}/upload",
         files={"file": ("Bank_Statement_Mar2026.pdf", io.BytesIO(b"%PDF-1.4 Bank sample content"), "application/pdf")},
@@ -43,11 +40,9 @@ def test_review_history_and_isolation():
     )
     assert upload_resp.status_code == 200
 
-    # 4. Reviewer starts review
     start_resp = client.post(f"/api/documents/{doc_id}/start-review", headers=headers_reviewer)
     assert start_resp.status_code == 200
 
-    # 5. Reviewer requests correction
     correction_resp = client.post(
         f"/api/documents/{doc_id}/request-correction",
         json={"comment": "March closing balance summary page missing."},
@@ -55,7 +50,6 @@ def test_review_history_and_isolation():
     )
     assert correction_resp.status_code == 200
 
-    # 6. Retrieve reviews
     reviews_resp = client.get(f"/api/documents/{doc_id}/reviews", headers=headers_reviewer)
     assert reviews_resp.status_code == 200
     reviews = reviews_resp.json()
@@ -65,6 +59,5 @@ def test_review_history_and_isolation():
     assert "March closing balance" in latest["comment"]
     assert latest["reviewer_name"] == "Aman"
 
-    # 7. Multi-tenant check: Firm B reviewer Priya CANNOT access Firm A reviews (returns 404)
     cross_resp = client.get(f"/api/documents/{doc_id}/reviews", headers=headers_b)
     assert cross_resp.status_code == 404

@@ -8,7 +8,6 @@ from app.middleware.security_headers import SecurityHeadersMiddleware
 from app.middleware.rate_limit import RateLimitMiddleware
 from app.api import auth, clients, documents, audit
 
-# Initialize structured logging
 setup_logging()
 
 app = FastAPI(
@@ -17,15 +16,21 @@ app = FastAPI(
     description="Multi-tenant Audit Document Review System for CA Firms",
 )
 
-# Middlewares (ordered: outer to inner)
 app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(RequestIDMiddleware)
 app.add_middleware(RateLimitMiddleware, requests_per_minute=500)
 
-# CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:8000"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:3001",
+        "http://127.0.0.1:3001",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+    ],
+    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1)(:[0-9]+)?",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -34,7 +39,6 @@ app.add_middleware(
 
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-# Exception handlers for standardized RFC-compliant error responses
 @app.exception_handler(MiniAuditException)
 async def mini_audit_exception_handler(request: Request, exc: MiniAuditException):
     logger.warning(f"[{exc.code}] {exc.message} (path: {request.url.path})")
@@ -76,7 +80,6 @@ async def http_exception_handler(request: Request, exc: HTTPException):
 
 from app.api import auth, clients, documents, audit, reviews, ai
 
-# Include Routers
 app.include_router(auth.router)
 app.include_router(clients.router)
 app.include_router(documents.router)

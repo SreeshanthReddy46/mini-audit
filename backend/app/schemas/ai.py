@@ -31,7 +31,7 @@ class AIAnalysisResponse(BaseModel):
     id: uuid.UUID
     document_id: uuid.UUID
     version_id: Optional[uuid.UUID] = None
-    status: str  # QUEUED, PROCESSING, COMPLETED, FAILED
+    status: str
     model: str
     prompt_version: str
     summary: Optional[str] = None

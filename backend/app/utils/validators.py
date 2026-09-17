@@ -20,12 +20,9 @@ def sanitize_filename(filename: str) -> str:
     if not filename:
         return "unnamed_file"
 
-    # Remove null bytes
     filename = filename.replace("\x00", "")
 
-    # Strip directory components regardless of OS slashes
     filename = filename.replace("\\", "/").split("/")[-1]
 
-    # Only allow alphanumeric, dashes, underscores, dots, and spaces
     clean = re.sub(r"[^\w\s\.\-]", "_", filename).strip()
     return clean or "document"

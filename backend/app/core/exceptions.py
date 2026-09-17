@@ -126,7 +126,7 @@ def format_error_response(
     """
     request_id = getattr(request.state, "request_id", "req_unknown")
     content = {
-        "detail": message,  # Backward compatibility
+        "detail": message,
         "error": {
             "code": code,
             "message": message,

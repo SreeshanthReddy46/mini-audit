@@ -30,7 +30,6 @@ class DocumentVersion(Base):
     uploaded_by = Column(Uuid, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
-    # Relationships
     document = relationship("Document", back_populates="versions")
     firm = relationship("Firm")
     uploader = relationship("User")

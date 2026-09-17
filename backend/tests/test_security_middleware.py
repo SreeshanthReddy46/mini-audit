@@ -14,20 +14,17 @@ def test_security_headers_present_on_response():
 
 
 def test_request_id_middleware_generates_and_propagates_id():
-    # When no X-Request-ID sent, server generates one
     response = client.get("/api/health")
     req_id = response.headers.get("X-Request-ID")
     assert req_id is not None
     assert req_id.startswith("req_")
 
-    # When client sends an X-Request-ID, server preserves it
     custom_id = "evaluator-audit-trace-999"
     response_custom = client.get("/api/health", headers={"X-Request-ID": custom_id})
     assert response_custom.headers.get("X-Request-ID") == custom_id
 
 
 def test_standardized_error_envelope_format():
-    # Request non-existent endpoint
     response = client.get("/api/non-existent-route-for-testing")
     assert response.status_code == 404
 

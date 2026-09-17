@@ -4,7 +4,6 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 
 from app.core.config import settings
 
-# Handle SQLite connect_args for multithreading (only needed for sqlite)
 connect_args = {}
 if settings.DATABASE_URL.startswith("sqlite"):
     connect_args = {"check_same_thread": False}
@@ -35,7 +34,6 @@ def get_db():
 
 
 def init_db(reset: bool = False):
-    # Import all models to ensure they are registered with Base.metadata
     from app.models import Firm, User, Client, Document, DocumentVersion, Review, AuditEvent, AIAnalysis
     if reset:
         Base.metadata.drop_all(bind=engine)

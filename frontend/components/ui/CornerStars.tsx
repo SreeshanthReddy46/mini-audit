@@ -18,7 +18,6 @@ export function CornerStars({ className = '', size = 'md' }: CornerStarsProps) {
 
   return (
     <>
-      {/* Top-Left Corner Star: Vivid Sunset Pink to Golden Yellow */}
       <span
         className={`corner-star corner-star-tl corner-star-glow-tl ${className}`}
         aria-hidden="true"
@@ -48,7 +47,6 @@ export function CornerStars({ className = '', size = 'md' }: CornerStarsProps) {
         </svg>
       </span>
 
-      {/* Top-Right Corner Star: Electric Purple to Laser Cyan */}
       <span
         className={`corner-star corner-star-tr corner-star-glow-tr ${className}`}
         aria-hidden="true"
@@ -78,7 +76,6 @@ export function CornerStars({ className = '', size = 'md' }: CornerStarsProps) {
         </svg>
       </span>
 
-      {/* Bottom-Right Corner Star: Vibrant Emerald to Electric Lime */}
       <span
         className={`corner-star corner-star-br corner-star-glow-br ${className}`}
         aria-hidden="true"
@@ -108,7 +105,6 @@ export function CornerStars({ className = '', size = 'md' }: CornerStarsProps) {
         </svg>
       </span>
 
-      {/* Bottom-Left Corner Star: Coral Red to Hot Neon Magenta */}
       <span
         className={`corner-star corner-star-bl corner-star-glow-bl ${className}`}
         aria-hidden="true"

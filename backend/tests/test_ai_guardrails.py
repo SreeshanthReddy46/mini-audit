@@ -43,7 +43,6 @@ def test_document_analyzer_bank_statement_missing_closing_balance():
     assert len(result.findings) >= 1
     missing_closing = any("Closing Balance" in f.title for f in result.findings)
     assert missing_closing is True
-    # Verify every finding has calibrated confidence and evidence
     for f in result.findings:
         assert 0.0 <= f.confidence <= 1.0
         assert len(f.evidence) > 0
@@ -59,7 +58,6 @@ def test_document_analyzer_prompt_injection_neutralized():
         content_text=malicious_content,
     )
 
-    # Must detect prompt injection and raise a HIGH severity compliance risk finding
     injection_finding = next((f for f in result.findings if "Prompt Injection" in f.title), None)
     assert injection_finding is not None
     assert injection_finding.severity == "HIGH"
@@ -107,7 +105,6 @@ def test_ai_service_tenant_isolation():
 
         ai_service = AIService(db)
 
-        # Firm A user can run AI analysis
         analysis_a = ai_service.analyze_document(
             document_id=doc_a.id,
             firm_id=firm_a_id,
@@ -117,11 +114,9 @@ def test_ai_service_tenant_isolation():
         assert analysis_a.document_id == doc_a.id
         assert analysis_a.status == "COMPLETED"
 
-        # Document status remains UPLOADED (AI never approves)
         db.refresh(doc_a)
         assert doc_a.status == "UPLOADED"
 
-        # Firm B CANNOT run AI analysis on Firm A's document (raises TenantIsolationError -> 404)
         with pytest.raises(TenantIsolationError):
             ai_service.analyze_document(
                 document_id=doc_a.id,

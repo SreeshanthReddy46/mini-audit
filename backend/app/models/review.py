@@ -17,12 +17,11 @@ class Review(Base):
     document_id = Column(Uuid, ForeignKey("documents.id", ondelete="CASCADE"), nullable=False, index=True)
     reviewer_id = Column(Uuid, ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)
 
-    decision = Column(String(50), nullable=False)  # 'APPROVED' or 'CORRECTION_REQUIRED'
+    decision = Column(String(50), nullable=False)
     comment = Column(Text, nullable=True)
 
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False, index=True)
 
-    # Relationships
     firm = relationship("Firm")
     document = relationship("Document", back_populates="reviews")
     reviewer = relationship("User")

@@ -17,13 +17,12 @@ class Document(Base):
     firm_id = Column(Uuid, ForeignKey("firms.id", ondelete="CASCADE"), nullable=False, index=True)
     client_id = Column(Uuid, ForeignKey("clients.id", ondelete="CASCADE"), nullable=False, index=True)
 
-    name = Column(String(255), nullable=False)  # e.g. "Bank Statement"
-    document_type = Column(String(100), nullable=True)  # e.g. "bank_statement"
-    file_url = Column(String(500), nullable=True)  # Latest storage key or URL for convenience
+    name = Column(String(255), nullable=False)
+    document_type = Column(String(100), nullable=True)
+    file_url = Column(String(500), nullable=True)
     status = Column(String(50), nullable=False, default="PENDING", index=True)
-    # Valid statuses: 'PENDING', 'UPLOADED', 'UNDER_REVIEW', 'CORRECTION_REQUIRED', 'APPROVED'
 
-    version = Column(Integer, default=1, nullable=False)  # Tracks current latest version number
+    version = Column(Integer, default=1, nullable=False)
     review_comment = Column(Text, nullable=True)
 
     uploaded_by = Column(Uuid, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
@@ -33,7 +32,6 @@ class Document(Base):
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
     updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=False)
 
-    # Relationships
     firm = relationship("Firm", back_populates="documents")
     client = relationship("Client", back_populates="documents")
     uploader = relationship("User", foreign_keys=[uploaded_by], back_populates="uploaded_documents")

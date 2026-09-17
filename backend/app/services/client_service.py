@@ -60,9 +60,8 @@ def create_client_for_firm(db: Session, firm_id: uuid.UUID, actor_id: uuid.UUID,
         name=name.strip()
     )
     db.add(client)
-    db.flush()  # Flush to generate client.id
+    db.flush()
 
-    # Append-only audit record
     audit_event = AuditEvent(
         firm_id=firm_id,
         actor_id=actor_id,

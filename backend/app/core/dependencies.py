@@ -1,4 +1,3 @@
-# Re-exporting from modular dependencies package for backward compatibility
 from app.dependencies.database import get_db
 from app.dependencies.auth import get_current_user, bearer_scheme
 from app.dependencies.permissions import require_role, require_staff, require_reviewer, require_admin

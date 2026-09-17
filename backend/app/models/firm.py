@@ -12,7 +12,6 @@ class Firm(Base):
     name = Column(String(255), nullable=False)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
-    # Relationships
     users = relationship("User", back_populates="firm", cascade="all, delete-orphan")
     clients = relationship("Client", back_populates="firm", cascade="all, delete-orphan")
     documents = relationship("Document", back_populates="firm", cascade="all, delete-orphan")

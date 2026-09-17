@@ -19,8 +19,9 @@ export function useDocuments() {
       setDocuments(data);
       return data;
     } catch (err: any) {
+      setDocuments([]);
       setError(err.message || 'Failed to load documents');
-      throw err;
+      return [];
     } finally {
       setLoading(false);
     }
@@ -34,8 +35,9 @@ export function useDocuments() {
       setCurrentDocument(doc);
       return doc;
     } catch (err: any) {
+      setCurrentDocument(null);
       setError(err.message || 'Failed to load document');
-      throw err;
+      return null;
     } finally {
       setLoading(false);
     }
@@ -46,8 +48,8 @@ export function useDocuments() {
       const history = await api.get<AuditEvent[]>(`/api/documents/${documentId}/audit`);
       setAuditHistory(history);
       return history;
-    } catch (err: any) {
-      console.error('Failed to load audit history', err);
+    } catch {
+      setAuditHistory([]);
       return [];
     }
   }, []);

@@ -35,7 +35,6 @@ export function Button({
 
     setWaves((prev) => [...prev, { id: newWaveId, x, y }]);
 
-    // Auto-clean wave after animation concludes
     setTimeout(() => {
       setWaves((prev) => prev.filter((w) => w.id !== newWaveId));
     }, 850);
@@ -54,14 +53,13 @@ export function Button({
     lg: 'px-5 py-2.5 text-base',
   }[size];
 
-  // User specification: Black buttons across total website
   const variantClasses = {
-    primary: 'bg-black text-white hover:bg-neutral-800 active:bg-neutral-900 focus:ring-black shadow-xs',
-    secondary: 'bg-neutral-100 text-black border border-neutral-300 hover:bg-neutral-200 focus:ring-black',
-    success: 'bg-black text-white hover:bg-neutral-800 focus:ring-black shadow-xs',
-    warning: 'bg-black text-white hover:bg-neutral-800 focus:ring-black shadow-xs',
-    danger: 'bg-black text-white hover:bg-neutral-900 border border-black focus:ring-black',
-    outline: 'border border-black bg-white text-black hover:bg-neutral-100 focus:ring-black',
+    primary: 'bg-neutral-900 text-white hover:bg-neutral-800 active:bg-neutral-950 focus:ring-neutral-800 shadow-xs',
+    secondary: 'bg-neutral-100 text-neutral-900 border border-neutral-300 hover:bg-neutral-200 focus:ring-neutral-800',
+    success: 'bg-neutral-900 text-white hover:bg-neutral-800 focus:ring-neutral-800 shadow-xs',
+    warning: 'bg-neutral-900 text-white hover:bg-neutral-800 focus:ring-neutral-800 shadow-xs',
+    danger: 'bg-neutral-900 text-white hover:bg-neutral-950 border border-neutral-900 focus:ring-neutral-800',
+    outline: 'border border-neutral-800 bg-white text-neutral-900 hover:bg-neutral-100 focus:ring-neutral-800',
   }[variant];
 
   return (
@@ -72,21 +70,17 @@ export function Button({
       onClick={onClick}
       {...props}
     >
-      {/* Ocean Waves Click Effect Overlay */}
       <span className="ocean-wave-container" aria-hidden="true">
         {waves.map((wave) => (
           <React.Fragment key={wave.id}>
-            {/* Outer Deep Blue Ocean Wave */}
             <span
               className="ocean-wave-ring ocean-wave-1"
               style={{ left: wave.x, top: wave.y }}
             />
-            {/* Mid Azure Ocean Wave */}
             <span
               className="ocean-wave-ring ocean-wave-2"
               style={{ left: wave.x, top: wave.y }}
             />
-            {/* Inner Foam Blue Wave */}
             <span
               className="ocean-wave-ring ocean-wave-3"
               style={{ left: wave.x, top: wave.y }}

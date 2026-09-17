@@ -47,17 +47,17 @@ export default function ClientDetailPage() {
 
   if (error || !client) {
     return (
-      <div className="group relative max-w-md mx-auto my-12 text-center p-8 rounded-2xl bg-white border-2 border-black shadow-sm hover-lift">
+      <div className="group relative max-w-md mx-auto my-12 text-center p-8 rounded-2xl bg-white border-2 border-neutral-900 shadow-sm hover-lift">
         <CornerStars />
-        <div className="w-12 h-12 rounded-full bg-neutral-100 text-black flex items-center justify-center mx-auto mb-3">
+        <div className="w-12 h-12 rounded-full bg-neutral-100 text-neutral-900 flex items-center justify-center mx-auto mb-3">
           <AlertOctagon className="w-6 h-6" />
         </div>
-        <h3 className="text-base font-black text-black">Tenant Access Denied (404)</h3>
+        <h3 className="text-base font-black text-neutral-900">Tenant Access Denied (404)</h3>
         <p className="text-xs text-neutral-600 mt-1 mb-4 font-medium">
           This client resource does not exist in your authenticated firm workspace.
         </p>
         <Link href="/clients">
-          <Button variant="outline" size="sm" className="border-black hover:bg-black hover:text-white">
+          <Button variant="outline" size="sm" className="rounded-xl border-neutral-300 text-neutral-800 hover:bg-neutral-900 hover:text-white">
             Return to Clients
           </Button>
         </Link>
@@ -66,43 +66,41 @@ export default function ClientDetailPage() {
   }
 
   return (
-    <div className="space-y-6 bg-white text-black">
+    <div className="space-y-6 bg-white text-neutral-900">
       <Link
         href="/clients"
-        className="inline-flex items-center gap-2 text-xs font-bold text-neutral-600 hover:text-black transition-colors"
+        className="inline-flex items-center gap-2 text-xs font-bold text-neutral-600 hover:text-neutral-950 transition-colors"
       >
         <ArrowLeft className="w-4 h-4" /> Back to Clients List
       </Link>
 
-      {/* Client Overview Card */}
-      <div className="group relative p-6 rounded-2xl border border-neutral-300 bg-white shadow-xs hover-lift">
+      <div className="group relative p-6 rounded-2xl border border-neutral-200 bg-white shadow-xs hover-lift">
         <CornerStars />
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-black flex items-center justify-center text-white transition-transform group-hover:scale-105">
+            <div className="w-12 h-12 rounded-xl bg-neutral-900 flex items-center justify-center text-white transition-transform group-hover:scale-105">
               <Building className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-xl font-black text-black tracking-tight">{client.name}</h2>
-              <p className="text-xs text-neutral-500 font-medium">
-                Client ID: <span className="font-mono">{client.id}</span>
+              <h2 className="text-xl font-black text-neutral-900 tracking-tight">{client.name}</h2>
+              <p className="text-xs text-neutral-500 font-medium mt-0.5">
+                Client Audit Workspace • Standard Compliance Package
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <span className="text-xs px-3 py-1 rounded-full bg-neutral-100 text-black border border-neutral-300 font-bold">
+            <span className="text-xs text-neutral-600 font-medium">
               5 Required Audit Checklist Documents
             </span>
           </div>
         </div>
       </div>
 
-      {/* Compliance Documents Checklist */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-black uppercase tracking-wider text-black flex items-center gap-2">
-            <FileCheck2 className="w-4 h-4 text-black" />
+          <h3 className="text-sm font-black uppercase tracking-wider text-neutral-900 flex items-center gap-2">
+            <FileCheck2 className="w-4 h-4 text-neutral-900" />
             Compliance Checklist & Audit Documents
           </h3>
           <span className="text-xs text-neutral-500 font-medium">

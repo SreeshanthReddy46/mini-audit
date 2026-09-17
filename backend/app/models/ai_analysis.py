@@ -17,7 +17,7 @@ class AIAnalysis(Base):
     document_id = Column(Uuid, ForeignKey("documents.id", ondelete="CASCADE"), nullable=False, index=True)
     version_id = Column(Uuid, ForeignKey("document_versions.id", ondelete="CASCADE"), nullable=True, index=True)
 
-    status = Column(String(50), nullable=False, default="QUEUED")  # QUEUED, PROCESSING, COMPLETED, FAILED
+    status = Column(String(50), nullable=False, default="QUEUED")
 
     model = Column(String(100), nullable=False, default="mini-audit-advisory-v1")
     prompt_version = Column(String(50), nullable=False, default="audit-guardrails-1.0")
@@ -29,7 +29,6 @@ class AIAnalysis(Base):
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
     completed_at = Column(DateTime, nullable=True)
 
-    # Relationships
     firm = relationship("Firm")
     document = relationship("Document", back_populates="analyses")
     version = relationship("DocumentVersion", back_populates="analyses")

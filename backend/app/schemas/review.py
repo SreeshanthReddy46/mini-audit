@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict
 
 
 class ReviewCreate(BaseModel):
-    decision: str  # 'APPROVED' or 'CORRECTION_REQUIRED'
+    decision: str
     comment: Optional[str] = None
 
 

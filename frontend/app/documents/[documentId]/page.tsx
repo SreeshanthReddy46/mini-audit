@@ -8,7 +8,6 @@ import { useAuth } from '../../../hooks/useAuth';
 import { DocumentStatus } from '../../../components/documents/DocumentStatus';
 import { DocumentReview } from '../../../components/documents/DocumentReview';
 import { AuditTimeline } from '../../../components/audit/AuditTimeline';
-import { Badge } from '../../../components/ui/Badge';
 import { Button } from '../../../components/ui/Button';
 import { Loading } from '../../../components/ui/Loading';
 import { CornerStars } from '../../../components/ui/CornerStars';
@@ -25,8 +24,6 @@ import {
   Layers,
   Sparkles,
   ShieldCheck,
-  Hash,
-  AlertTriangle,
   Info,
 } from 'lucide-react';
 import { api } from '../../../lib/api';
@@ -64,7 +61,6 @@ export default function DocumentReviewPage() {
       const data = await api.get<DocumentVersion[]>(`/api/documents/${documentId}/versions`);
       setVersions(data);
     } catch {
-      // ignore
     } finally {
       setLoadingVersions(false);
     }
@@ -81,13 +77,17 @@ export default function DocumentReviewPage() {
   }, [documentId]);
 
   useEffect(() => {
-    if (documentId) {
-      fetchDocumentDetail(documentId);
-      fetchAuditHistory(documentId);
-      fetchVersions();
-      fetchAiAnalysis();
+    async function load() {
+      if (!documentId) return;
+      const doc = await fetchDocumentDetail(documentId);
+      if (doc) {
+        fetchAuditHistory(documentId);
+        fetchVersions();
+        fetchAiAnalysis();
+      }
     }
-  }, [documentId, fetchDocumentDetail, fetchAuditHistory, fetchVersions, fetchAiAnalysis]);
+    load();
+  }, [documentId, user?.firm_id, fetchDocumentDetail, fetchAuditHistory, fetchVersions, fetchAiAnalysis]);
 
   const handleRunAiAnalysis = async () => {
     setRunningAi(true);
@@ -124,17 +124,17 @@ export default function DocumentReviewPage() {
 
   if (error || !currentDocument) {
     return (
-      <div className="group relative max-w-md mx-auto my-12 text-center p-8 rounded-2xl bg-white border-2 border-black shadow-sm hover-lift">
+      <div className="group relative max-w-md mx-auto my-12 text-center p-8 rounded-2xl bg-white border-2 border-neutral-900 shadow-sm hover-lift">
         <CornerStars />
-        <div className="w-12 h-12 rounded-full bg-neutral-100 text-black flex items-center justify-center mx-auto mb-3 border border-neutral-200">
-          <AlertOctagon className="w-6 h-6 text-black" />
+        <div className="w-12 h-12 rounded-full bg-neutral-100 text-neutral-900 flex items-center justify-center mx-auto mb-3 border border-neutral-200">
+          <AlertOctagon className="w-6 h-6 text-neutral-900" />
         </div>
-        <h3 className="text-base font-bold text-black">Tenant Document Not Found (404)</h3>
+        <h3 className="text-base font-bold text-neutral-900">Tenant Document Not Found (404)</h3>
         <p className="text-xs text-neutral-600 mt-1 mb-4">
-          This document does not belong to your authenticated firm. Access is strictly blocked.
+          This document does not exist or does not belong to your authenticated firm. Access is strictly blocked.
         </p>
         <Link href="/dashboard">
-          <Button variant="primary" size="sm">
+          <Button variant="primary" size="sm" className="rounded-xl">
             Return to Dashboard
           </Button>
         </Link>
@@ -144,30 +144,28 @@ export default function DocumentReviewPage() {
 
   return (
     <div className="space-y-6">
-      {/* Top back navigation */}
       <div>
         <Link
           href={`/clients/${currentDocument.client_id}`}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-black hover:underline transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-800 hover:text-neutral-950 transition-colors"
         >
-          <ArrowLeft className="w-4 h-4 text-black" /> Back to Client Checklist
+          <ArrowLeft className="w-4 h-4" /> Back to Client Checklist
         </Link>
       </div>
 
-      {/* Header Banner with CornerStars */}
       <div className="group relative rounded-2xl border border-neutral-200 bg-white p-6 shadow-xs flex flex-wrap items-center justify-between gap-4 hover-lift">
         <CornerStars />
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-neutral-100 border border-neutral-200 text-black flex items-center justify-center transition-transform group-hover:scale-105">
-            <FileText className="w-6 h-6 text-black" />
+          <div className="w-12 h-12 rounded-xl bg-neutral-100 border border-neutral-200 text-neutral-900 flex items-center justify-center transition-transform group-hover:scale-105">
+            <FileText className="w-6 h-6" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-xl font-black text-black tracking-tight">{currentDocument.name}</h2>
-              <Badge size="sm">v{currentDocument.version}</Badge>
+              <h2 className="text-xl font-black text-neutral-900 tracking-tight">{currentDocument.name}</h2>
+              <span className="font-mono text-xs font-bold text-neutral-600">v{currentDocument.version}</span>
             </div>
-            <p className="text-xs text-neutral-500 mt-0.5">
-              Document ID: <code className="font-mono text-black font-semibold">{currentDocument.id}</code>
+            <p className="text-xs text-neutral-500 mt-0.5 font-medium">
+              Compliance Review Lifecycle • Version {currentDocument.version}
             </p>
           </div>
         </div>
@@ -181,7 +179,7 @@ export default function DocumentReviewPage() {
               size="sm"
               onClick={handleDownload}
               loading={downloading}
-              className="gap-1.5 text-xs"
+              className="gap-1.5 text-xs rounded-xl"
             >
               <Download className="w-3.5 h-3.5" /> Download / View File
             </Button>
@@ -189,19 +187,18 @@ export default function DocumentReviewPage() {
         </div>
       </div>
 
-      {/* Metadata Row */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-xl border border-neutral-200 bg-white text-xs shadow-xs">
         <div>
           <span className="text-[11px] text-neutral-500 uppercase font-semibold block">Uploaded By</span>
-          <span className="font-bold text-black flex items-center gap-1 mt-0.5">
-            <User className="w-3.5 h-3.5 text-black" />
-            {currentDocument.uploader_name || 'Awaiting upload'}
+          <span className="font-bold text-neutral-900 flex items-center gap-1 mt-0.5">
+            <User className="w-3.5 h-3.5 text-neutral-700" />
+            {currentDocument.uploader_name || 'Awaiting initial upload'}
           </span>
         </div>
         <div>
           <span className="text-[11px] text-neutral-500 uppercase font-semibold block">Uploaded Date</span>
-          <span className="font-bold text-black flex items-center gap-1 mt-0.5">
-            <Clock className="w-3.5 h-3.5 text-black" />
+          <span className="font-bold text-neutral-900 flex items-center gap-1 mt-0.5">
+            <Clock className="w-3.5 h-3.5 text-neutral-700" />
             {currentDocument.uploaded_at
               ? new Date(currentDocument.uploaded_at).toLocaleString([], {
                   month: 'short',
@@ -214,19 +211,17 @@ export default function DocumentReviewPage() {
         </div>
         <div>
           <span className="text-[11px] text-neutral-500 uppercase font-semibold block">Current Version</span>
-          <span className="font-bold text-black mt-0.5 block">Version {currentDocument.version}</span>
+          <span className="font-bold text-neutral-900 mt-0.5 block">Version {currentDocument.version}</span>
         </div>
         <div>
-          <span className="text-[11px] text-neutral-500 uppercase font-semibold block">Review Comment</span>
-          <span className="font-medium text-black mt-0.5 block truncate">
+          <span className="text-[11px] text-neutral-500 uppercase font-semibold block">Review Note</span>
+          <span className="font-medium text-neutral-800 mt-0.5 block truncate">
             {currentDocument.review_comment || 'No active notes'}
           </span>
         </div>
       </div>
 
-      {/* 2-Column Split: Actions (Left 55%) vs Audit History (Right 45%) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Column: Workflow Actions */}
         <div className="lg:col-span-7 space-y-6">
           <DocumentReview
             document={currentDocument}
@@ -245,19 +240,18 @@ export default function DocumentReviewPage() {
             onApprove={(comment) => approveDocument(currentDocument.id, comment)}
           />
 
-          {/* AI Advisory Assistant Panel with CornerStars */}
-          <div className="group relative rounded-xl border border-neutral-200 bg-white p-6 shadow-xs space-y-5 hover-lift">
+          <div className="group relative rounded-2xl border border-neutral-200 bg-white p-6 shadow-xs space-y-5 hover-lift">
             <CornerStars />
             <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-neutral-100">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-neutral-100 border border-neutral-200 flex items-center justify-center transition-transform group-hover:scale-105">
-                  <Bot className="w-4 h-4 text-black" />
+                  <Bot className="w-4 h-4 text-neutral-900" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold uppercase tracking-wider text-black flex items-center gap-2">
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-neutral-900 flex items-center gap-2">
                     AI Advisory Assistant
-                    <span className="text-[10px] font-mono font-bold bg-neutral-100 text-black px-2 py-0.5 rounded border border-neutral-200">
-                      Advisory Only
+                    <span className="text-xs font-mono font-medium text-neutral-500">
+                      (Advisory Only)
                     </span>
                   </h3>
                   <p className="text-[11px] text-neutral-500">
@@ -272,7 +266,7 @@ export default function DocumentReviewPage() {
                   size="sm"
                   onClick={handleRunAiAnalysis}
                   loading={runningAi}
-                  className="gap-1.5 text-xs"
+                  className="gap-1.5 text-xs rounded-xl"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
                   {aiAnalysis ? 'Re-run Advisory Check' : 'Run Advisory Analysis'}
@@ -281,8 +275,8 @@ export default function DocumentReviewPage() {
             </div>
 
             {aiError && (
-              <div className="p-3 rounded-lg bg-neutral-50 border border-black text-xs text-black flex items-center gap-2">
-                <AlertOctagon className="w-4 h-4 shrink-0 text-black" />
+              <div className="p-3 rounded-lg bg-neutral-50 border border-neutral-900 text-xs text-neutral-900 flex items-center gap-2">
+                <AlertOctagon className="w-4 h-4 shrink-0 text-neutral-900" />
                 <span>{aiError}</span>
               </div>
             )}
@@ -293,13 +287,13 @@ export default function DocumentReviewPage() {
               </p>
             ) : aiAnalysis ? (
               <div className="space-y-4">
-                <div className="p-3 rounded-lg bg-neutral-50 border border-neutral-200 space-y-2">
+                <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200 space-y-2">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-semibold text-black flex items-center gap-1.5">
-                      <ShieldCheck className="w-4 h-4 text-black" />
-                      Model: <code className="font-mono">{aiAnalysis.model}</code> ({aiAnalysis.prompt_version})
+                    <span className="font-bold text-neutral-900 flex items-center gap-1.5">
+                      <ShieldCheck className="w-4 h-4 text-neutral-900" />
+                      Automated Compliance Scanner
                     </span>
-                    <span className="font-mono text-black font-bold">
+                    <span className="font-mono text-neutral-900 font-bold">
                       Confidence: {(aiAnalysis.overall_confidence * 100).toFixed(0)}%
                     </span>
                   </div>
@@ -309,36 +303,28 @@ export default function DocumentReviewPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-black">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-900">
                     Advisory Findings ({aiAnalysis.findings?.length || 0})
                   </h4>
                   <div className="space-y-2">
                     {aiAnalysis.findings?.map((finding, idx) => (
                       <div
                         key={idx}
-                        className="group/finding relative p-3 rounded-lg border border-neutral-200 bg-white space-y-1.5 hover:border-black transition-colors"
+                        className="group/finding relative p-3.5 rounded-xl border border-neutral-200 bg-white space-y-1.5 hover:border-neutral-900 transition-colors"
                       >
                         <CornerStars size="sm" />
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-black">{finding.category}</span>
-                          <span
-                            className={`text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded border ${
-                              finding.severity === 'HIGH'
-                                ? 'bg-neutral-900 text-white border-black'
-                                : finding.severity === 'MEDIUM'
-                                ? 'bg-neutral-200 text-black border-neutral-400'
-                                : 'bg-neutral-100 text-black border-neutral-300'
-                            }`}
-                          >
+                          <span className="text-xs font-bold text-neutral-900">{finding.category}</span>
+                          <span className="text-xs font-mono font-bold text-neutral-900">
                             {finding.severity}
                           </span>
                         </div>
-                        <p className="text-xs text-black">
+                        <p className="text-xs text-neutral-900">
                           <span className="font-semibold">Observation: </span>
                           {finding.observation}
                         </p>
                         <p className="text-xs text-neutral-600">
-                          <span className="font-semibold text-black">Recommendation: </span>
+                          <span className="font-semibold text-neutral-900">Recommendation: </span>
                           {finding.recommendation}
                         </p>
                       </div>
@@ -347,34 +333,33 @@ export default function DocumentReviewPage() {
                 </div>
 
                 <div className="p-3 rounded-lg bg-neutral-50 border border-neutral-200 text-[11px] text-neutral-600 flex items-center gap-2">
-                  <Info className="w-4 h-4 text-black shrink-0" />
+                  <Info className="w-4 h-4 text-neutral-900 shrink-0" />
                   <span>
                     <strong>Rule:</strong> AI findings are advisory only. A certified human reviewer must make final approval decisions.
                   </span>
                 </div>
               </div>
             ) : (
-              <div className="text-center py-6 border border-dashed border-neutral-300 rounded-xl">
+              <div className="text-center py-6 border border-dashed border-neutral-200 rounded-xl">
                 <Bot className="w-8 h-8 text-neutral-400 mx-auto mb-2 animate-float-slow" />
-                <p className="text-xs font-semibold text-black">No Advisory Analysis Run Yet</p>
+                <p className="text-xs font-semibold text-neutral-900">No Advisory Analysis Run Yet</p>
                 <p className="text-[11px] text-neutral-500 mt-1 max-w-sm mx-auto">
-                  Click &ldquo;Run Advisory Analysis&rdquo; to prompt the sandboxed LLM agent to inspect this document against compliance heuristics.
+                  Click &ldquo;Run Advisory Analysis&rdquo; to prompt the sandboxed compliance engine to inspect this document against compliance heuristics.
                 </p>
               </div>
             )}
           </div>
 
-          {/* Immutable Version History with CornerStars */}
-          <div className="group relative rounded-xl border border-neutral-200 bg-white p-6 shadow-xs space-y-4 hover-lift">
+          <div className="group relative rounded-2xl border border-neutral-200 bg-white p-6 shadow-xs space-y-4 hover-lift">
             <CornerStars />
             <div className="flex items-center justify-between pb-4 border-b border-neutral-100">
               <div className="flex items-center gap-2">
-                <Layers className="w-4 h-4 text-black" />
-                <h3 className="text-sm font-bold uppercase tracking-wider text-black">
+                <Layers className="w-4 h-4 text-neutral-900" />
+                <h3 className="text-sm font-bold uppercase tracking-wider text-neutral-900">
                   Immutable Version History
                 </h3>
               </div>
-              <span className="text-[10px] uppercase font-bold text-black bg-neutral-100 px-2 py-0.5 rounded border border-neutral-200">
+              <span className="text-xs font-mono font-semibold text-neutral-600">
                 {versions.length} {versions.length === 1 ? 'Version' : 'Versions'}
               </span>
             </div>
@@ -388,28 +373,38 @@ export default function DocumentReviewPage() {
                 {versions.map((v) => (
                   <div
                     key={v.id}
-                    className="group/version relative p-3 rounded-lg border border-neutral-200 bg-neutral-50 hover:border-black transition-colors space-y-2"
+                    className="group/version relative p-3.5 rounded-xl border border-neutral-200 bg-neutral-50/70 hover:border-neutral-900 transition-colors space-y-2"
                   >
                     <CornerStars size="sm" />
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-black">Version {v.version_number}</span>
+                        <span className="text-xs font-bold text-neutral-900">Version {v.version_number}</span>
                         <span className="text-[11px] text-neutral-500 font-mono">({v.original_name})</span>
                       </div>
-                      <span className="text-[11px] font-mono text-black font-semibold">
+                      <span className="text-[11px] font-mono text-neutral-900 font-semibold">
                         {(v.file_size / 1024).toFixed(1)} KB
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-1.5 text-[11px] text-neutral-600">
-                      <Hash className="w-3.5 h-3.5 text-black shrink-0" />
-                      <span className="font-semibold text-black">SHA-256:</span>
-                      <code className="font-mono text-[10px] text-black break-all select-all">
-                        {v.sha256_hash}
-                      </code>
+                    <div className="flex items-center justify-between text-[11px] text-neutral-600">
+                      <div className="flex items-center gap-1.5 font-mono">
+                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        <span className="font-semibold text-neutral-900">Fingerprint:</span>
+                        <code className="font-mono text-[10px] text-neutral-700">
+                          {v.sha256_hash.slice(0, 8)}...{v.sha256_hash.slice(-6)}
+                        </code>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => navigator.clipboard.writeText(v.sha256_hash)}
+                        title="Copy full SHA-256 digest"
+                        className="text-[10px] font-bold text-neutral-600 hover:text-neutral-900 underline"
+                      >
+                        Copy SHA-256
+                      </button>
                     </div>
 
-                    <div className="text-[10px] text-neutral-500 flex items-center justify-between pt-1 border-t border-neutral-200">
+                    <div className="text-[10px] text-neutral-500 flex items-center justify-between pt-1.5 border-t border-neutral-200/80">
                       <span>Uploaded by: {v.uploader_name || 'Staff'}</span>
                       <span>
                         {new Date(v.created_at).toLocaleString([], {
@@ -427,16 +422,15 @@ export default function DocumentReviewPage() {
           </div>
         </div>
 
-        {/* Right Column: Append-Only Audit History with CornerStars */}
         <div className="lg:col-span-5 space-y-4">
-          <div className="group relative rounded-xl border border-neutral-200 bg-white p-6 shadow-xs hover-lift">
+          <div className="group relative rounded-2xl border border-neutral-200 bg-white p-6 shadow-xs hover-lift">
             <CornerStars />
             <div className="flex items-center justify-between pb-4 border-b border-neutral-100 mb-6">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-black flex items-center gap-2">
-                <History className="w-4 h-4 text-black" />
+              <h3 className="text-sm font-bold uppercase tracking-wider text-neutral-900 flex items-center gap-2">
+                <History className="w-4 h-4 text-neutral-900" />
                 Audit History
               </h3>
-              <span className="text-[10px] uppercase font-bold text-black bg-neutral-100 px-2 py-0.5 rounded border border-neutral-200">
+              <span className="text-xs font-mono font-semibold text-neutral-600">
                 Append-Only
               </span>
             </div>

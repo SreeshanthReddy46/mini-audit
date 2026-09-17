@@ -22,13 +22,11 @@ def test_invalid_state_transition_pending_to_approved():
     token_reviewer = get_token("aman@abc.com")
     headers_reviewer = {"Authorization": f"Bearer {token_reviewer}"}
 
-    # Find an un-uploaded (PENDING) document
     clients_resp = client.get("/api/clients", headers=headers_reviewer)
     abc_client = clients_resp.json()[0]
     docs_resp = client.get(f"/api/clients/{abc_client['id']}/documents", headers=headers_reviewer)
     pending_doc = next(d for d in docs_resp.json() if d["status"] == "PENDING")
 
-    # Reviewer attempts to directly approve
     resp = client.post(f"/api/documents/{pending_doc['id']}/approve", headers=headers_reviewer)
     assert resp.status_code == 400
     assert "Cannot approve" in resp.json()["detail"]
@@ -47,14 +45,12 @@ def test_invalid_state_transition_uploaded_to_approved():
     docs_resp = client.get(f"/api/clients/{abc_client['id']}/documents", headers=headers_staff)
     doc = next(d for d in docs_resp.json() if d["status"] == "PENDING")
 
-    # Upload
     client.post(
         f"/api/documents/{doc['id']}/upload",
         files={"file": ("Purchase_Register.pdf", io.BytesIO(b"%PDF Mock Purchase"), "application/pdf")},
         headers=headers_staff
     )
 
-    # Reviewer attempts direct approval without entering UNDER_REVIEW
     resp = client.post(f"/api/documents/{doc['id']}/approve", headers=headers_reviewer)
     assert resp.status_code == 400
     assert "Cannot approve" in resp.json()["detail"]

@@ -39,7 +39,6 @@ def sanitize_untrusted_document(text: str) -> str:
     if not text:
         return "<UNTRUSTED_DOCUMENT_CONTENT>\n[Empty Document Content]\n</UNTRUSTED_DOCUMENT_CONTENT>"
 
-    # Truncate at 100,000 characters for safety
     max_len = 100_000
     safe_text = text[:max_len]
     if len(text) > max_len:

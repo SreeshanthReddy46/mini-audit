@@ -12,17 +12,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Root landing page (/) and /login are public showcase / authentication pages
   const isPublicPage = pathname === '/' || pathname === '/login';
 
   useEffect(() => {
-    // Only redirect to /login if user tries to visit a protected page while not authenticated
     if (!loading && !user && !isPublicPage) {
       router.push('/login');
     }
   }, [user, loading, isPublicPage, router]);
 
-  // Render public landing / login page with pure white background
   if (isPublicPage) {
     return <main className="min-h-screen bg-white text-black">{children}</main>;
   }

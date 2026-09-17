@@ -38,7 +38,7 @@ export function CreateClientModal({ isOpen, onClose, onCreate }: CreateClientMod
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Add New Audit Client">
       <form onSubmit={handleSubmit} className="space-y-4">
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-neutral-500">
           Enter the legal business entity name. This client will be isolated strictly to your firm.
         </p>
 

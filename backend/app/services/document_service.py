@@ -52,7 +52,6 @@ def format_document_dict(doc: Document) -> dict:
 
 def get_documents_for_client(db: Session, client_id: uuid.UUID, firm_id: uuid.UUID) -> List[dict]:
     """Retrieve documents for a client, ensuring both client and documents belong to firm_id."""
-    # Confirm client belongs to firm
     client = db.query(Client).filter(Client.id == client_id, Client.firm_id == firm_id).first()
     if not client:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Client not found")
@@ -142,7 +141,6 @@ def upload_document_file(
 
     storage_filename, file_size = save_file_locally(firm_id, file)
 
-    # Compute SHA-256 fingerprint
     file_bytes = storage_service.retrieve_file(storage_filename) or b""
     sha256_digest = calculate_sha256(file_bytes) if file_bytes else "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 
@@ -152,7 +150,6 @@ def upload_document_file(
     doc.uploaded_by = actor_id
     doc.uploaded_at = datetime.now(timezone.utc)
 
-    # Create immutable DocumentVersion record
     doc_ver = DocumentVersion(
         document_id=doc.id,
         firm_id=firm_id,
@@ -166,7 +163,6 @@ def upload_document_file(
     )
     db.add(doc_ver)
 
-    # Atomic audit logging in the same transaction
     log_audit_event(
         db=db,
         firm_id=firm_id,
@@ -259,7 +255,6 @@ def request_document_correction(
     doc.status = "CORRECTION_REQUIRED"
     doc.review_comment = clean_comment
 
-    # Record Review decision
     review_record = Review(
         firm_id=firm_id,
         document_id=doc.id,
@@ -316,10 +311,8 @@ def reupload_document_file(
     doc.status = "UPLOADED"
     doc.uploaded_by = actor_id
     doc.uploaded_at = datetime.now(timezone.utc)
-    # Note: Keep doc.review_comment as context or clear it
     prior_comment = doc.review_comment
 
-    # Create immutable DocumentVersion record for the incremented version
     doc_ver = DocumentVersion(
         document_id=doc.id,
         firm_id=firm_id,
@@ -380,7 +373,6 @@ def approve_document(
     doc.status = "APPROVED"
     doc.review_comment = comment or "Document approved without comments."
 
-    # Record Review decision
     review_record = Review(
         firm_id=firm_id,
         document_id=doc.id,

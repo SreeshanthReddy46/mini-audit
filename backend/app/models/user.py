@@ -17,13 +17,12 @@ class User(Base):
     name = Column(String(255), nullable=False)
     email = Column(String(255), unique=True, nullable=False, index=True)
     password_hash = Column(String(255), nullable=False)
-    role = Column(String(50), nullable=False)  # 'STAFF', 'REVIEWER', 'ADMIN'
+    role = Column(String(50), nullable=False)
     is_active = Column(Boolean, default=True, nullable=False)
 
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
     updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=True)
 
-    # Relationships
     firm = relationship("Firm", back_populates="users")
     uploaded_documents = relationship("Document", foreign_keys="Document.uploaded_by", back_populates="uploader")
     audit_events = relationship("AuditEvent", back_populates="actor")

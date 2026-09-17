@@ -42,12 +42,12 @@ export default function FirmAuditPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-neutral-200">
         <div>
-          <h2 className="text-xl font-black text-black tracking-tight flex items-center gap-2">
-            <FileCheck2 className="w-5 h-5 text-black" />
+          <h2 className="text-xl font-black text-neutral-900 tracking-tight flex items-center gap-2">
+            <FileCheck2 className="w-5 h-5 text-neutral-900" />
             Firm Audit Trail
           </h2>
-          <p className="text-xs text-neutral-500 mt-0.5">
-            Immutable, append-only log of all regulatory compliance and document actions.
+          <p className="text-xs text-neutral-500 mt-0.5 font-medium">
+            Immutable, append-only log of all regulatory compliance and document lifecycle transitions.
           </p>
         </div>
 
@@ -56,12 +56,12 @@ export default function FirmAuditPage() {
           <select
             value={selectedAction}
             onChange={(e) => setSelectedAction(e.target.value)}
-            className="rounded-lg border border-neutral-300 bg-white px-3 py-1.5 text-xs text-black focus:border-black focus:ring-1 focus:ring-black focus:outline-none"
+            className="rounded-xl border border-neutral-300 bg-white px-3 py-1.5 text-xs text-neutral-900 focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900 focus:outline-none"
           >
             <option value="ALL">All Actions ({events.length})</option>
             {actionsList.map((action) => (
               <option key={action} value={action}>
-                {action}
+                {action.replace(/_/g, ' ')}
               </option>
             ))}
           </select>
@@ -71,11 +71,11 @@ export default function FirmAuditPage() {
       <div className="group relative rounded-2xl border border-neutral-200 bg-white p-6 shadow-xs hover-lift">
         <CornerStars />
         <div className="flex items-center justify-between pb-4 border-b border-neutral-100 mb-6">
-          <div className="flex items-center gap-2 text-xs font-bold text-black">
-            <ShieldCheck className="w-4 h-4 text-black" />
+          <div className="flex items-center gap-2 text-xs font-bold text-neutral-900">
+            <ShieldCheck className="w-4 h-4 text-neutral-900" />
             <span>Traceability Log</span>
           </div>
-          <span className="text-[11px] text-neutral-500">
+          <span className="text-[11px] text-neutral-500 font-medium">
             Showing {filteredEvents.length} events
           </span>
         </div>

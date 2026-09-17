@@ -63,7 +63,6 @@ def test_me_with_bearer_token(client):
     )
     token = login_resp.json()["access_token"]
 
-    # Use fresh client to test pure header
     auth_client = TestClient(app)
     response = auth_client.get(
         "/api/auth/me",
@@ -82,7 +81,6 @@ def test_me_with_session_cookie(client):
     )
     assert login_resp.status_code == 200
 
-    # Cookie automatically persisted in this client
     response = client.get("/api/auth/me")
     assert response.status_code == 200
     data = response.json()
@@ -91,7 +89,6 @@ def test_me_with_session_cookie(client):
 
 
 def test_me_unauthenticated():
-    # Fresh unauthenticated client
     fresh_client = TestClient(app)
     response = fresh_client.get("/api/auth/me")
     assert response.status_code == 401

@@ -51,7 +51,6 @@ class AuditEntity(str, Enum):
     AI_ANALYSIS = "ai_analysis"
 
 
-# Standard compliance audit documents checklist
 STANDARD_AUDIT_CHECKLIST = [
     "Bank Statement",
     "Sales Register",
@@ -60,8 +59,7 @@ STANDARD_AUDIT_CHECKLIST = [
     "Expense Summary"
 ]
 
-# File security constants
-MAX_FILE_SIZE_BYTES = 15 * 1024 * 1024  # 15 MB
+MAX_FILE_SIZE_BYTES = 15 * 1024 * 1024
 ALLOWED_EXTENSIONS = {".pdf", ".xlsx", ".xls", ".csv", ".png", ".jpg", ".jpeg"}
 ALLOWED_MIME_TYPES = {
     "application/pdf",

@@ -22,13 +22,12 @@ def login(request: LoginRequest, response: Response, db: Session = Depends(get_d
 
     access_token = generate_token_for_user(user)
 
-    # Set secure HttpOnly session cookie
     response.set_cookie(
         key="access_token",
         value=access_token,
         httponly=True,
         samesite="lax",
-        max_age=86400,  # 24 hours
+        max_age=86400,
         path="/"
     )
 

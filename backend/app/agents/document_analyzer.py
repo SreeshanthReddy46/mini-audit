@@ -22,7 +22,6 @@ class DocumentAnalyzer:
         findings: List[FindingItem] = []
         doc_type_clean = document_type.lower().replace(" ", "_")
 
-        # 1. Prompt Injection & Adversarial Content Guardrail
         is_suspicious, matched_pattern = detect_prompt_injection(content_text)
         if is_suspicious:
             findings.append(
@@ -36,11 +35,9 @@ class DocumentAnalyzer:
                 )
             )
 
-        # 2. Document-Specific Domain Compliance Checks
         text_lower = content_text.lower() if content_text else ""
 
         if "bank_statement" in doc_type_clean or "bank" in text_lower:
-            # Check for closing balance
             if "closing balance" not in text_lower and "ending balance" not in text_lower:
                 findings.append(
                     FindingGenerator.missing_information(
@@ -65,7 +62,6 @@ class DocumentAnalyzer:
                 )
 
         elif "gst_return" in doc_type_clean or "gst" in text_lower:
-            # Check GSTIN pattern (2 digits + 5 alpha + 4 digits + 1 alpha + 1 alpha/digit + Z + 1 alpha/digit)
             gstin_regex = r"\b[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}\b"
             gstin_match = re.search(gstin_regex, content_text.upper())
             if not gstin_match:
@@ -117,7 +113,6 @@ class DocumentAnalyzer:
                     )
                 )
 
-        # Baseline observation if empty or no other findings
         if not findings:
             findings.append(
                 FindingGenerator.observation(

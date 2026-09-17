@@ -26,11 +26,9 @@ def seed_database():
     db = SessionLocal()
 
     try:
-        # Check if already seeded
         existing_firm = db.query(Firm).filter(Firm.name == "ABC & Co.").first()
         if existing_firm:
             print("Database already contains demo data. Resetting demo data for clean evaluation...")
-            # Delete in cascade order (children first)
             db.query(AIAnalysis).delete()
             db.query(Review).delete()
             db.query(DocumentVersion).delete()
@@ -46,7 +44,6 @@ def seed_database():
         db.add(firm_a)
         db.flush()
 
-        # Firm A Users
         rohit = User(
             firm_id=firm_a.id,
             name="Rohit",
@@ -64,7 +61,6 @@ def seed_database():
         db.add_all([rohit, aman])
         db.flush()
 
-        # Firm A Client
         client_a = Client(
             firm_id=firm_a.id,
             name="ABC Traders Pvt. Ltd."
@@ -72,7 +68,6 @@ def seed_database():
         db.add(client_a)
         db.flush()
 
-        # Firm A Client Created Audit Event
         audit_client_a = AuditEvent(
             firm_id=firm_a.id,
             actor_id=rohit.id,
@@ -82,7 +77,6 @@ def seed_database():
         )
         db.add(audit_client_a)
 
-        # Firm A Documents
         for doc_name in REQUIRED_DOCUMENTS:
             doc = Document(
                 firm_id=firm_a.id,
@@ -108,7 +102,6 @@ def seed_database():
         db.add(firm_b)
         db.flush()
 
-        # Firm B Users
         rahul = User(
             firm_id=firm_b.id,
             name="Rahul",
@@ -126,7 +119,6 @@ def seed_database():
         db.add_all([rahul, priya])
         db.flush()
 
-        # Firm B Client
         client_b = Client(
             firm_id=firm_b.id,
             name="XYZ Manufacturing Ltd."
@@ -134,7 +126,6 @@ def seed_database():
         db.add(client_b)
         db.flush()
 
-        # Firm B Client Created Audit Event
         audit_client_b = AuditEvent(
             firm_id=firm_b.id,
             actor_id=rahul.id,
@@ -144,7 +135,6 @@ def seed_database():
         )
         db.add(audit_client_b)
 
-        # Firm B Documents
         for doc_name in REQUIRED_DOCUMENTS:
             doc = Document(
                 firm_id=firm_b.id,

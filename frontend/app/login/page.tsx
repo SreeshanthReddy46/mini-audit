@@ -19,7 +19,6 @@ function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // If redirected with pre-filled email from persona link on root page
   useEffect(() => {
     const emailParam = searchParams.get('email');
     if (emailParam) {
@@ -27,7 +26,6 @@ function LoginForm() {
     }
   }, [searchParams]);
 
-  // If already authenticated, forward to dashboard
   useEffect(() => {
     if (user) {
       router.push('/dashboard');
@@ -112,7 +110,6 @@ function LoginForm() {
             </Button>
           </form>
 
-          {/* Evaluator 1-Click Demo Credentials */}
           <div className="mt-8 pt-6 border-t border-neutral-200">
             <div className="flex items-center gap-1.5 text-xs font-black text-black mb-3 uppercase tracking-wider">
               <UserCheck className="w-4 h-4 text-black" />
@@ -128,8 +125,8 @@ function LoginForm() {
                 <CornerStars size="sm" />
                 <div>
                   <span className="font-bold text-black">Firm A: Rohit</span>
-                  <span className="ml-2 text-[10px] font-black uppercase px-1.5 py-0.5 rounded bg-black text-white">
-                    STAFF
+                  <span className="ml-2 text-xs font-mono font-bold text-neutral-600">
+                    (STAFF)
                   </span>
                   <p className="text-[11px] text-neutral-500 font-mono mt-0.5">rohit@abc.com</p>
                 </div>
@@ -146,8 +143,8 @@ function LoginForm() {
                 <CornerStars size="sm" />
                 <div>
                   <span className="font-bold text-black">Firm A: Aman</span>
-                  <span className="ml-2 text-[10px] font-black uppercase px-1.5 py-0.5 rounded bg-black text-white">
-                    REVIEWER
+                  <span className="ml-2 text-xs font-mono font-bold text-neutral-600">
+                    (REVIEWER)
                   </span>
                   <p className="text-[11px] text-neutral-500 font-mono mt-0.5">aman@abc.com</p>
                 </div>
@@ -164,8 +161,8 @@ function LoginForm() {
                 <CornerStars size="sm" />
                 <div>
                   <span className="font-bold text-black">Firm B: Priya</span>
-                  <span className="ml-2 text-[10px] font-black uppercase px-1.5 py-0.5 rounded bg-black text-white">
-                    REVIEWER (TENANT B)
+                  <span className="ml-2 text-xs font-mono font-bold text-neutral-600">
+                    (REVIEWER - TENANT B)
                   </span>
                   <p className="text-[11px] text-neutral-500 font-mono mt-0.5">priya@xyz.com</p>
                 </div>

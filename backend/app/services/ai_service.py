@@ -35,12 +35,10 @@ class AIService:
         ip_address: Optional[str] = None,
         user_agent: Optional[str] = None,
     ) -> AIAnalysis:
-        # 1. Authorize access (strict tenant check)
         doc = self.doc_repo.get_by_id(document_id, firm_id)
         if not doc:
             raise TenantIsolationError("Document not found")
 
-        # 2. Resolve document version
         target_version: Optional[DocumentVersion] = None
         if version_id:
             target_version = (
@@ -59,7 +57,6 @@ class AIService:
             if versions:
                 target_version = versions[0]
 
-        # 3. Read document text content safely
         content_text = ""
         if target_version and target_version.storage_key:
             try:
@@ -78,7 +75,6 @@ class AIService:
         else:
             content_text = f"Audit document placeholder for {doc.name}."
 
-        # 4. Invoke restricted AuditAgent
         structured_analysis = self.agent.analyze_document_version(
             document_id=doc.id,
             document_name=doc.name,
@@ -87,7 +83,6 @@ class AIService:
             content_text=content_text,
         )
 
-        # 5. Persist AIAnalysis record (associated with version)
         analysis_record = AIAnalysis(
             firm_id=firm_id,
             document_id=doc.id,
@@ -103,7 +98,6 @@ class AIService:
         self.db.add(analysis_record)
         self.db.flush()
 
-        # 6. Append immutable audit event
         self.audit_repo.create(
             firm_id=firm_id,
             action=AuditAction.AI_ANALYSIS_COMPLETED.value,

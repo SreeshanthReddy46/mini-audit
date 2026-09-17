@@ -20,7 +20,6 @@ def require_role(allowed_roles: List[str]):
     return role_dependency
 
 
-# Pre-defined convenience role guards
 require_staff = require_role(["STAFF", "ADMIN"])
 require_reviewer = require_role(["REVIEWER", "ADMIN"])
 require_admin = require_role(["ADMIN"])

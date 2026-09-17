@@ -14,7 +14,6 @@ def test_sha256_calculation_and_verification():
 
 
 def test_filename_sanitization_prevents_path_traversal():
-    # Test path traversal attempts
     assert sanitize_filename("../../etc/passwd") == "passwd"
     assert sanitize_filename("..\\..\\Windows\\System32\\cmd.exe") == "cmd.exe"
     assert sanitize_filename("safe_report.pdf") == "safe_report.pdf"
@@ -29,12 +28,10 @@ def test_uuid_validator():
 
 
 def test_file_validation_allowed_types():
-    # Valid PDF
     clean_name, mime, size = validate_file_upload("report.pdf", b"%PDF-1.4 test content", "application/pdf")
     assert clean_name == "report.pdf"
     assert size > 0
 
-    # Valid Excel
     clean_name, mime, size = validate_file_upload("tax_register.xlsx", b"dummy excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
     assert clean_name == "tax_register.xlsx"
 

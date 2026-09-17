@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, FileCheck2, ShieldCheck } from 'lucide-react';
+import { LayoutDashboard, Users, FileCheck2 } from 'lucide-react';
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -15,13 +15,13 @@ export function Sidebar() {
   ];
 
   return (
-    <aside className="w-64 border-r border-neutral-200 bg-white text-black flex flex-col shrink-0 min-h-screen">
+    <aside className="w-64 border-r border-neutral-200 bg-white text-neutral-900 flex flex-col shrink-0 min-h-screen">
       <div className="flex items-center gap-2.5 px-6 py-5 border-b border-neutral-200">
-        <div className="w-8 h-8 rounded-lg bg-black flex items-center justify-center text-white font-black text-sm shadow-xs">
+        <div className="w-8 h-8 rounded-lg bg-neutral-900 flex items-center justify-center text-white font-black text-sm shadow-xs">
           A
         </div>
         <div>
-          <h1 className="text-sm font-black text-black tracking-tight">MINI AUDIT</h1>
+          <h1 className="text-sm font-black text-neutral-900 tracking-tight">MINI AUDIT</h1>
           <p className="text-[10px] text-neutral-500 font-medium">CA Document Review</p>
         </div>
       </div>
@@ -36,8 +36,8 @@ export function Sidebar() {
               href={item.href}
               className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold tracking-wide transition-all ${
                 isActive
-                  ? 'bg-black text-white shadow-xs'
-                  : 'text-neutral-600 hover:text-black hover:bg-neutral-100'
+                  ? 'bg-neutral-900 text-white shadow-xs'
+                  : 'text-neutral-600 hover:text-neutral-950 hover:bg-neutral-100'
               }`}
             >
               <Icon className="w-4 h-4 shrink-0" />
@@ -47,9 +47,9 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="p-4 border-t border-neutral-200 bg-neutral-50 text-[11px] text-black">
-        <div className="flex items-center gap-1.5 font-bold text-black mb-1">
-          <span className="w-2 h-2 rounded-full bg-black"></span>
+      <div className="p-4 border-t border-neutral-200 bg-neutral-50 text-[11px] text-neutral-900">
+        <div className="flex items-center gap-1.5 font-bold text-neutral-900 mb-1">
+          <span className="w-2 h-2 rounded-full bg-neutral-900"></span>
           Tenant Isolation Active
         </div>
         <p className="text-[10px] text-neutral-600 font-medium">

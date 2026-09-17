@@ -14,9 +14,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ==========================================================
-   1. CORNER STARS ANIMATIONS (Hover on divs/cards)
-   ========================================================== */
 .corner-star {
   position: absolute;
   pointer-events: none;
@@ -51,7 +48,6 @@ body {
   transition-delay: 0.20s;
 }
 
-/* Colorful Corner Star Glows */
 .corner-star-glow-tl {
   filter: drop-shadow(0 0 5px rgba(255, 0, 122, 0.8)) drop-shadow(0 0 10px rgba(255, 214, 0, 0.6));
 }
@@ -68,7 +64,6 @@ body {
   filter: drop-shadow(0 0 5px rgba(255, 19, 97, 0.8)) drop-shadow(0 0 10px rgba(255, 248, 0, 0.6));
 }
 
-/* Trigger when hovering over any parent marked with .group or .star-card */
 .group:hover .corner-star,
 .star-card:hover .corner-star,
 *:hover > .corner-star {
@@ -96,9 +91,6 @@ body {
   }
 }
 
-/* ==========================================================
-   2. OCEAN WAVES BUTTON CLICK ANIMATIONS (Vibrant Blue Waves)
-   ========================================================== */
 .ocean-wave-container {
   position: absolute;
   inset: 0;
@@ -115,21 +107,18 @@ body {
   pointer-events: none;
 }
 
-/* Layer 1: Deep Ocean Deep Azure Wave */
 .ocean-wave-1 {
   background: radial-gradient(circle, rgba(14, 165, 233, 0.75) 0%, rgba(2, 132, 199, 0.55) 50%, rgba(3, 105, 161, 0) 75%);
   border: 2px solid rgba(56, 189, 248, 0.8);
   animation: oceanWaveExpand1 0.85s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
 }
 
-/* Layer 2: Middle Cerulean Wave Ripple */
 .ocean-wave-2 {
   background: radial-gradient(circle, rgba(56, 189, 248, 0.7) 0%, rgba(14, 165, 233, 0.45) 45%, rgba(2, 132, 199, 0) 70%);
   border: 1.5px solid rgba(125, 211, 252, 0.9);
   animation: oceanWaveExpand2 0.75s cubic-bezier(0.15, 0.85, 0.35, 1) 0.06s forwards;
 }
 
-/* Layer 3: Foam Crest Wave Sparkle */
 .ocean-wave-3 {
   background: radial-gradient(circle, rgba(186, 230, 253, 0.85) 0%, rgba(56, 189, 248, 0.5) 40%, rgba(14, 165, 233, 0) 65%);
   border: 1px solid rgba(255, 255, 255, 0.95);
@@ -190,10 +179,6 @@ body {
   }
 }
 
-/* ==========================================================
-   3. SIMPLE & DELIGHTFUL MICRO-ANIMATIONS
-   ========================================================== */
-/* Smooth gentle float for hero indicators and icons */
 @keyframes floatSlow {
   0%, 100% {
     transform: translateY(0px);
@@ -207,7 +192,6 @@ body {
   animation: floatSlow 3.5s ease-in-out infinite;
 }
 
-/* Subtle glow pulse */
 @keyframes pulseSubtle {
   0%, 100% {
     opacity: 1;
@@ -221,7 +205,6 @@ body {
   animation: pulseSubtle 2s ease-in-out infinite;
 }
 
-/* Light sweep across button or card */
 .hover-light-sweep {
   position: relative;
   overflow: hidden;
@@ -249,7 +232,6 @@ body {
   left: 140%;
 }
 
-/* Card hover lift */
 .hover-lift {
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
 }
@@ -259,7 +241,6 @@ body {
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
 }
 
-/* Custom crisp scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
