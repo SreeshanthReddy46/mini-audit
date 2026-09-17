@@ -19,6 +19,8 @@ import {
   Workflow,
   Sparkles,
 } from 'lucide-react';
+import { Button } from '../components/ui/Button';
+import { CornerStars } from '../components/ui/CornerStars';
 
 export default function RootLandingPage() {
   const workflowStages = [
@@ -142,7 +144,7 @@ export default function RootLandingPage() {
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-xs border-b border-neutral-200">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-black text-white flex items-center justify-center font-black text-sm shadow-xs">
+            <div className="w-8 h-8 rounded-lg bg-black text-white flex items-center justify-center font-black text-sm shadow-xs animate-float-slow">
               A
             </div>
             <div>
@@ -162,12 +164,11 @@ export default function RootLandingPage() {
           </nav>
 
           <div className="flex items-center gap-3">
-            <Link
-              href="/login"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-black text-white text-xs font-bold hover:bg-neutral-800 transition-all shadow-xs"
-            >
-              Get Started
-              <ArrowRight className="w-3.5 h-3.5" />
+            <Link href="/login">
+              <Button size="sm" className="gap-2">
+                Get Started
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Button>
             </Link>
           </div>
         </div>
@@ -175,7 +176,7 @@ export default function RootLandingPage() {
 
       {/* Hero Section */}
       <section className="py-20 md:py-28 px-6 max-w-7xl mx-auto text-center border-b border-neutral-200">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-neutral-300 bg-neutral-50 text-xs font-bold text-black mb-6">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-neutral-300 bg-neutral-50 text-xs font-bold text-black mb-6 animate-float-slow">
           <ShieldCheck className="w-4 h-4 text-black" />
           <span>Chartered Accountant Document Review & Verification System</span>
         </div>
@@ -188,10 +189,11 @@ export default function RootLandingPage() {
           A production-grade, zero-trust audit review platform for CA firms. Deterministic backend rules control access, tenant boundaries, state transitions, and append-only audit logging.
         </p>
 
-        {/* The Golden Principle Callout */}
-        <div className="mt-10 max-w-2xl mx-auto p-6 rounded-2xl border-2 border-black bg-white shadow-sm text-left">
+        {/* The Golden Principle Callout with CornerStars */}
+        <div className="group relative mt-10 max-w-2xl mx-auto p-6 rounded-2xl border-2 border-black bg-white shadow-sm text-left hover-lift">
+          <CornerStars size="lg" />
           <div className="flex items-center gap-2 font-black text-xs uppercase tracking-widest text-black mb-2">
-            <Sparkles className="w-4 h-4 text-black" />
+            <Sparkles className="w-4 h-4 text-black animate-pulse-subtle" />
             Core Architectural Invariant
           </div>
           <p className="text-xl sm:text-2xl font-black text-black">
@@ -203,18 +205,16 @@ export default function RootLandingPage() {
         </div>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-          <Link
-            href="/login"
-            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-black text-white text-sm font-bold hover:bg-neutral-800 transition-all shadow-md"
-          >
-            Get Started (Sign In)
-            <ArrowRight className="w-4 h-4" />
+          <Link href="/login">
+            <Button size="lg" className="gap-2 px-7 py-3.5 text-sm shadow-md">
+              Get Started (Sign In)
+              <ArrowRight className="w-4 h-4" />
+            </Button>
           </Link>
-          <a
-            href="#architecture"
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white text-black text-sm font-bold border border-black hover:bg-neutral-100 transition-all"
-          >
-            View Architecture Blueprint
+          <a href="#architecture">
+            <Button variant="outline" size="lg" className="gap-2 px-6 py-3.5 text-sm">
+              View Architecture Blueprint
+            </Button>
           </a>
         </div>
       </section>
@@ -237,11 +237,12 @@ export default function RootLandingPage() {
           {workflowStages.map((stage) => (
             <div
               key={stage.step}
-              className="p-5 rounded-xl border border-neutral-300 bg-white hover:border-black transition-all flex flex-col justify-between"
+              className="group relative p-5 rounded-xl border border-neutral-300 bg-white hover:border-black transition-all duration-200 hover-lift flex flex-col justify-between"
             >
+              <CornerStars size="sm" />
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-black font-mono text-neutral-400">{stage.step}</span>
+                  <span className="text-xs font-black font-mono text-neutral-400 group-hover:text-black transition-colors">{stage.step}</span>
                   <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-black text-white">
                     {stage.actor}
                   </span>
@@ -277,9 +278,10 @@ export default function RootLandingPage() {
             return (
               <div
                 key={pillar.title}
-                className="p-6 rounded-2xl border border-neutral-300 bg-white hover:border-black transition-all"
+                className="group relative p-6 rounded-2xl border border-neutral-300 bg-white hover:border-black transition-all duration-200 hover-lift"
               >
-                <div className="w-10 h-10 rounded-lg bg-black text-white flex items-center justify-center mb-4">
+                <CornerStars />
+                <div className="w-10 h-10 rounded-lg bg-black text-white flex items-center justify-center mb-4 transition-transform group-hover:scale-105">
                   <Icon className="w-5 h-5" />
                 </div>
                 <div className="flex items-center justify-between gap-2 mb-2">
@@ -311,9 +313,11 @@ export default function RootLandingPage() {
           </p>
         </div>
 
-        <div className="p-8 rounded-2xl border-2 border-black bg-white font-mono text-xs overflow-x-auto shadow-sm">
+        <div className="group relative p-8 rounded-2xl border-2 border-black bg-white font-mono text-xs overflow-x-auto shadow-sm hover-lift">
+          <CornerStars size="lg" />
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
-            <div className="p-4 rounded-xl border border-neutral-300 bg-neutral-50">
+            <div className="group/item relative p-4 rounded-xl border border-neutral-300 bg-neutral-50 hover:border-black transition-colors">
+              <CornerStars size="sm" />
               <span className="text-[10px] font-black uppercase text-neutral-500">Presentation Layer</span>
               <h4 className="font-bold text-black text-sm mt-1">Next.js 14 App Router</h4>
               <p className="text-[11px] text-neutral-600 mt-2 font-sans">
@@ -321,7 +325,8 @@ export default function RootLandingPage() {
               </p>
             </div>
 
-            <div className="p-4 rounded-xl border border-neutral-300 bg-neutral-50">
+            <div className="group/item relative p-4 rounded-xl border border-neutral-300 bg-neutral-50 hover:border-black transition-colors">
+              <CornerStars size="sm" />
               <span className="text-[10px] font-black uppercase text-neutral-500">API Gateway</span>
               <h4 className="font-bold text-black text-sm mt-1">FastAPI Backend</h4>
               <p className="text-[11px] text-neutral-600 mt-2 font-sans">
@@ -329,17 +334,19 @@ export default function RootLandingPage() {
               </p>
             </div>
 
-            <div className="p-4 rounded-xl border border-neutral-300 bg-neutral-50">
+            <div className="group/item relative p-4 rounded-xl border border-neutral-300 bg-neutral-50 hover:border-black transition-colors">
+              <CornerStars size="sm" />
               <span className="text-[10px] font-black uppercase text-neutral-500">Data & Storage</span>
-              <h4 className="font-bold text-black text-sm mt-1">PostgreSQL + Private Storage</h4>
+              <h4 className="font-bold text-black text-sm mt-1">PostgreSQL + Storage</h4>
               <p className="text-[11px] text-neutral-600 mt-2 font-sans">
                 Firms, Users, Clients, Documents, DocumentVersions, Reviews.
               </p>
             </div>
 
-            <div className="p-4 rounded-xl border border-neutral-300 bg-neutral-50">
+            <div className="group/item relative p-4 rounded-xl border border-neutral-300 bg-neutral-50 hover:border-black transition-colors">
+              <CornerStars size="sm" />
               <span className="text-[10px] font-black uppercase text-neutral-500">Audit & AI</span>
-              <h4 className="font-bold text-black text-sm mt-1">Append-Only Audit + AI Agent</h4>
+              <h4 className="font-bold text-black text-sm mt-1">Append-Only + AI Agent</h4>
               <p className="text-[11px] text-neutral-600 mt-2 font-sans">
                 Append-only event ledger & advisory document analyzer.
               </p>
@@ -367,8 +374,9 @@ export default function RootLandingPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {checklistDocs.map((doc, idx) => (
-            <div key={doc.name} className="p-4 rounded-xl border border-neutral-300 bg-white">
+          {checklistDocs.map((doc) => (
+            <div key={doc.name} className="group relative p-4 rounded-xl border border-neutral-300 bg-white hover:border-black transition-all duration-200 hover-lift">
+              <CornerStars size="sm" />
               <div className="flex items-center gap-2 mb-2">
                 <FileText className="w-4 h-4 text-black shrink-0" />
                 <h3 className="text-sm font-bold text-black">{doc.name}</h3>
@@ -376,7 +384,8 @@ export default function RootLandingPage() {
               <p className="text-xs text-neutral-600 font-medium">{doc.check}</p>
             </div>
           ))}
-          <div className="p-4 rounded-xl border border-dashed border-neutral-400 bg-neutral-50 flex items-center justify-center text-center">
+          <div className="group relative p-4 rounded-xl border border-dashed border-neutral-400 bg-neutral-50 hover:border-black flex items-center justify-center text-center transition-colors">
+            <CornerStars size="sm" />
             <p className="text-xs font-bold text-neutral-700">
               + Custom Client Documents Supported
             </p>
@@ -402,8 +411,9 @@ export default function RootLandingPage() {
           {personas.map((p) => (
             <div
               key={p.email}
-              className="p-6 rounded-2xl border-2 border-neutral-300 bg-white hover:border-black transition-all flex flex-col justify-between"
+              className="group relative p-6 rounded-2xl border-2 border-neutral-300 bg-white hover:border-black transition-all duration-200 hover-lift flex flex-col justify-between"
             >
+              <CornerStars />
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-bold uppercase tracking-wider text-neutral-500">{p.firm}</span>
@@ -419,10 +429,12 @@ export default function RootLandingPage() {
               <div className="mt-6 pt-4 border-t border-neutral-200">
                 <Link
                   href={`/login?email=${encodeURIComponent(p.email)}`}
-                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-black text-white text-xs font-bold hover:bg-neutral-800 transition-all shadow-xs"
+                  className="w-full block"
                 >
-                  Sign In as {p.name}
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <Button variant="primary" size="sm" className="w-full gap-2 group/btn">
+                    Sign In as {p.name}
+                    <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
+                  </Button>
                 </Link>
               </div>
             </div>
@@ -442,8 +454,10 @@ export default function RootLandingPage() {
           </div>
 
           <div className="flex items-center gap-6 text-black font-bold">
-            <Link href="/login" className="hover:underline">
-              Get Started →
+            <Link href="/login">
+              <Button size="sm" variant="outline" className="gap-1.5">
+                Get Started →
+              </Button>
             </Link>
           </div>
         </div>

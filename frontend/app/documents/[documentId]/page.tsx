@@ -11,6 +11,7 @@ import { AuditTimeline } from '../../../components/audit/AuditTimeline';
 import { Badge } from '../../../components/ui/Badge';
 import { Button } from '../../../components/ui/Button';
 import { Loading } from '../../../components/ui/Loading';
+import { CornerStars } from '../../../components/ui/CornerStars';
 import { DocumentVersion, AIAnalysis } from '../../../lib/types';
 import {
   ArrowLeft,
@@ -123,7 +124,8 @@ export default function DocumentReviewPage() {
 
   if (error || !currentDocument) {
     return (
-      <div className="max-w-md mx-auto my-12 text-center p-8 rounded-2xl bg-white border border-black shadow-sm">
+      <div className="group relative max-w-md mx-auto my-12 text-center p-8 rounded-2xl bg-white border-2 border-black shadow-sm hover-lift">
+        <CornerStars />
         <div className="w-12 h-12 rounded-full bg-neutral-100 text-black flex items-center justify-center mx-auto mb-3 border border-neutral-200">
           <AlertOctagon className="w-6 h-6 text-black" />
         </div>
@@ -152,10 +154,11 @@ export default function DocumentReviewPage() {
         </Link>
       </div>
 
-      {/* Header Banner */}
-      <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-xs flex flex-wrap items-center justify-between gap-4">
+      {/* Header Banner with CornerStars */}
+      <div className="group relative rounded-2xl border border-neutral-200 bg-white p-6 shadow-xs flex flex-wrap items-center justify-between gap-4 hover-lift">
+        <CornerStars />
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-neutral-100 border border-neutral-200 text-black flex items-center justify-center">
+          <div className="w-12 h-12 rounded-xl bg-neutral-100 border border-neutral-200 text-black flex items-center justify-center transition-transform group-hover:scale-105">
             <FileText className="w-6 h-6 text-black" />
           </div>
           <div>
@@ -187,7 +190,7 @@ export default function DocumentReviewPage() {
       </div>
 
       {/* Metadata Row */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-xl border border-neutral-200 bg-white text-xs">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-xl border border-neutral-200 bg-white text-xs shadow-xs">
         <div>
           <span className="text-[11px] text-neutral-500 uppercase font-semibold block">Uploaded By</span>
           <span className="font-bold text-black flex items-center gap-1 mt-0.5">
@@ -242,11 +245,12 @@ export default function DocumentReviewPage() {
             onApprove={(comment) => approveDocument(currentDocument.id, comment)}
           />
 
-          {/* AI Advisory Assistant Panel */}
-          <div className="rounded-xl border border-neutral-200 bg-white p-6 shadow-xs space-y-5">
+          {/* AI Advisory Assistant Panel with CornerStars */}
+          <div className="group relative rounded-xl border border-neutral-200 bg-white p-6 shadow-xs space-y-5 hover-lift">
+            <CornerStars />
             <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-neutral-100">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-neutral-100 border border-neutral-200 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-neutral-100 border border-neutral-200 flex items-center justify-center transition-transform group-hover:scale-105">
                   <Bot className="w-4 h-4 text-black" />
                 </div>
                 <div>
@@ -312,8 +316,9 @@ export default function DocumentReviewPage() {
                     {aiAnalysis.findings?.map((finding, idx) => (
                       <div
                         key={idx}
-                        className="p-3 rounded-lg border border-neutral-200 bg-white space-y-1.5"
+                        className="group/finding relative p-3 rounded-lg border border-neutral-200 bg-white space-y-1.5 hover:border-black transition-colors"
                       >
+                        <CornerStars size="sm" />
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-bold text-black">{finding.category}</span>
                           <span
@@ -350,7 +355,7 @@ export default function DocumentReviewPage() {
               </div>
             ) : (
               <div className="text-center py-6 border border-dashed border-neutral-300 rounded-xl">
-                <Bot className="w-8 h-8 text-neutral-400 mx-auto mb-2" />
+                <Bot className="w-8 h-8 text-neutral-400 mx-auto mb-2 animate-float-slow" />
                 <p className="text-xs font-semibold text-black">No Advisory Analysis Run Yet</p>
                 <p className="text-[11px] text-neutral-500 mt-1 max-w-sm mx-auto">
                   Click &ldquo;Run Advisory Analysis&rdquo; to prompt the sandboxed LLM agent to inspect this document against compliance heuristics.
@@ -359,8 +364,9 @@ export default function DocumentReviewPage() {
             )}
           </div>
 
-          {/* Immutable Version History */}
-          <div className="rounded-xl border border-neutral-200 bg-white p-6 shadow-xs space-y-4">
+          {/* Immutable Version History with CornerStars */}
+          <div className="group relative rounded-xl border border-neutral-200 bg-white p-6 shadow-xs space-y-4 hover-lift">
+            <CornerStars />
             <div className="flex items-center justify-between pb-4 border-b border-neutral-100">
               <div className="flex items-center gap-2">
                 <Layers className="w-4 h-4 text-black" />
@@ -382,8 +388,9 @@ export default function DocumentReviewPage() {
                 {versions.map((v) => (
                   <div
                     key={v.id}
-                    className="p-3 rounded-lg border border-neutral-200 bg-neutral-50 space-y-2"
+                    className="group/version relative p-3 rounded-lg border border-neutral-200 bg-neutral-50 hover:border-black transition-colors space-y-2"
                   >
+                    <CornerStars size="sm" />
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-bold text-black">Version {v.version_number}</span>
@@ -420,9 +427,10 @@ export default function DocumentReviewPage() {
           </div>
         </div>
 
-        {/* Right Column: Append-Only Audit History */}
+        {/* Right Column: Append-Only Audit History with CornerStars */}
         <div className="lg:col-span-5 space-y-4">
-          <div className="rounded-xl border border-neutral-200 bg-white p-6 shadow-xs">
+          <div className="group relative rounded-xl border border-neutral-200 bg-white p-6 shadow-xs hover-lift">
+            <CornerStars />
             <div className="flex items-center justify-between pb-4 border-b border-neutral-100 mb-6">
               <h3 className="text-sm font-bold uppercase tracking-wider text-black flex items-center gap-2">
                 <History className="w-4 h-4 text-black" />

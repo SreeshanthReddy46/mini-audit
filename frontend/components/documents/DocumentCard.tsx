@@ -4,6 +4,7 @@ import { Document } from '../../lib/types';
 import { DocumentStatus } from './DocumentStatus';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
+import { CornerStars } from '../ui/CornerStars';
 import { FileText, ArrowRight, AlertCircle, Clock } from 'lucide-react';
 
 export function DocumentCard({ document }: { document: Document }) {
@@ -11,10 +12,11 @@ export function DocumentCard({ document }: { document: Document }) {
   const hasComment = document.status === 'CORRECTION_REQUIRED' && document.review_comment;
 
   return (
-    <div className="rounded-xl border border-neutral-300 bg-white p-5 shadow-xs hover:border-black transition-all">
+    <div className="group relative rounded-xl border border-neutral-300 bg-white p-5 shadow-xs hover:border-black transition-all duration-200 hover-lift">
+      <CornerStars />
       <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
         <div className="flex items-start gap-3">
-          <div className="w-9 h-9 rounded-lg bg-black flex items-center justify-center text-white mt-0.5">
+          <div className="w-9 h-9 rounded-lg bg-black flex items-center justify-center text-white mt-0.5 transition-transform group-hover:scale-105">
             <FileText className="w-5 h-5" />
           </div>
           <div>
@@ -56,9 +58,9 @@ export function DocumentCard({ document }: { document: Document }) {
         </span>
 
         <Link href={`/documents/${document.id}`}>
-          <Button variant="primary" size="sm" className="gap-1.5">
+          <Button variant="primary" size="sm" className="gap-1.5 group/btn">
             {isPending ? 'Upload File' : 'Open Review'}
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
           </Button>
         </Link>
       </div>

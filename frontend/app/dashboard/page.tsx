@@ -9,6 +9,7 @@ import { Document } from '../../lib/types';
 import { DocumentStatus } from '../../components/documents/DocumentStatus';
 import { Button } from '../../components/ui/Button';
 import { Loading } from '../../components/ui/Loading';
+import { CornerStars } from '../../components/ui/CornerStars';
 import { Search, AlertCircle, CheckCircle2, Building, ArrowRight } from 'lucide-react';
 
 export default function DashboardPage() {
@@ -64,12 +65,13 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      {/* 3 Core Metric Cards (Pure White & Black) */}
+      {/* 3 Core Metric Cards with CornerStars */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div className="rounded-xl border border-neutral-300 bg-white p-5 shadow-xs">
+        <div className="group relative rounded-xl border border-neutral-300 bg-white p-5 shadow-xs hover:border-black transition-all duration-200 hover-lift">
+          <CornerStars />
           <div className="flex items-center justify-between">
             <span className="text-xs font-black uppercase tracking-wider text-black">Pending Review</span>
-            <div className="w-8 h-8 rounded-lg bg-black text-white flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-black text-white flex items-center justify-center transition-transform group-hover:scale-105">
               <Search className="w-4 h-4" />
             </div>
           </div>
@@ -77,10 +79,11 @@ export default function DashboardPage() {
           <span className="text-[11px] text-neutral-500 mt-1 block font-medium">Awaiting reviewer evaluation</span>
         </div>
 
-        <div className="rounded-xl border border-neutral-300 bg-white p-5 shadow-xs">
+        <div className="group relative rounded-xl border border-neutral-300 bg-white p-5 shadow-xs hover:border-black transition-all duration-200 hover-lift">
+          <CornerStars />
           <div className="flex items-center justify-between">
             <span className="text-xs font-black uppercase tracking-wider text-black">Correction Required</span>
-            <div className="w-8 h-8 rounded-lg bg-black text-white flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-black text-white flex items-center justify-center transition-transform group-hover:scale-105">
               <AlertCircle className="w-4 h-4" />
             </div>
           </div>
@@ -88,10 +91,11 @@ export default function DashboardPage() {
           <span className="text-[11px] text-neutral-500 mt-1 block font-medium">Pending staff re-upload</span>
         </div>
 
-        <div className="rounded-xl border border-neutral-300 bg-white p-5 shadow-xs">
+        <div className="group relative rounded-xl border border-neutral-300 bg-white p-5 shadow-xs hover:border-black transition-all duration-200 hover-lift">
+          <CornerStars />
           <div className="flex items-center justify-between">
             <span className="text-xs font-black uppercase tracking-wider text-black">Approved</span>
-            <div className="w-8 h-8 rounded-lg bg-black text-white flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-black text-white flex items-center justify-center transition-transform group-hover:scale-105">
               <CheckCircle2 className="w-4 h-4" />
             </div>
           </div>
@@ -115,10 +119,11 @@ export default function DashboardPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {clients.map((client) => (
-            <Link key={client.id} href={`/clients/${client.id}`}>
-              <div className="p-4 rounded-xl border border-neutral-300 bg-white hover:border-black transition-all flex items-center justify-between shadow-xs">
+            <Link key={client.id} href={`/clients/${client.id}`} className="block group">
+              <div className="relative p-4 rounded-xl border border-neutral-300 bg-white hover:border-black transition-all duration-200 hover-lift flex items-center justify-between shadow-xs">
+                <CornerStars size="sm" />
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-black text-white flex items-center justify-center">
+                  <div className="w-9 h-9 rounded-lg bg-black text-white flex items-center justify-center transition-transform group-hover:scale-105">
                     <Building className="w-4 h-4" />
                   </div>
                   <div>
@@ -126,7 +131,7 @@ export default function DashboardPage() {
                     <p className="text-[11px] text-neutral-500 font-medium">{client.document_count} audit documents</p>
                   </div>
                 </div>
-                <ArrowRight className="w-4 h-4 text-black" />
+                <ArrowRight className="w-4 h-4 text-black group-hover:translate-x-1 transition-transform" />
               </div>
             </Link>
           ))}
@@ -139,7 +144,8 @@ export default function DashboardPage() {
           Audit Document Queue ({recentDocs.length})
         </h3>
 
-        <div className="rounded-xl border border-neutral-300 bg-white overflow-hidden shadow-xs">
+        <div className="group relative rounded-xl border border-neutral-300 bg-white overflow-hidden shadow-xs hover:border-black transition-all">
+          <CornerStars />
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead className="bg-neutral-100 border-b border-neutral-200 text-black uppercase tracking-wider text-[11px]">

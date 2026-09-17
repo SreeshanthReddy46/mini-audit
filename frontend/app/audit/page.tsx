@@ -5,6 +5,7 @@ import { AuditEvent } from '../../lib/types';
 import { api } from '../../lib/api';
 import { AuditTimeline } from '../../components/audit/AuditTimeline';
 import { Loading } from '../../components/ui/Loading';
+import { CornerStars } from '../../components/ui/CornerStars';
 import { ShieldCheck, FileCheck2, Filter } from 'lucide-react';
 
 export default function FirmAuditPage() {
@@ -67,7 +68,8 @@ export default function FirmAuditPage() {
         </div>
       </div>
 
-      <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-xs">
+      <div className="group relative rounded-2xl border border-neutral-200 bg-white p-6 shadow-xs hover-lift">
+        <CornerStars />
         <div className="flex items-center justify-between pb-4 border-b border-neutral-100 mb-6">
           <div className="flex items-center gap-2 text-xs font-bold text-black">
             <ShieldCheck className="w-4 h-4 text-black" />

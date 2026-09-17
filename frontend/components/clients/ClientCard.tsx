@@ -2,14 +2,16 @@ import React from 'react';
 import Link from 'next/link';
 import { Client } from '../../lib/types';
 import { Button } from '../ui/Button';
+import { CornerStars } from '../ui/CornerStars';
 import { Building, ArrowRight, FileCheck } from 'lucide-react';
 
 export function ClientCard({ client }: { client: Client }) {
   return (
-    <div className="rounded-xl border border-neutral-300 bg-white p-6 shadow-xs hover:border-black transition-all flex flex-col justify-between">
+    <div className="group relative rounded-xl border border-neutral-300 bg-white p-6 shadow-xs hover:border-black transition-all duration-200 hover-lift flex flex-col justify-between">
+      <CornerStars />
       <div>
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-lg bg-black flex items-center justify-center text-white">
+          <div className="w-10 h-10 rounded-lg bg-black flex items-center justify-center text-white transition-transform group-hover:scale-105">
             <Building className="w-5 h-5" />
           </div>
           <div>
@@ -29,9 +31,9 @@ export function ClientCard({ client }: { client: Client }) {
       </div>
 
       <Link href={`/clients/${client.id}`} className="w-full">
-        <Button variant="outline" size="sm" className="w-full justify-between group border-black hover:bg-black hover:text-white">
+        <Button variant="outline" size="sm" className="w-full justify-between group/btn border-black hover:bg-black hover:text-white">
           <span>View Audit Workspace</span>
-          <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+          <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
         </Button>
       </Link>
     </div>

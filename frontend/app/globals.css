@@ -14,13 +14,228 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.98); }
-  to { opacity: 1; transform: scale(1); }
+/* ==========================================================
+   1. CORNER STARS ANIMATIONS (Hover on divs/cards)
+   ========================================================== */
+.corner-star {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0) rotate(-45deg);
+  transition: opacity 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 30;
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.15s ease-out forwards;
+.corner-star-tl {
+  top: -7px;
+  left: -7px;
+  transition-delay: 0.02s;
+}
+
+.corner-star-tr {
+  top: -7px;
+  right: -7px;
+  transition-delay: 0.08s;
+}
+
+.corner-star-br {
+  bottom: -7px;
+  right: -7px;
+  transition-delay: 0.14s;
+}
+
+.corner-star-bl {
+  bottom: -7px;
+  left: -7px;
+  transition-delay: 0.20s;
+}
+
+/* Trigger when hovering over any parent marked with .group or .star-card */
+.group:hover .corner-star,
+.star-card:hover .corner-star,
+*:hover > .corner-star {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+  animation: starTwinkle 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes starTwinkle {
+  0% {
+    transform: scale(1) rotate(0deg);
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.5));
+  }
+  50% {
+    transform: scale(1.35) rotate(20deg);
+    filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.8));
+  }
+  100% {
+    transform: scale(0.9) rotate(-15deg);
+    filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.3));
+  }
+}
+
+/* ==========================================================
+   2. OCEAN WAVES BUTTON CLICK ANIMATIONS (Vibrant Blue Waves)
+   ========================================================== */
+.ocean-wave-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.ocean-wave-ring {
+  position: absolute;
+  border-radius: 9999px;
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+}
+
+/* Layer 1: Deep Ocean Deep Azure Wave */
+.ocean-wave-1 {
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.75) 0%, rgba(2, 132, 199, 0.55) 50%, rgba(3, 105, 161, 0) 75%);
+  border: 2px solid rgba(56, 189, 248, 0.8);
+  animation: oceanWaveExpand1 0.85s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+/* Layer 2: Middle Cerulean Wave Ripple */
+.ocean-wave-2 {
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.7) 0%, rgba(14, 165, 233, 0.45) 45%, rgba(2, 132, 199, 0) 70%);
+  border: 1.5px solid rgba(125, 211, 252, 0.9);
+  animation: oceanWaveExpand2 0.75s cubic-bezier(0.15, 0.85, 0.35, 1) 0.06s forwards;
+}
+
+/* Layer 3: Foam Crest Wave Sparkle */
+.ocean-wave-3 {
+  background: radial-gradient(circle, rgba(186, 230, 253, 0.85) 0%, rgba(56, 189, 248, 0.5) 40%, rgba(14, 165, 233, 0) 65%);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  animation: oceanWaveExpand3 0.65s cubic-bezier(0.2, 0.9, 0.4, 1) 0.12s forwards;
+}
+
+@keyframes oceanWaveExpand1 {
+  0% {
+    width: 0px;
+    height: 0px;
+    opacity: 0.95;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  60% {
+    opacity: 0.75;
+  }
+  100% {
+    width: 480px;
+    height: 480px;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes oceanWaveExpand2 {
+  0% {
+    width: 0px;
+    height: 0px;
+    opacity: 0.9;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  50% {
+    opacity: 0.65;
+  }
+  100% {
+    width: 400px;
+    height: 400px;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes oceanWaveExpand3 {
+  0% {
+    width: 0px;
+    height: 0px;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  40% {
+    opacity: 0.8;
+  }
+  100% {
+    width: 320px;
+    height: 320px;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* ==========================================================
+   3. SIMPLE & DELIGHTFUL MICRO-ANIMATIONS
+   ========================================================== */
+/* Smooth gentle float for hero indicators and icons */
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 3.5s ease-in-out infinite;
+}
+
+/* Subtle glow pulse */
+@keyframes pulseSubtle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.65;
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulseSubtle 2s ease-in-out infinite;
+}
+
+/* Light sweep across button or card */
+.hover-light-sweep {
+  position: relative;
+  overflow: hidden;
+}
+
+.hover-light-sweep::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: left 0.6s ease-out;
+  pointer-events: none;
+}
+
+.hover-light-sweep:hover::before {
+  left: 140%;
+}
+
+/* Card hover lift */
+.hover-lift {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
 }
 
 /* Custom crisp scrollbar */

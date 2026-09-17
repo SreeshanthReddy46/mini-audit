@@ -8,6 +8,7 @@ import { api } from '../../../lib/api';
 import { DocumentCard } from '../../../components/documents/DocumentCard';
 import { Button } from '../../../components/ui/Button';
 import { Loading } from '../../../components/ui/Loading';
+import { CornerStars } from '../../../components/ui/CornerStars';
 import { ArrowLeft, Building, FileCheck2, AlertOctagon } from 'lucide-react';
 
 export default function ClientDetailPage() {
@@ -46,7 +47,8 @@ export default function ClientDetailPage() {
 
   if (error || !client) {
     return (
-      <div className="max-w-md mx-auto my-12 text-center p-8 rounded-2xl bg-white border-2 border-black shadow-sm">
+      <div className="group relative max-w-md mx-auto my-12 text-center p-8 rounded-2xl bg-white border-2 border-black shadow-sm hover-lift">
+        <CornerStars />
         <div className="w-12 h-12 rounded-full bg-neutral-100 text-black flex items-center justify-center mx-auto mb-3">
           <AlertOctagon className="w-6 h-6" />
         </div>
@@ -73,10 +75,11 @@ export default function ClientDetailPage() {
       </Link>
 
       {/* Client Overview Card */}
-      <div className="p-6 rounded-2xl border border-neutral-300 bg-white shadow-xs">
+      <div className="group relative p-6 rounded-2xl border border-neutral-300 bg-white shadow-xs hover-lift">
+        <CornerStars />
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-black flex items-center justify-center text-white">
+            <div className="w-12 h-12 rounded-xl bg-black flex items-center justify-center text-white transition-transform group-hover:scale-105">
               <Building className="w-6 h-6" />
             </div>
             <div>
