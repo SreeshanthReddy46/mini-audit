@@ -51,27 +51,48 @@ body {
   transition-delay: 0.20s;
 }
 
+/* Colorful Corner Star Glows */
+.corner-star-glow-tl {
+  filter: drop-shadow(0 0 5px rgba(255, 0, 122, 0.8)) drop-shadow(0 0 10px rgba(255, 214, 0, 0.6));
+}
+
+.corner-star-glow-tr {
+  filter: drop-shadow(0 0 5px rgba(121, 40, 202, 0.8)) drop-shadow(0 0 10px rgba(0, 242, 254, 0.6));
+}
+
+.corner-star-glow-br {
+  filter: drop-shadow(0 0 5px rgba(0, 245, 160, 0.8)) drop-shadow(0 0 10px rgba(16, 185, 129, 0.6));
+}
+
+.corner-star-glow-bl {
+  filter: drop-shadow(0 0 5px rgba(255, 19, 97, 0.8)) drop-shadow(0 0 10px rgba(255, 248, 0, 0.6));
+}
+
 /* Trigger when hovering over any parent marked with .group or .star-card */
 .group:hover .corner-star,
 .star-card:hover .corner-star,
 *:hover > .corner-star {
   opacity: 1;
   transform: scale(1) rotate(0deg);
-  animation: starTwinkle 2.4s ease-in-out infinite alternate;
+  animation: colorfulStarTwinkle 2.2s ease-in-out infinite alternate;
 }
 
-@keyframes starTwinkle {
+@keyframes colorfulStarTwinkle {
   0% {
     transform: scale(1) rotate(0deg);
-    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0 0 6px rgba(255, 0, 122, 0.9)) drop-shadow(0 0 12px rgba(255, 214, 0, 0.8));
   }
-  50% {
-    transform: scale(1.35) rotate(20deg);
-    filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.8));
+  33% {
+    transform: scale(1.4) rotate(22deg);
+    filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.95)) drop-shadow(0 0 16px rgba(121, 40, 202, 0.85));
+  }
+  66% {
+    transform: scale(1.15) rotate(-18deg);
+    filter: drop-shadow(0 0 8px rgba(0, 245, 160, 0.95)) drop-shadow(0 0 16px rgba(16, 185, 129, 0.85));
   }
   100% {
-    transform: scale(0.9) rotate(-15deg);
-    filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.3));
+    transform: scale(1.45) rotate(35deg);
+    filter: drop-shadow(0 0 9px rgba(255, 19, 97, 0.95)) drop-shadow(0 0 18px rgba(255, 248, 0, 0.9));
   }
 }
 
