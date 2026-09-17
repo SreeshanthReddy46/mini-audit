@@ -7,7 +7,14 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.core.dependencies import get_current_user, require_reviewer, require_staff
 from app.models.user import User
-from app.schemas.document import DocumentCreate, DocumentResponse, CorrectionRequest, ApproveRequest
+from app.schemas.document import (
+    DocumentCreate,
+    DocumentResponse,
+    DocumentVersionResponse,
+    CorrectionRequest,
+    ApproveRequest,
+)
+from app.repositories.document_repository import DocumentRepository
 from app.schemas.audit import AuditEventResponse
 from app.services.document_service import (
     get_documents_for_client,
@@ -199,3 +206,34 @@ def get_document_audit_history(
     # Verify document exists in this firm
     get_document_by_id(db, document_id, current_user.firm_id)
     return get_audit_history_for_document(db, document_id, current_user.firm_id)
+
+
+@router.get("/api/documents/{document_id}/versions", response_model=List[DocumentVersionResponse])
+def get_document_versions(
+    document_id: uuid.UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """
+    Retrieve all immutable versions for a document.
+    Enforces firm boundary.
+    """
+    # Verify document ownership
+    get_document_by_id(db, document_id, current_user.firm_id)
+    repo = DocumentRepository(db)
+    versions = repo.get_versions(document_id, current_user.firm_id)
+    return [
+        DocumentVersionResponse(
+            id=v.id,
+            document_id=v.document_id,
+            version_number=v.version_number,
+            original_name=v.original_name,
+            mime_type=v.mime_type,
+            file_size=v.file_size,
+            sha256_hash=v.sha256_hash,
+            uploaded_by=v.uploaded_by,
+            uploader_name=v.uploader.name if getattr(v, "uploader", None) else None,
+            created_at=v.created_at,
+        )
+        for v in versions
+    ]

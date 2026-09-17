@@ -1,6 +1,15 @@
 from app.core.database import SessionLocal, init_db
 from app.core.security import get_password_hash
-from app.models import Firm, User, Client, Document, AuditEvent
+from app.models import (
+    Firm,
+    User,
+    Client,
+    Document,
+    DocumentVersion,
+    Review,
+    AuditEvent,
+    AIAnalysis,
+)
 
 REQUIRED_DOCUMENTS = [
     "Bank Statement",
@@ -21,7 +30,10 @@ def seed_database():
         existing_firm = db.query(Firm).filter(Firm.name == "ABC & Co.").first()
         if existing_firm:
             print("Database already contains demo data. Resetting demo data for clean evaluation...")
-            # Delete in cascade order
+            # Delete in cascade order (children first)
+            db.query(AIAnalysis).delete()
+            db.query(Review).delete()
+            db.query(DocumentVersion).delete()
             db.query(AuditEvent).delete()
             db.query(Document).delete()
             db.query(Client).delete()

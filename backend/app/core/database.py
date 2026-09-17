@@ -34,7 +34,9 @@ def get_db():
         db.close()
 
 
-def init_db():
+def init_db(reset: bool = False):
     # Import all models to ensure they are registered with Base.metadata
-    from app.models import Firm, User, Client, Document, AuditEvent
+    from app.models import Firm, User, Client, Document, DocumentVersion, Review, AuditEvent, AIAnalysis
+    if reset:
+        Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)

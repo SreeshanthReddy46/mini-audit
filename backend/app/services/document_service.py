@@ -6,13 +6,32 @@ from sqlalchemy.orm import Session
 
 from app.models.document import Document
 from app.models.client import Client
-from app.services.storage_service import save_file_locally
+from app.models.document_version import DocumentVersion
+from app.models.review import Review
+from app.services.storage_service import save_file_locally, storage_service
 from app.services.audit_service import log_audit_event
+from app.utils.hashing import calculate_sha256
 
 
 def format_document_dict(doc: Document) -> dict:
-    """Format Document model instance into serializable dictionary."""
+    """Format Document model instance into serializable dictionary with versions."""
     uploader_name = doc.uploader.name if doc.uploader else None
+    versions_list = []
+    if getattr(doc, "versions", None):
+        for v in doc.versions:
+            versions_list.append({
+                "id": v.id,
+                "document_id": v.document_id,
+                "version_number": v.version_number,
+                "original_name": v.original_name,
+                "mime_type": v.mime_type,
+                "file_size": v.file_size,
+                "sha256_hash": v.sha256_hash,
+                "uploaded_by": v.uploaded_by,
+                "uploader_name": v.uploader.name if getattr(v, "uploader", None) else None,
+                "created_at": v.created_at,
+            })
+
     return {
         "id": doc.id,
         "firm_id": doc.firm_id,
@@ -26,7 +45,8 @@ def format_document_dict(doc: Document) -> dict:
         "review_comment": doc.review_comment,
         "uploaded_at": doc.uploaded_at,
         "created_at": doc.created_at,
-        "updated_at": doc.updated_at
+        "updated_at": doc.updated_at,
+        "versions": versions_list,
     }
 
 
@@ -122,11 +142,29 @@ def upload_document_file(
 
     storage_filename, file_size = save_file_locally(firm_id, file)
 
+    # Compute SHA-256 fingerprint
+    file_bytes = storage_service.retrieve_file(storage_filename) or b""
+    sha256_digest = calculate_sha256(file_bytes) if file_bytes else "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+
     old_status = doc.status
     doc.file_url = storage_filename
     doc.status = "UPLOADED"
     doc.uploaded_by = actor_id
     doc.uploaded_at = datetime.now(timezone.utc)
+
+    # Create immutable DocumentVersion record
+    doc_ver = DocumentVersion(
+        document_id=doc.id,
+        firm_id=firm_id,
+        version_number=doc.version,
+        storage_key=storage_filename,
+        original_name=file.filename or "document.pdf",
+        mime_type=file.content_type or "application/pdf",
+        file_size=file_size,
+        sha256_hash=sha256_digest,
+        uploaded_by=actor_id,
+    )
+    db.add(doc_ver)
 
     # Atomic audit logging in the same transaction
     log_audit_event(
@@ -140,6 +178,7 @@ def upload_document_file(
         metadata_json={
             "filename": file.filename,
             "file_size": file_size,
+            "sha256": sha256_digest,
             "version": doc.version,
             "old_status": old_status,
             "new_status": "UPLOADED"
@@ -220,6 +259,16 @@ def request_document_correction(
     doc.status = "CORRECTION_REQUIRED"
     doc.review_comment = clean_comment
 
+    # Record Review decision
+    review_record = Review(
+        firm_id=firm_id,
+        document_id=doc.id,
+        reviewer_id=actor_id,
+        decision="CORRECTION_REQUIRED",
+        comment=clean_comment,
+    )
+    db.add(review_record)
+
     log_audit_event(
         db=db,
         firm_id=firm_id,
@@ -258,6 +307,8 @@ def reupload_document_file(
         )
 
     storage_filename, file_size = save_file_locally(firm_id, file)
+    file_bytes = storage_service.retrieve_file(storage_filename) or b""
+    sha256_digest = calculate_sha256(file_bytes) if file_bytes else "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 
     previous_version = doc.version
     doc.version += 1
@@ -267,6 +318,20 @@ def reupload_document_file(
     doc.uploaded_at = datetime.now(timezone.utc)
     # Note: Keep doc.review_comment as context or clear it
     prior_comment = doc.review_comment
+
+    # Create immutable DocumentVersion record for the incremented version
+    doc_ver = DocumentVersion(
+        document_id=doc.id,
+        firm_id=firm_id,
+        version_number=doc.version,
+        storage_key=storage_filename,
+        original_name=file.filename or "document.pdf",
+        mime_type=file.content_type or "application/pdf",
+        file_size=file_size,
+        sha256_hash=sha256_digest,
+        uploaded_by=actor_id,
+    )
+    db.add(doc_ver)
 
     log_audit_event(
         db=db,
@@ -281,6 +346,7 @@ def reupload_document_file(
             "new_version": doc.version,
             "filename": file.filename,
             "file_size": file_size,
+            "sha256": sha256_digest,
             "status": "UPLOADED"
         }
     )
@@ -313,6 +379,16 @@ def approve_document(
 
     doc.status = "APPROVED"
     doc.review_comment = comment or "Document approved without comments."
+
+    # Record Review decision
+    review_record = Review(
+        firm_id=firm_id,
+        document_id=doc.id,
+        reviewer_id=actor_id,
+        decision="APPROVED",
+        comment=doc.review_comment,
+    )
+    db.add(review_record)
 
     log_audit_event(
         db=db,

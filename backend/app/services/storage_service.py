@@ -1,7 +1,7 @@
 import os
 import uuid
 from pathlib import Path
-from typing import Tuple
+from typing import Tuple, Optional
 from fastapi import UploadFile, HTTPException, status
 from app.core.config import settings
 
@@ -79,3 +79,25 @@ def get_file_path(firm_id: uuid.UUID, storage_filename: str) -> Path:
         )
 
     return target_path
+
+
+class StorageService:
+    def retrieve_file(self, storage_key: str) -> Optional[bytes]:
+        """Reads file bytes from storage given a relative storage key."""
+        storage_root = Path(settings.STORAGE_DIR).resolve()
+        target_path = (storage_root / storage_key).resolve()
+        if not target_path.is_file():
+            # Try searching directly in firm folders
+            matches = list(storage_root.glob(f"**/{Path(storage_key).name}"))
+            if matches and matches[0].is_file():
+                target_path = matches[0]
+            else:
+                return None
+        try:
+            return target_path.read_bytes()
+        except Exception:
+            return None
+
+
+storage_service = StorageService()
+
