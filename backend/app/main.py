@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.api import auth, clients
+from app.api import auth, clients, documents, audit
 
 app = FastAPI(
     title="Mini Audit Document Review System API",
@@ -21,6 +21,8 @@ app.add_middleware(
 # Include Routers
 app.include_router(auth.router)
 app.include_router(clients.router)
+app.include_router(documents.router)
+app.include_router(audit.router)
 
 
 @app.get("/api/health")
