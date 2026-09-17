@@ -1,17 +1,28 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import { useAuth } from '../../hooks/useAuth';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
-import { ShieldCheck, ArrowRight, UserCheck, AlertCircle } from 'lucide-react';
+import { ShieldCheck, ArrowRight, UserCheck, AlertCircle, ArrowLeft } from 'lucide-react';
 
-export default function LoginPage() {
+function LoginForm() {
   const { login } = useAuth();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const queryEmail = searchParams.get('email');
+    if (queryEmail) {
+      setEmail(queryEmail);
+      setPassword('password123');
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,22 +48,32 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-100 via-slate-50 to-blue-50">
-      <div className="max-w-md w-full">
+    <div className="min-h-screen bg-white text-black flex flex-col justify-between p-4 sm:p-6">
+      {/* Back to Preview Link */}
+      <div className="max-w-md w-full mx-auto pt-4">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-neutral-600 hover:text-black transition-colors"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" /> Back to Project Overview
+        </Link>
+      </div>
+
+      <div className="max-w-md w-full mx-auto my-auto py-8">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-600 text-white shadow-md mb-3">
-            <ShieldCheck className="w-7 h-7" />
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-black text-white shadow-md mb-3">
+            <ShieldCheck className="w-6 h-6" />
           </div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">MINI AUDIT</h1>
-          <p className="text-xs text-slate-500 mt-1">
-            Chartered Accountant Document Review & Compliance System
+          <h1 className="text-2xl font-black text-black tracking-tight">MINI AUDIT</h1>
+          <p className="text-xs text-neutral-600 mt-1 font-medium">
+            Sign in to access your tenant workspace
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-xl">
+        <div className="bg-white rounded-2xl border-2 border-black p-8 shadow-sm">
           {error && (
-            <div className="mb-5 p-3 rounded-lg bg-rose-50 border border-rose-200 text-xs text-rose-700 flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0" />
+            <div className="mb-5 p-3 rounded-lg bg-neutral-100 border border-black text-xs text-black font-semibold flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 shrink-0 text-black" />
               {error}
             </div>
           )}
@@ -61,7 +82,7 @@ export default function LoginPage() {
             <Input
               label="Email Address"
               type="email"
-              placeholder="e.g. rohit@abc.com"
+              placeholder="e.g. aman@abc.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -83,9 +104,9 @@ export default function LoginPage() {
           </form>
 
           {/* Evaluator 1-Click Demo Credentials */}
-          <div className="mt-8 pt-6 border-t border-slate-100">
-            <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700 mb-3 uppercase tracking-wider">
-              <UserCheck className="w-4 h-4 text-blue-600" />
+          <div className="mt-8 pt-6 border-t border-neutral-200">
+            <div className="flex items-center gap-1.5 text-xs font-black text-black mb-3 uppercase tracking-wider">
+              <UserCheck className="w-4 h-4 text-black" />
               1-Click Demo Accounts (Evaluation):
             </div>
 
@@ -93,54 +114,72 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => fillDemo('rohit@abc.com')}
-                className="w-full text-left p-2.5 rounded-lg border border-slate-200 hover:border-blue-300 hover:bg-blue-50/50 transition-all flex items-center justify-between text-xs"
+                className="w-full text-left p-3 rounded-xl border border-neutral-300 hover:border-black hover:bg-neutral-50 transition-all flex items-center justify-between text-xs"
               >
                 <div>
-                  <span className="font-bold text-slate-800">Firm A: Rohit</span>
-                  <span className="ml-2 text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded bg-blue-100 text-blue-800">
+                  <span className="font-bold text-black">Firm A: Rohit</span>
+                  <span className="ml-2 text-[10px] font-black uppercase px-1.5 py-0.5 rounded bg-black text-white">
                     STAFF
                   </span>
-                  <p className="text-[11px] text-slate-500 font-mono">rohit@abc.com</p>
+                  <p className="text-[11px] text-neutral-500 font-mono mt-0.5">rohit@abc.com</p>
                 </div>
-                <span className="text-[11px] font-semibold text-blue-600">Select</span>
+                <span className="text-xs font-bold text-black border border-black px-2 py-0.5 rounded hover:bg-black hover:text-white transition-colors">
+                  Select
+                </span>
               </button>
 
               <button
                 type="button"
                 onClick={() => fillDemo('aman@abc.com')}
-                className="w-full text-left p-2.5 rounded-lg border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/50 transition-all flex items-center justify-between text-xs"
+                className="w-full text-left p-3 rounded-xl border border-neutral-300 hover:border-black hover:bg-neutral-50 transition-all flex items-center justify-between text-xs"
               >
                 <div>
-                  <span className="font-bold text-slate-800">Firm A: Aman</span>
-                  <span className="ml-2 text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-800">
+                  <span className="font-bold text-black">Firm A: Aman</span>
+                  <span className="ml-2 text-[10px] font-black uppercase px-1.5 py-0.5 rounded bg-black text-white">
                     REVIEWER
                   </span>
-                  <p className="text-[11px] text-slate-500 font-mono">aman@abc.com</p>
+                  <p className="text-[11px] text-neutral-500 font-mono mt-0.5">aman@abc.com</p>
                 </div>
-                <span className="text-[11px] font-semibold text-indigo-600">Select</span>
+                <span className="text-xs font-bold text-black border border-black px-2 py-0.5 rounded hover:bg-black hover:text-white transition-colors">
+                  Select
+                </span>
               </button>
 
               <button
                 type="button"
                 onClick={() => fillDemo('priya@xyz.com')}
-                className="w-full text-left p-2.5 rounded-lg border border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/50 transition-all flex items-center justify-between text-xs"
+                className="w-full text-left p-3 rounded-xl border border-neutral-300 hover:border-black hover:bg-neutral-50 transition-all flex items-center justify-between text-xs"
               >
                 <div>
-                  <span className="font-bold text-slate-800">Firm B: Priya</span>
-                  <span className="ml-2 text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">
+                  <span className="font-bold text-black">Firm B: Priya</span>
+                  <span className="ml-2 text-[10px] font-black uppercase px-1.5 py-0.5 rounded bg-black text-white">
                     REVIEWER (TENANT B)
                   </span>
-                  <p className="text-[11px] text-slate-500 font-mono">priya@xyz.com</p>
+                  <p className="text-[11px] text-neutral-500 font-mono mt-0.5">priya@xyz.com</p>
                 </div>
-                <span className="text-[11px] font-semibold text-emerald-600">Select</span>
+                <span className="text-xs font-bold text-black border border-black px-2 py-0.5 rounded hover:bg-black hover:text-white transition-colors">
+                  Select
+                </span>
               </button>
             </div>
-            <p className="text-[10px] text-slate-400 mt-2 text-center">
-              Default password for all accounts: <code>password123</code>
+            <p className="text-[11px] text-neutral-500 mt-3 text-center font-medium">
+              Default password for all accounts: <code className="text-black font-bold">password123</code>
             </p>
           </div>
         </div>
       </div>
+
+      <div className="text-center text-xs text-neutral-500 pb-4 font-medium">
+        Deterministic backend rules enforce authentication, authorization, and tenant isolation.
+      </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white flex items-center justify-center">Loading...</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }

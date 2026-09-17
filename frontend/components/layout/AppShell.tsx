@@ -12,32 +12,35 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
 
-  const isAuthPage = pathname === '/login';
+  // Root landing page (/) and /login are public showcase / authentication pages
+  const isPublicPage = pathname === '/' || pathname === '/login';
 
   useEffect(() => {
-    if (!loading && !user && !isAuthPage) {
+    // Only redirect to /login if user tries to visit a protected page while not authenticated
+    if (!loading && !user && !isPublicPage) {
       router.push('/login');
     }
-  }, [user, loading, isAuthPage, router]);
+  }, [user, loading, isPublicPage, router]);
 
-  if (isAuthPage) {
-    return <main className="min-h-screen bg-slate-50">{children}</main>;
+  // Render public landing / login page with pure white background
+  if (isPublicPage) {
+    return <main className="min-h-screen bg-white text-black">{children}</main>;
   }
 
   if (loading || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="min-h-screen flex items-center justify-center bg-white text-black">
         <Loading message="Authenticating session..." />
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-50 text-slate-900">
+    <div className="flex min-h-screen bg-white text-black">
       <Sidebar />
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 bg-white">
         <Header />
-        <main className="flex-1 p-8 max-w-7xl w-full mx-auto">{children}</main>
+        <main className="flex-1 p-8 max-w-7xl w-full mx-auto bg-white text-black">{children}</main>
       </div>
     </div>
   );

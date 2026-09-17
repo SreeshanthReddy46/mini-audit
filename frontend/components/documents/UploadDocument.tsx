@@ -56,7 +56,7 @@ export function UploadDocument({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="border-2 border-dashed border-slate-300 hover:border-blue-400 transition-colors rounded-xl p-6 text-center bg-slate-50/50">
+      <div className="border-2 border-dashed border-neutral-300 hover:border-black transition-colors rounded-xl p-6 text-center bg-white">
         <input
           type="file"
           id="audit-file-upload"
@@ -65,33 +65,33 @@ export function UploadDocument({
           className="hidden"
         />
         <label htmlFor="audit-file-upload" className="cursor-pointer flex flex-col items-center justify-center">
-          <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 mb-2">
+          <div className="w-10 h-10 rounded-full bg-neutral-100 border border-neutral-200 flex items-center justify-center text-black mb-2">
             <Upload className="w-5 h-5" />
           </div>
-          <span className="text-xs font-semibold text-slate-700 hover:text-blue-600">
+          <span className="text-xs font-semibold text-black hover:underline">
             {file ? file.name : 'Choose PDF, CSV, or XLSX file'}
           </span>
-          <span className="text-[11px] text-slate-400 mt-1">Maximum size 10MB</span>
+          <span className="text-[11px] text-neutral-500 mt-1">Maximum size 10MB</span>
         </label>
 
         {file && (
-          <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-50 border border-blue-200 text-xs font-medium text-blue-800">
-            <FileText className="w-4 h-4 text-blue-600" />
+          <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-neutral-100 border border-black text-xs font-medium text-black">
+            <FileText className="w-4 h-4 text-black" />
             <span>{file.name} ({(file.size / 1024).toFixed(1)} KB)</span>
           </div>
         )}
       </div>
 
       {error && (
-        <div className="p-3 rounded-lg bg-rose-50 border border-rose-200 text-xs text-rose-700 flex items-center gap-2">
-          <AlertCircle className="w-4 h-4 shrink-0" />
+        <div className="p-3 rounded-lg bg-neutral-50 border border-black text-xs text-black flex items-center gap-2">
+          <AlertCircle className="w-4 h-4 shrink-0 text-black" />
           {error}
         </div>
       )}
 
       <Button
         type="submit"
-        variant={isReupload ? 'warning' : 'primary'}
+        variant="primary"
         disabled={!file}
         loading={loading}
         className="w-full"

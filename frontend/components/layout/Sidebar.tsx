@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, FileCheck2, ShieldAlert } from 'lucide-react';
+import { LayoutDashboard, Users, FileCheck2, ShieldCheck } from 'lucide-react';
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -15,14 +15,14 @@ export function Sidebar() {
   ];
 
   return (
-    <aside className="w-64 border-r border-slate-200 bg-slate-900 text-slate-300 flex flex-col shrink-0 min-h-screen">
-      <div className="flex items-center gap-2 px-6 py-5 border-b border-slate-800">
-        <div className="w-7 h-7 rounded-md bg-blue-600 flex items-center justify-center text-white font-bold text-sm">
+    <aside className="w-64 border-r border-neutral-200 bg-white text-black flex flex-col shrink-0 min-h-screen">
+      <div className="flex items-center gap-2.5 px-6 py-5 border-b border-neutral-200">
+        <div className="w-8 h-8 rounded-lg bg-black flex items-center justify-center text-white font-black text-sm shadow-xs">
           A
         </div>
         <div>
-          <h1 className="text-sm font-bold text-white tracking-wide">MINI AUDIT</h1>
-          <p className="text-[10px] text-slate-400">Document Review System</p>
+          <h1 className="text-sm font-black text-black tracking-tight">MINI AUDIT</h1>
+          <p className="text-[10px] text-neutral-500 font-medium">CA Document Review</p>
         </div>
       </div>
 
@@ -34,10 +34,10 @@ export function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold tracking-wide transition-colors ${
+              className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold tracking-wide transition-all ${
                 isActive
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/70'
+                  ? 'bg-black text-white shadow-xs'
+                  : 'text-neutral-600 hover:text-black hover:bg-neutral-100'
               }`}
             >
               <Icon className="w-4 h-4 shrink-0" />
@@ -47,12 +47,14 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="p-4 border-t border-slate-800 text-[11px] text-slate-400">
-        <div className="flex items-center gap-1.5 font-medium text-emerald-400 mb-1">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <div className="p-4 border-t border-neutral-200 bg-neutral-50 text-[11px] text-black">
+        <div className="flex items-center gap-1.5 font-bold text-black mb-1">
+          <span className="w-2 h-2 rounded-full bg-black"></span>
           Tenant Isolation Active
         </div>
-        <p className="text-[10px] text-slate-500">Row-level security enforced on backend.</p>
+        <p className="text-[10px] text-neutral-600 font-medium">
+          Row-level security enforced on backend (404 on breach).
+        </p>
       </div>
     </aside>
   );

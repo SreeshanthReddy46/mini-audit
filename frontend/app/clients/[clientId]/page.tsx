@@ -46,16 +46,16 @@ export default function ClientDetailPage() {
 
   if (error || !client) {
     return (
-      <div className="max-w-md mx-auto my-12 text-center p-8 rounded-2xl bg-white border border-rose-200 shadow-sm">
-        <div className="w-12 h-12 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center mx-auto mb-3">
+      <div className="max-w-md mx-auto my-12 text-center p-8 rounded-2xl bg-white border-2 border-black shadow-sm">
+        <div className="w-12 h-12 rounded-full bg-neutral-100 text-black flex items-center justify-center mx-auto mb-3">
           <AlertOctagon className="w-6 h-6" />
         </div>
-        <h3 className="text-base font-bold text-slate-900">Tenant Access Denied (404)</h3>
-        <p className="text-xs text-slate-500 mt-1 mb-4">
+        <h3 className="text-base font-black text-black">Tenant Access Denied (404)</h3>
+        <p className="text-xs text-neutral-600 mt-1 mb-4 font-medium">
           This client resource does not exist in your authenticated firm workspace.
         </p>
         <Link href="/clients">
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="border-black hover:bg-black hover:text-white">
             Return to Clients
           </Button>
         </Link>
@@ -63,48 +63,48 @@ export default function ClientDetailPage() {
     );
   }
 
-  const approvedDocs = documents.filter((d) => d.status === 'APPROVED').length;
-
   return (
-    <div className="space-y-6">
-      {/* Back button */}
-      <div>
-        <Link href="/clients" className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Back to Clients
-        </Link>
-      </div>
+    <div className="space-y-6 bg-white text-black">
+      <Link
+        href="/clients"
+        className="inline-flex items-center gap-2 text-xs font-bold text-neutral-600 hover:text-black transition-colors"
+      >
+        <ArrowLeft className="w-4 h-4" /> Back to Clients List
+      </Link>
 
       {/* Client Overview Card */}
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-xs">
-            <Building className="w-6 h-6" />
+      <div className="p-6 rounded-2xl border border-neutral-300 bg-white shadow-xs">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-black flex items-center justify-center text-white">
+              <Building className="w-6 h-6" />
+            </div>
+            <div>
+              <h2 className="text-xl font-black text-black tracking-tight">{client.name}</h2>
+              <p className="text-xs text-neutral-500 font-medium">
+                Client ID: <span className="font-mono">{client.id}</span>
+              </p>
+            </div>
           </div>
-          <div>
-            <h2 className="text-xl font-black text-slate-900 tracking-tight">{client.name}</h2>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Statutory Audit Workspace • Added {new Date(client.created_at).toLocaleDateString([], { month: 'long', day: 'numeric', year: 'numeric' })}
-            </p>
-          </div>
-        </div>
 
-        <div className="flex items-center gap-3">
-          <div className="px-4 py-2 rounded-xl bg-slate-50 border border-slate-200 text-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Compliance Progress</span>
-            <span className="text-sm font-black text-slate-800">
-              {approvedDocs} of {documents.length} Approved
+          <div className="flex items-center gap-3">
+            <span className="text-xs px-3 py-1 rounded-full bg-neutral-100 text-black border border-neutral-300 font-bold">
+              5 Required Audit Checklist Documents
             </span>
           </div>
         </div>
       </div>
 
-      {/* Required Compliance Documents List */}
+      {/* Compliance Documents Checklist */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
-            <FileCheck2 className="w-4 h-4 text-blue-600" />
-            Statutory Audit Checklist ({documents.length} Required Documents)
+          <h3 className="text-sm font-black uppercase tracking-wider text-black flex items-center gap-2">
+            <FileCheck2 className="w-4 h-4 text-black" />
+            Compliance Checklist & Audit Documents
           </h3>
+          <span className="text-xs text-neutral-500 font-medium">
+            {documents.filter((d) => d.status === 'APPROVED').length} of {documents.length} approved
+          </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

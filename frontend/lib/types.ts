@@ -58,3 +58,37 @@ export interface LoginResponse {
   token_type: string;
   user: User;
 }
+
+export interface DocumentVersion {
+  id: string;
+  document_id: string;
+  version_number: number;
+  original_name: string;
+  mime_type: string;
+  file_size: number;
+  sha256_hash: string;
+  uploaded_by: string;
+  uploader_name?: string | null;
+  created_at: string;
+}
+
+export interface AIFindingItem {
+  category: string;
+  severity: 'INFO' | 'LOW' | 'MEDIUM' | 'HIGH';
+  observation: string;
+  recommendation: string;
+}
+
+export interface AIAnalysis {
+  id: string;
+  document_id: string;
+  version_id?: string | null;
+  status: 'COMPLETED' | 'FAILED';
+  model: string;
+  prompt_version: string;
+  summary: string;
+  findings: AIFindingItem[];
+  overall_confidence: number;
+  created_at: string;
+  completed_at?: string | null;
+}

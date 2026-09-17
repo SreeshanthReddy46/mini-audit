@@ -12,32 +12,32 @@ export function Header() {
   if (!user) return null;
 
   return (
-    <header className="sticky top-0 z-30 flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 bg-white/95 px-6 py-3 backdrop-blur-sm shadow-xs">
+    <header className="sticky top-0 z-30 flex flex-wrap items-center justify-between gap-4 border-b border-neutral-200 bg-white px-6 py-3.5 shadow-2xs">
       <div className="flex items-center gap-3">
-        <div className="flex items-center gap-2 rounded-lg bg-slate-100 px-3 py-1.5 border border-slate-200">
-          <Building2 className="w-4 h-4 text-slate-600" />
-          <span className="text-xs font-bold text-slate-900 tracking-tight">
+        <div className="flex items-center gap-2 rounded-lg bg-neutral-100 px-3 py-1.5 border border-neutral-300">
+          <Building2 className="w-4 h-4 text-black" />
+          <span className="text-xs font-black text-black tracking-tight">
             {user.firm_name || 'Audit Firm'}
           </span>
         </div>
-        <div className="hidden sm:flex items-center gap-2 text-xs text-slate-500">
+        <div className="hidden sm:flex items-center gap-2 text-xs text-neutral-600 font-medium">
           <span>Logged in as:</span>
-          <span className="font-semibold text-slate-800">{user.name}</span>
+          <span className="font-bold text-black">{user.name}</span>
           <Badge variant="role" size="sm">{user.role}</Badge>
         </div>
       </div>
 
-      {/* Evaluator Quick Demo Switcher */}
+      {/* Evaluator Quick Demo Persona Switcher */}
       <div className="flex items-center gap-2 overflow-x-auto py-1">
-        <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mr-1 flex items-center gap-1">
-          <UserCheck className="w-3.5 h-3.5 text-blue-600" /> Quick Persona:
+        <span className="text-[11px] font-bold uppercase tracking-wider text-black mr-1 flex items-center gap-1">
+          <UserCheck className="w-3.5 h-3.5 text-black" /> Quick Persona:
         </span>
         <button
           onClick={() => switchUser('rohit@abc.com')}
-          className={`px-2.5 py-1 text-xs rounded-md font-medium border transition-colors ${
+          className={`px-2.5 py-1 text-xs rounded-md font-bold transition-all border ${
             user.email === 'rohit@abc.com'
-              ? 'bg-blue-50 border-blue-400 text-blue-800 font-semibold'
-              : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+              ? 'bg-black text-white border-black shadow-2xs'
+              : 'bg-white text-black border-neutral-300 hover:bg-neutral-100'
           }`}
           title="Firm A (ABC & Co.) Staff"
         >
@@ -45,10 +45,10 @@ export function Header() {
         </button>
         <button
           onClick={() => switchUser('aman@abc.com')}
-          className={`px-2.5 py-1 text-xs rounded-md font-medium border transition-colors ${
+          className={`px-2.5 py-1 text-xs rounded-md font-bold transition-all border ${
             user.email === 'aman@abc.com'
-              ? 'bg-indigo-50 border-indigo-400 text-indigo-800 font-semibold'
-              : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+              ? 'bg-black text-white border-black shadow-2xs'
+              : 'bg-white text-black border-neutral-300 hover:bg-neutral-100'
           }`}
           title="Firm A (ABC & Co.) Reviewer"
         >
@@ -56,17 +56,22 @@ export function Header() {
         </button>
         <button
           onClick={() => switchUser('priya@xyz.com')}
-          className={`px-2.5 py-1 text-xs rounded-md font-medium border transition-colors ${
+          className={`px-2.5 py-1 text-xs rounded-md font-bold transition-all border ${
             user.email === 'priya@xyz.com'
-              ? 'bg-emerald-50 border-emerald-400 text-emerald-800 font-semibold'
-              : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+              ? 'bg-black text-white border-black shadow-2xs'
+              : 'bg-white text-black border-neutral-300 hover:bg-neutral-100'
           }`}
           title="Firm B (XYZ & Co.) Reviewer - Test Isolation"
         >
           Priya (XYZ Reviewer)
         </button>
 
-        <Button variant="outline" size="sm" onClick={logout} className="ml-2 gap-1.5 text-slate-600">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={logout}
+          className="ml-2 gap-1.5 text-black border-black hover:bg-black hover:text-white"
+        >
           <LogOut className="w-3.5 h-3.5" /> Logout
         </Button>
       </div>

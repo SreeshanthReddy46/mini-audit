@@ -7,16 +7,16 @@ interface BadgeProps {
 }
 
 export function Badge({ children, variant = 'default', size = 'md' }: BadgeProps) {
-  const sizeClasses = size === 'sm' ? 'px-2 py-0.5 text-xs' : 'px-2.5 py-1 text-xs font-semibold';
+  const sizeClasses = size === 'sm' ? 'px-2 py-0.5 text-[10px]' : 'px-2.5 py-1 text-xs font-semibold';
 
   const variantClasses = {
-    default: 'bg-slate-100 text-slate-700 border-slate-200',
-    pending: 'bg-slate-100 text-slate-600 border-slate-200',
-    uploaded: 'bg-blue-50 text-blue-700 border-blue-200',
-    review: 'bg-indigo-50 text-indigo-700 border-indigo-200',
-    correction: 'bg-amber-50 text-amber-800 border-amber-200',
-    approved: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-    role: 'bg-slate-900 text-slate-100 border-slate-800',
+    default: 'bg-neutral-100 text-black border-neutral-300',
+    pending: 'bg-white text-neutral-500 border-neutral-300',
+    uploaded: 'bg-neutral-100 text-black border-neutral-400 font-semibold',
+    review: 'bg-neutral-200 text-black border-black font-semibold',
+    correction: 'bg-white text-black border-dashed border-black font-bold',
+    approved: 'bg-black text-white border-black font-bold',
+    role: 'bg-black text-white border-black font-bold',
   }[variant];
 
   return (

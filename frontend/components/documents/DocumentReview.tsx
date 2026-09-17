@@ -78,19 +78,19 @@ export function DocumentReview({
   };
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-xs space-y-6">
-      <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+    <div className="rounded-xl border border-neutral-200 bg-white p-6 shadow-xs space-y-6">
+      <div className="flex items-center justify-between pb-4 border-b border-neutral-100">
         <div>
-          <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900">Review & Workflow Actions</h3>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Role: <span className="font-semibold text-slate-800">{user?.role}</span>
+          <h3 className="text-sm font-bold uppercase tracking-wider text-black">Review & Workflow Actions</h3>
+          <p className="text-xs text-neutral-500 mt-0.5">
+            Role: <span className="font-semibold text-black">{user?.role}</span>
           </p>
         </div>
       </div>
 
       {error && (
-        <div className="p-3 rounded-lg bg-rose-50 border border-rose-200 text-xs text-rose-700 flex items-center gap-2">
-          <AlertCircle className="w-4 h-4 shrink-0" />
+        <div className="p-3 rounded-lg bg-neutral-50 border border-black text-xs text-black flex items-center gap-2">
+          <AlertCircle className="w-4 h-4 shrink-0 text-black" />
           {error}
         </div>
       )}
@@ -98,7 +98,7 @@ export function DocumentReview({
       {/* STATE 1: PENDING */}
       {document.status === 'PENDING' && (
         <div className="space-y-4">
-          <div className="p-4 rounded-lg bg-blue-50/70 border border-blue-100 text-xs text-blue-900">
+          <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-200 text-xs text-black">
             <span className="font-semibold">Document Required:</span> Upload initial {document.name} to begin compliance review.
           </div>
           <UploadDocument onUpload={onUpload} buttonText="Upload Initial Document" />
@@ -108,7 +108,7 @@ export function DocumentReview({
       {/* STATE 2: UPLOADED */}
       {document.status === 'UPLOADED' && (
         <div className="space-y-4">
-          <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 text-xs text-slate-700">
+          <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-200 text-xs text-black">
             Document is uploaded (version {document.version}).
             {isReviewer ? ' Ready for reviewer assessment.' : ' Awaiting reviewer to begin evaluation.'}
           </div>
@@ -123,7 +123,7 @@ export function DocumentReview({
               <Play className="w-4 h-4" /> Start Review
             </Button>
           ) : (
-            <p className="text-xs text-slate-400 italic text-center">
+            <p className="text-xs text-neutral-500 italic text-center">
               Staff cannot approve or review. Please switch to Reviewer persona to advance workflow.
             </p>
           )}
@@ -133,8 +133,8 @@ export function DocumentReview({
       {/* STATE 3: UNDER_REVIEW */}
       {document.status === 'UNDER_REVIEW' && (
         <div className="space-y-4">
-          <div className="p-4 rounded-lg bg-indigo-50 border border-indigo-200 text-xs text-indigo-900 flex items-start gap-2">
-            <FileCheck className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5" />
+          <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-200 text-xs text-black flex items-start gap-2">
+            <FileCheck className="w-4 h-4 text-black shrink-0 mt-0.5" />
             <div>
               <span className="font-semibold">Review In Progress:</span> Reviewer is evaluating document integrity.
             </div>
@@ -143,7 +143,7 @@ export function DocumentReview({
           {isReviewer ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
               <Button
-                variant="warning"
+                variant="outline"
                 onClick={() => setIsCorrectionModalOpen(true)}
                 disabled={actionLoading}
                 className="gap-2"
@@ -151,7 +151,7 @@ export function DocumentReview({
                 <AlertCircle className="w-4 h-4" /> Request Correction
               </Button>
               <Button
-                variant="success"
+                variant="primary"
                 onClick={handleApprove}
                 loading={actionLoading}
                 className="gap-2"
@@ -160,7 +160,7 @@ export function DocumentReview({
               </Button>
             </div>
           ) : (
-            <p className="text-xs text-slate-400 italic text-center">
+            <p className="text-xs text-neutral-500 italic text-center">
               Under review by chartered accountant. Staff will be alerted if corrections are needed.
             </p>
           )}
@@ -170,17 +170,17 @@ export function DocumentReview({
       {/* STATE 4: CORRECTION_REQUIRED */}
       {document.status === 'CORRECTION_REQUIRED' && (
         <div className="space-y-4">
-          <div className="p-4 rounded-lg bg-amber-50 border border-amber-300 text-xs text-amber-900 space-y-1.5">
-            <div className="flex items-center gap-1.5 font-bold text-amber-900">
-              <AlertCircle className="w-4 h-4 text-amber-600" />
+          <div className="p-4 rounded-lg bg-neutral-50 border border-black text-xs text-black space-y-1.5">
+            <div className="flex items-center gap-1.5 font-bold text-black">
+              <AlertCircle className="w-4 h-4 text-black" />
               Correction Required by Reviewer:
             </div>
             <p className="pl-5 italic font-medium">&ldquo;{document.review_comment}&rdquo;</p>
           </div>
 
           <div>
-            <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800 mb-2">
-              <ArrowUpCircle className="w-4 h-4 text-blue-600" />
+            <div className="flex items-center gap-1.5 text-xs font-bold text-black mb-2">
+              <ArrowUpCircle className="w-4 h-4 text-black" />
               Upload Revised Document (Will generate version {document.version + 1}):
             </div>
             <UploadDocument onUpload={onReupload} buttonText="Re-upload Corrected File" isReupload={true} />
@@ -190,10 +190,10 @@ export function DocumentReview({
 
       {/* STATE 5: APPROVED */}
       {document.status === 'APPROVED' && (
-        <div className="p-5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-center space-y-2">
-          <CheckCircle2 className="w-8 h-8 text-emerald-600 mx-auto" />
+        <div className="p-5 rounded-xl bg-white border-2 border-black text-black text-center space-y-2">
+          <CheckCircle2 className="w-8 h-8 text-black mx-auto" />
           <h4 className="text-sm font-bold">Document Approved & Compliant</h4>
-          <p className="text-xs text-emerald-700">
+          <p className="text-xs text-neutral-600">
             This document has successfully satisfied audit requirements. Final version: v{document.version}.
           </p>
         </div>
@@ -206,11 +206,11 @@ export function DocumentReview({
         title="Request Document Correction"
       >
         <form onSubmit={handleConfirmCorrection} className="space-y-4">
-          <p className="text-xs text-slate-600">
+          <p className="text-xs text-neutral-600">
             Specify the deficiency or missing information (e.g. <em>&ldquo;Page 3 is missing. Please upload the complete bank statement.&rdquo;</em>).
           </p>
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-black mb-1.5">
               Correction Reason (Mandatory)
             </label>
             <textarea
@@ -218,7 +218,7 @@ export function DocumentReview({
               value={correctionComment}
               onChange={(e) => setCorrectionComment(e.target.value)}
               placeholder="e.g. Page 3 is missing. Please upload the complete bank statement."
-              className="w-full rounded-lg border border-slate-300 p-3 text-xs text-slate-900 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 focus:outline-none"
+              className="w-full rounded-lg border border-neutral-300 p-3 text-xs text-black focus:border-black focus:ring-1 focus:ring-black focus:outline-none"
               required
             />
           </div>
@@ -234,7 +234,7 @@ export function DocumentReview({
             </Button>
             <Button
               type="submit"
-              variant="warning"
+              variant="primary"
               size="sm"
               loading={actionLoading}
               disabled={!correctionComment.trim()}
