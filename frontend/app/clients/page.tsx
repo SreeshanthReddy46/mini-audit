@@ -17,39 +17,39 @@ export default function ClientsPage() {
   }
 
   return (
-    <div className="space-y-6 bg-white text-black">
-      <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-neutral-200">
+    <div className="space-y-8 bg-white text-neutral-900">
+      <div className="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-neutral-200">
         <div>
-          <h2 className="text-xl font-black text-black tracking-tight flex items-center gap-2">
-            <Users className="w-5 h-5 text-black" />
+          <h1 className="text-3xl font-bold text-neutral-900 tracking-tight flex items-center gap-3">
+            <Users className="w-6 h-6 text-neutral-800" />
             Audit Clients
-          </h2>
-          <p className="text-xs text-neutral-600 mt-0.5 font-medium">
-            Manage your firm&apos;s corporate audit clients and track document review progress.
+          </h1>
+          <p className="text-base text-neutral-500 mt-1.5">
+            Manage your corporate clients and track statutory compliance progress.
           </p>
         </div>
 
-        <Button onClick={() => setIsModalOpen(true)} className="gap-2">
+        <Button onClick={() => setIsModalOpen(true)} size="md" className="gap-2 rounded-md font-semibold">
           <Plus className="w-4 h-4" /> Add Client
         </Button>
       </div>
 
       {error && (
-        <div className="p-4 rounded-xl bg-neutral-100 border border-black text-xs text-black font-semibold flex items-center gap-2">
-          <AlertCircle className="w-4 h-4 shrink-0 text-black" />
-          {error}
+        <div className="p-4 rounded-lg bg-neutral-50 border border-neutral-200 text-sm text-neutral-900 flex items-center gap-3">
+          <AlertCircle className="w-5 h-5 shrink-0 text-neutral-700" />
+          <span>{error}</span>
         </div>
       )}
 
       {clients.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-2xl border border-dashed border-neutral-300 p-8">
-          <Users className="w-10 h-10 text-neutral-400 mx-auto mb-3" />
-          <h3 className="text-sm font-bold text-black">No clients found</h3>
-          <p className="text-xs text-neutral-500 mt-1 max-w-sm mx-auto font-medium">
+        <div className="text-center py-20 bg-white rounded-xl border border-dashed border-neutral-200 p-10">
+          <Users className="w-12 h-12 text-neutral-400 mx-auto mb-3" />
+          <h3 className="text-base font-semibold text-neutral-900">No clients registered</h3>
+          <p className="text-sm text-neutral-500 mt-1.5 max-w-sm mx-auto">
             Get started by adding your first audit client to create their compliance document checklist.
           </p>
-          <Button onClick={() => setIsModalOpen(true)} size="sm" className="mt-4 gap-1.5">
-            <Plus className="w-4 h-4" /> Create First Client
+          <Button onClick={() => setIsModalOpen(true)} size="md" className="mt-5 gap-2 rounded-md">
+            <Plus className="w-4 h-4" /> Create Client
           </Button>
         </div>
       ) : (

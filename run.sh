@@ -10,7 +10,7 @@ else
     PYTHON_CMD="python3"
 fi
 
-$PYTHON_CMD -m app.seed --help > /dev/null 2>&1
+(cd backend && $PYTHON_CMD -m app.seed > /dev/null 2>&1)
 
 echo "[1/2] Starting FastAPI Backend on http://localhost:8000..."
 (cd backend && $PYTHON_CMD -m uvicorn app.main:app --reload --port 8000) &

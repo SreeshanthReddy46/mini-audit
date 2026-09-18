@@ -6,8 +6,7 @@ import Link from 'next/link';
 import { useAuth } from '../../hooks/useAuth';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
-import { CornerStars } from '../../components/ui/CornerStars';
-import { ShieldCheck, ArrowRight, ArrowLeft, UserCheck, AlertCircle } from 'lucide-react';
+import { ShieldCheck, ArrowRight, ArrowLeft, AlertCircle } from 'lucide-react';
 
 function LoginForm() {
   const router = useRouter();
@@ -54,11 +53,11 @@ function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-black flex flex-col justify-between p-6">
+    <div className="min-h-screen bg-white text-neutral-900 flex flex-col justify-between p-8 sm:p-12">
       <div>
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-600 hover:text-black transition-colors"
+          className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-neutral-900 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" /> Back to Product Showcase
         </Link>
@@ -66,22 +65,20 @@ function LoginForm() {
 
       <div className="max-w-md w-full mx-auto my-auto py-8">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-black text-white shadow-md mb-3 animate-float-slow">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-neutral-900 text-white mb-3">
             <ShieldCheck className="w-6 h-6" />
           </div>
-          <h1 className="text-2xl font-black text-black tracking-tight">MINI AUDIT</h1>
-          <p className="text-xs text-neutral-600 mt-1 font-medium">
-            Sign in to access your tenant workspace
+          <h1 className="text-2xl font-bold text-neutral-900 tracking-tight">MINI AUDIT</h1>
+          <p className="text-sm text-neutral-500 mt-1">
+            Sign in to access your firm workspace
           </p>
         </div>
 
-        <div className="group relative bg-white rounded-2xl border-2 border-black p-8 shadow-sm hover-lift">
-          <CornerStars size="lg" />
-
+        <div className="bg-white rounded-xl border border-neutral-200 p-8 space-y-5 hover-card">
           {error && (
-            <div className="mb-5 p-3 rounded-lg bg-neutral-100 border border-black text-xs text-black font-semibold flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0 text-black" />
-              {error}
+            <div className="p-3.5 rounded-md bg-neutral-50 border border-neutral-200 text-sm text-neutral-900 flex items-center gap-2.5">
+              <AlertCircle className="w-4.5 h-4.5 shrink-0 text-neutral-700" />
+              <span>{error}</span>
             </div>
           )}
 
@@ -104,81 +101,64 @@ function LoginForm() {
               required
             />
 
-            <Button type="submit" className="w-full gap-2 mt-2" loading={loading}>
-              Sign In to Workspace
-              <ArrowRight className="w-4 h-4" />
+            <Button type="submit" size="md" className="w-full gap-2 rounded-md mt-2 font-semibold" loading={loading}>
+              Sign In <ArrowRight className="w-4 h-4" />
             </Button>
           </form>
 
-          <div className="mt-8 pt-6 border-t border-neutral-200">
-            <div className="flex items-center gap-1.5 text-xs font-black text-black mb-3 uppercase tracking-wider">
-              <UserCheck className="w-4 h-4 text-black" />
-              1-Click Demo Accounts (Evaluation):
-            </div>
+          <div className="pt-5 border-t border-neutral-100 space-y-3">
+            <span className="text-xs font-semibold text-neutral-500 block uppercase tracking-wider">
+              1-Click Demo Accounts
+            </span>
 
             <div className="space-y-2">
               <button
                 type="button"
                 onClick={() => fillDemo('rohit@abc.com')}
-                className="group/demo relative w-full text-left p-3 rounded-xl border border-neutral-300 hover:border-black hover:bg-neutral-50 transition-all duration-200 hover-lift flex items-center justify-between text-xs"
+                className="w-full text-left p-3.5 rounded-lg border border-neutral-200 hover:border-neutral-900 hover:bg-neutral-50/50 transition-colors flex items-center justify-between text-sm hover-lift-subtle"
               >
-                <CornerStars size="sm" />
                 <div>
-                  <span className="font-bold text-black">Firm A: Rohit</span>
-                  <span className="ml-2 text-xs font-mono font-bold text-neutral-600">
-                    (STAFF)
-                  </span>
-                  <p className="text-[11px] text-neutral-500 font-mono mt-0.5">rohit@abc.com</p>
+                  <span className="font-semibold text-neutral-900">Rohit</span>
+                  <span className="ml-2 text-xs font-mono text-neutral-500">Firm A · Staff</span>
+                  <p className="text-xs text-neutral-400 font-mono mt-0.5">rohit@abc.com</p>
                 </div>
-                <span className="text-xs font-bold text-black border border-black px-2 py-0.5 rounded group-hover/demo:bg-black group-hover/demo:text-white transition-colors">
-                  Select
-                </span>
+                <ArrowRight className="w-4 h-4 text-neutral-400" />
               </button>
 
               <button
                 type="button"
                 onClick={() => fillDemo('aman@abc.com')}
-                className="group/demo relative w-full text-left p-3 rounded-xl border border-neutral-300 hover:border-black hover:bg-neutral-50 transition-all duration-200 hover-lift flex items-center justify-between text-xs"
+                className="w-full text-left p-3.5 rounded-lg border border-neutral-200 hover:border-neutral-900 hover:bg-neutral-50/50 transition-colors flex items-center justify-between text-sm hover-lift-subtle"
               >
-                <CornerStars size="sm" />
                 <div>
-                  <span className="font-bold text-black">Firm A: Aman</span>
-                  <span className="ml-2 text-xs font-mono font-bold text-neutral-600">
-                    (REVIEWER)
-                  </span>
-                  <p className="text-[11px] text-neutral-500 font-mono mt-0.5">aman@abc.com</p>
+                  <span className="font-semibold text-neutral-900">Aman</span>
+                  <span className="ml-2 text-xs font-mono text-neutral-500">Firm A · Reviewer</span>
+                  <p className="text-xs text-neutral-400 font-mono mt-0.5">aman@abc.com</p>
                 </div>
-                <span className="text-xs font-bold text-black border border-black px-2 py-0.5 rounded group-hover/demo:bg-black group-hover/demo:text-white transition-colors">
-                  Select
-                </span>
+                <ArrowRight className="w-4 h-4 text-neutral-400" />
               </button>
 
               <button
                 type="button"
                 onClick={() => fillDemo('priya@xyz.com')}
-                className="group/demo relative w-full text-left p-3 rounded-xl border border-neutral-300 hover:border-black hover:bg-neutral-50 transition-all duration-200 hover-lift flex items-center justify-between text-xs"
+                className="w-full text-left p-3.5 rounded-lg border border-neutral-200 hover:border-neutral-900 hover:bg-neutral-50/50 transition-colors flex items-center justify-between text-sm hover-lift-subtle"
               >
-                <CornerStars size="sm" />
                 <div>
-                  <span className="font-bold text-black">Firm B: Priya</span>
-                  <span className="ml-2 text-xs font-mono font-bold text-neutral-600">
-                    (REVIEWER - TENANT B)
-                  </span>
-                  <p className="text-[11px] text-neutral-500 font-mono mt-0.5">priya@xyz.com</p>
+                  <span className="font-semibold text-neutral-900">Priya</span>
+                  <span className="ml-2 text-xs font-mono text-neutral-500">Firm B · Reviewer</span>
+                  <p className="text-xs text-neutral-400 font-mono mt-0.5">priya@xyz.com</p>
                 </div>
-                <span className="text-xs font-bold text-black border border-black px-2 py-0.5 rounded group-hover/demo:bg-black group-hover/demo:text-white transition-colors">
-                  Select
-                </span>
+                <ArrowRight className="w-4 h-4 text-neutral-400" />
               </button>
             </div>
-            <p className="text-[11px] text-neutral-500 mt-3 text-center font-medium">
-              Default password for all accounts: <code className="text-black font-bold">password123</code>
+            <p className="text-xs text-neutral-400 text-center pt-1.5">
+              Default password: <code className="text-neutral-700 font-mono">password123</code>
             </p>
           </div>
         </div>
       </div>
 
-      <div className="text-center text-xs text-neutral-500 pb-4 font-medium">
+      <div className="text-center text-xs text-neutral-400 pb-2">
         Deterministic backend rules enforce authentication, authorization, and tenant isolation.
       </div>
     </div>
@@ -187,7 +167,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-white flex items-center justify-center">Loading...</div>}>
+    <Suspense fallback={<div className="min-h-screen bg-white flex items-center justify-center text-xs text-neutral-400">Loading...</div>}>
       <LoginForm />
     </Suspense>
   );

@@ -3,24 +3,19 @@
 import React from 'react';
 import Link from 'next/link';
 import {
-  ShieldCheck,
-  ArrowRight,
   Lock,
   History,
   FileCheck2,
   Bot,
   Layers,
   Database,
-  CheckCircle2,
-  AlertCircle,
   FileText,
   UserCheck,
   Server,
   Workflow,
-  Sparkles,
+  ArrowRight,
 } from 'lucide-react';
 import { Button } from '../components/ui/Button';
-import { CornerStars } from '../components/ui/CornerStars';
 
 export default function RootLandingPage() {
   const workflowStages = [
@@ -65,44 +60,44 @@ export default function RootLandingPage() {
     {
       icon: Lock,
       title: 'Multi-Tenant Isolation',
-      badge: 'Zero Cross-Talk',
+      tag: 'Strict Boundary',
       description:
-        'Firm A (ABC & Co.) and Firm B (XYZ & Co.) are strictly isolated. Querying another firm\'s client or document returns 404 Not Found (never 403) to block IDOR probing.',
+        'Firm A (ABC & Co.) and Firm B (XYZ & Co.) are strictly isolated. Querying another firm\'s client or document returns 404 Not Found to block IDOR probing.',
     },
     {
       icon: History,
       title: 'Append-Only Audit Trail',
-      badge: 'Immutable Ledger',
+      tag: 'Audit Ledger',
       description:
         'Every status modification, file upload, and reviewer note is logged in the same database transaction with actor ID, IP address, user agent, and timestamp.',
     },
     {
       icon: Layers,
-      title: 'First-Class Document Versioning',
-      badge: 'SHA-256 Fingerprints',
+      title: 'Document Versioning',
+      tag: 'SHA-256 Hashes',
       description:
         'When corrections are uploaded, prior versions are never overwritten. Every revision is preserved with cryptographic SHA-256 hash digests and file sizes.',
     },
     {
       icon: Bot,
-      title: 'Restricted AI Advisory Assistant',
-      badge: 'Advisory Only',
+      title: 'AI Advisory Assistant',
+      tag: 'Advisory Only',
       description:
-        '"AI can recommend. The backend decides." AI inspects documents for closing balances, GSTIN format, and prompt-injection attacks with zero approval authority.',
+        '"AI can recommend. The backend decides." AI inspects documents for closing balances, GSTIN format, and anomalies with zero approval authority.',
     },
     {
       icon: Database,
       title: 'Private File Storage',
-      badge: 'Isolated Keys',
+      tag: 'Isolated Keys',
       description:
-        'Files are stored under server-generated paths: firms/{firm_id}/clients/{client_id}/... Direct public URL access is prohibited; streaming requires auth.',
+        'Files are stored under server-generated paths. Direct public URL access is prohibited; file streaming requires authenticated session.',
     },
     {
       icon: Server,
       title: 'Defense-in-Depth Security',
-      badge: 'OWASP Compliant',
+      tag: 'Robust Middleware',
       description:
-        'Standardized error envelopes with X-Request-ID correlation, in-memory sliding-window rate limiting, and security headers (nosniff, DENY, XSS protection).',
+        'Standardized error envelopes with X-Request-ID correlation, in-memory rate limiting, and standard security headers.',
     },
   ];
 
@@ -118,118 +113,88 @@ export default function RootLandingPage() {
     {
       name: 'Rohit',
       firm: 'Firm A (ABC & Co.)',
-      role: 'STAFF',
+      role: 'Staff',
       email: 'rohit@abc.com',
-      action: 'Can upload files, re-upload revisions, and view audit history.',
+      action: 'Upload files, re-upload revisions, and inspect document audit history.',
     },
     {
       name: 'Aman',
       firm: 'Firm A (ABC & Co.)',
-      role: 'REVIEWER',
+      role: 'Reviewer',
       email: 'aman@abc.com',
-      action: 'Can review documents, request corrections with reasons, approve, and view AI findings.',
+      action: 'Inspect documents, request corrections with mandatory reasons, and approve.',
     },
     {
       name: 'Priya',
       firm: 'Firm B (XYZ & Co.)',
-      role: 'REVIEWER (TENANT B)',
+      role: 'Reviewer (Tenant B)',
       email: 'priya@xyz.com',
-      action: 'Demonstrates tenant isolation. Attempting to view Firm A data returns 404 Not Found.',
+      action: 'Demonstrates tenant boundary isolation. Cross-tenant queries return 404 Not Found.',
     },
   ];
 
   return (
-    <div className="min-h-screen bg-white text-neutral-900 selection:bg-neutral-900 selection:text-white">
-      <div className="sticky top-4 z-50 px-4 sm:px-6 w-full pointer-events-none">
-        <header className="max-w-6xl mx-auto pointer-events-auto group relative rounded-2xl border border-neutral-200/90 bg-white/85 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.05)] px-4 sm:px-6 py-2.5 flex items-center justify-between transition-all duration-300 hover:border-neutral-400/80 hover:shadow-[0_12px_36px_rgb(0,0,0,0.08)]">
-          <CornerStars size="sm" />
+    <div className="min-h-screen bg-white text-neutral-900">
+      <header className="border-b border-neutral-200 bg-white px-8 sticky top-0 z-30 h-16 flex items-center">
+        <div className="max-w-7xl w-full mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-neutral-900 text-white flex items-center justify-center font-black text-sm shadow-xs transition-transform group-hover:scale-105">
+            <div className="w-8 h-8 rounded-md bg-neutral-900 text-white flex items-center justify-center font-bold text-sm">
               A
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-black tracking-tight text-sm text-neutral-900">MINI AUDIT</span>
-                <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-mono text-neutral-500 pl-2 border-l border-neutral-200">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Enterprise CA
-                </span>
-              </div>
-            </div>
+            <span className="font-bold tracking-tight text-sm text-neutral-900">MINI AUDIT</span>
+            <span className="text-neutral-300 text-sm hidden sm:inline">/</span>
+            <span className="text-sm text-neutral-500 hidden sm:inline">CA Document Verification</span>
           </div>
 
-          <nav className="hidden md:flex items-center gap-1 bg-neutral-100/80 p-1 rounded-xl border border-neutral-200/70">
-            <a href="#workflow" className="px-3 py-1.5 rounded-lg text-xs font-bold tracking-wide text-neutral-600 hover:text-neutral-900 hover:bg-white transition-all">Workflow</a>
-            <a href="#pillars" className="px-3 py-1.5 rounded-lg text-xs font-bold tracking-wide text-neutral-600 hover:text-neutral-900 hover:bg-white transition-all">Pillars</a>
-            <a href="#architecture" className="px-3 py-1.5 rounded-lg text-xs font-bold tracking-wide text-neutral-600 hover:text-neutral-900 hover:bg-white transition-all">Architecture</a>
-            <a href="#checklist" className="px-3 py-1.5 rounded-lg text-xs font-bold tracking-wide text-neutral-600 hover:text-neutral-900 hover:bg-white transition-all">Checklist</a>
-            <a href="#personas" className="px-3 py-1.5 rounded-lg text-xs font-bold tracking-wide text-neutral-600 hover:text-neutral-900 hover:bg-white transition-all">Personas</a>
+          <nav className="hidden md:flex items-center gap-7 text-sm text-neutral-600 font-medium">
+            <a href="#workflow" className="hover:text-neutral-900 transition-colors">Workflow</a>
+            <a href="#pillars" className="hover:text-neutral-900 transition-colors">Pillars</a>
+            <a href="#architecture" className="hover:text-neutral-900 transition-colors">Architecture</a>
+            <a href="#checklist" className="hover:text-neutral-900 transition-colors">Checklist</a>
+            <a href="#personas" className="hover:text-neutral-900 transition-colors">Personas</a>
           </nav>
 
-          <div className="flex items-center gap-3">
-            <Link href="/login">
-              <Button size="sm" className="gap-2 rounded-xl text-xs font-bold">
-                Get Started
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Button>
-            </Link>
-          </div>
-        </header>
-      </div>
-
-      <section className="pt-24 pb-20 md:pt-32 md:pb-28 px-6 max-w-7xl mx-auto text-center border-b border-neutral-200">
-        <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-neutral-900 mb-6">
-          <ShieldCheck className="w-4 h-4 text-neutral-900" />
-          <span>Chartered Accountant Document Review & Verification System</span>
-        </div>
-
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-neutral-900 max-w-4xl mx-auto leading-tight">
-          Deterministic Audit Document Review & Verification
-        </h1>
-
-        <p className="mt-6 text-base sm:text-lg text-neutral-600 max-w-2xl mx-auto font-medium leading-relaxed">
-          A production-grade, zero-trust audit review platform for CA firms. Deterministic backend rules control access, tenant boundaries, state transitions, and append-only audit logging.
-        </p>
-
-        <div className="group relative mt-10 max-w-2xl mx-auto p-6 rounded-2xl border-2 border-neutral-900 bg-white shadow-sm text-left hover-lift">
-          <CornerStars size="lg" />
-          <div className="flex items-center gap-2 font-black text-xs uppercase tracking-widest text-neutral-900 mb-2">
-            <Sparkles className="w-4 h-4 text-neutral-900 animate-pulse-subtle" />
-            Core Architectural Invariant
-          </div>
-          <p className="text-xl sm:text-2xl font-black text-neutral-900">
-            &ldquo;AI can recommend. The backend decides.&rdquo;
-          </p>
-          <p className="mt-2 text-xs text-neutral-600 leading-relaxed font-medium">
-            The AI agent assists human reviewers with document classification, extraction, and anomaly detection. It possesses zero permissions to execute SQL, bypass authentication, mutate workflow state, or approve documents.
-          </p>
-        </div>
-
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
           <Link href="/login">
-            <Button size="lg" className="gap-2 px-7 py-3.5 text-sm shadow-md rounded-xl">
-              Get Started (Sign In)
-              <ArrowRight className="w-4 h-4" />
+            <Button size="sm" className="rounded-md">
+              Sign In
             </Button>
           </Link>
-          <a href="#architecture">
-            <Button variant="outline" size="lg" className="gap-2 px-6 py-3.5 text-sm rounded-xl">
-              View Architecture Blueprint
+        </div>
+      </header>
+
+      <section className="pt-24 pb-20 px-8 max-w-5xl mx-auto text-center space-y-5">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-neutral-900 leading-tight">
+          Statutory Document Review System
+        </h1>
+        <p className="text-base sm:text-lg text-neutral-600 max-w-2xl mx-auto leading-relaxed">
+          Production-grade chartered accountancy workflow enforcing deterministic state transitions,
+          strict multi-tenant isolation, cryptographic versioning, and immutable audit logging.
+        </p>
+
+        <div className="pt-4 flex items-center justify-center gap-3.5">
+          <Link href="/login">
+            <Button size="md" className="rounded-md gap-2">
+              Launch Workspace <ArrowRight className="w-4 h-4" />
+            </Button>
+          </Link>
+          <a href="#workflow">
+            <Button variant="outline" size="md" className="rounded-md">
+              View Workflow
             </Button>
           </a>
         </div>
       </section>
 
-      <section id="workflow" className="py-20 px-6 max-w-7xl mx-auto border-b border-neutral-200">
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-500 mb-3">
-            <Workflow className="w-3.5 h-3.5 text-neutral-900" /> Deterministic State Transitions
-          </div>
-          <h2 className="text-3xl font-black text-neutral-900 tracking-tight">
-            5-Stage Document Lifecycle Pipeline
+      <section id="workflow" className="py-20 px-8 max-w-7xl mx-auto border-t border-neutral-200">
+        <div className="mb-12 space-y-1.5">
+          <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
+            Lifecycle Engine
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900">
+            5-Stage Document Review Pipeline
           </h2>
-          <p className="mt-3 text-sm text-neutral-600 font-medium">
-            The backend strictly rejects invalid jumps (e.g. PENDING → APPROVED or STAFF → APPROVED).
+          <p className="text-sm text-neutral-500">
+            Deterministic state machine preventing unauthorized or out-of-order transitions.
           </p>
         </div>
 
@@ -237,59 +202,53 @@ export default function RootLandingPage() {
           {workflowStages.map((stage) => (
             <div
               key={stage.step}
-              className="group relative p-5 rounded-xl border border-neutral-300 bg-white hover:border-neutral-900 transition-all duration-200 hover-lift flex flex-col justify-between"
+              className="p-5 sm:p-6 rounded-xl border border-neutral-200 bg-white flex flex-col justify-between space-y-4 hover-card"
             >
-              <CornerStars size="sm" />
               <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-black font-mono text-neutral-400 group-hover:text-neutral-900 transition-colors">{stage.step}</span>
-                  <span className="text-xs font-mono font-bold text-neutral-600">
-                    {stage.actor}
-                  </span>
+                <div className="flex items-center justify-between text-xs text-neutral-400 mb-3">
+                  <span className="font-mono font-semibold text-neutral-800">{stage.step}</span>
+                  <span className="text-neutral-500 font-medium">{stage.actor}</span>
                 </div>
-                <h3 className="text-sm font-black text-neutral-900 tracking-tight mb-2">{stage.title}</h3>
-                <p className="text-xs text-neutral-600 leading-relaxed">{stage.description}</p>
+                <h3 className="text-sm font-bold text-neutral-900 mb-1.5">{stage.title}</h3>
+                <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed">{stage.description}</p>
               </div>
-              <div className="mt-4 pt-3 border-t border-neutral-200">
-                <p className="text-[10px] font-mono text-neutral-900 font-bold">Rule: {stage.rule}</p>
+              <div className="pt-3 border-t border-neutral-100 text-xs text-neutral-400">
+                Rule: {stage.rule}
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      <section id="pillars" className="py-20 px-6 max-w-7xl mx-auto border-b border-neutral-200">
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-500 mb-3">
-            <Layers className="w-3.5 h-3.5 text-neutral-900" /> System Invariants
-          </div>
-          <h2 className="text-3xl font-black text-neutral-900 tracking-tight">
-            Built for Real-World CA Compliance
+      <section id="pillars" className="py-20 px-8 max-w-7xl mx-auto border-t border-neutral-200">
+        <div className="mb-12 space-y-1.5">
+          <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
+            Core Architecture
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900">
+            Enterprise Invariants
           </h2>
-          <p className="mt-3 text-sm text-neutral-600 font-medium">
-            Designed to address the 75 marks concentrated in workflow, audit trail, data design, and security.
+          <p className="text-sm text-neutral-500">
+            Security, auditability, and data integrity guarantees.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {pillars.map((pillar) => {
             const Icon = pillar.icon;
             return (
               <div
                 key={pillar.title}
-                className="group relative p-6 rounded-2xl border border-neutral-300 bg-white hover:border-neutral-900 transition-all duration-200 hover-lift"
+                className="p-6 sm:p-7 rounded-xl border border-neutral-200 bg-white space-y-3 hover-card"
               >
-                <CornerStars />
-                <div className="w-10 h-10 rounded-xl bg-neutral-900 text-white flex items-center justify-center mb-4 transition-transform group-hover:scale-105">
+                <div className="w-10 h-10 rounded-lg bg-neutral-100 flex items-center justify-center text-neutral-800">
                   <Icon className="w-5 h-5" />
                 </div>
-                <div className="flex items-center justify-between gap-2 mb-2">
+                <div className="flex items-center justify-between">
                   <h3 className="text-base font-bold text-neutral-900">{pillar.title}</h3>
-                  <span className="text-xs font-mono font-medium text-neutral-500">
-                    {pillar.badge}
-                  </span>
+                  <span className="text-xs font-mono text-neutral-400">{pillar.tag}</span>
                 </div>
-                <p className="text-xs text-neutral-600 leading-relaxed font-medium">
+                <p className="text-sm text-neutral-600 leading-relaxed">
                   {pillar.description}
                 </p>
               </div>
@@ -298,138 +257,69 @@ export default function RootLandingPage() {
         </div>
       </section>
 
-      <section id="architecture" className="py-20 px-6 max-w-7xl mx-auto border-b border-neutral-200">
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-500 mb-3">
-            <Server className="w-3.5 h-3.5 text-neutral-900" /> Complete Technical Stack
-          </div>
-          <h2 className="text-3xl font-black text-neutral-900 tracking-tight">
-            System Architecture Blueprint
+      <section id="checklist" className="py-20 px-8 max-w-7xl mx-auto border-t border-neutral-200">
+        <div className="mb-12 space-y-1.5">
+          <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
+            Compliance Checklist
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900">
+            Standard Statutory Documents
           </h2>
-          <p className="mt-3 text-sm text-neutral-600 font-medium">
-            Separation of concerns: API → Services → Repositories → Database.
-          </p>
-        </div>
-
-        <div className="group relative p-8 rounded-2xl border-2 border-neutral-900 bg-white font-mono text-xs overflow-x-auto shadow-sm hover-lift">
-          <CornerStars size="lg" />
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
-            <div className="group/item relative p-4 rounded-xl border border-neutral-300 bg-neutral-50 hover:border-neutral-900 transition-colors">
-              <CornerStars size="sm" />
-              <span className="text-[10px] font-black uppercase text-neutral-500">Presentation Layer</span>
-              <h4 className="font-bold text-neutral-900 text-sm mt-1">Next.js 14 App Router</h4>
-              <p className="text-[11px] text-neutral-600 mt-2 font-sans">
-                TypeScript, Tailwind CSS, Lucide Icons, Persona Switcher.
-              </p>
-            </div>
-
-            <div className="group/item relative p-4 rounded-xl border border-neutral-300 bg-neutral-50 hover:border-neutral-900 transition-colors">
-              <CornerStars size="sm" />
-              <span className="text-[10px] font-black uppercase text-neutral-500">API Gateway</span>
-              <h4 className="font-bold text-neutral-900 text-sm mt-1">FastAPI Backend</h4>
-              <p className="text-[11px] text-neutral-600 mt-2 font-sans">
-                Auth, RBAC, Validation, Security Headers, Rate Limiting.
-              </p>
-            </div>
-
-            <div className="group/item relative p-4 rounded-xl border border-neutral-300 bg-neutral-50 hover:border-neutral-900 transition-colors">
-              <CornerStars size="sm" />
-              <span className="text-[10px] font-black uppercase text-neutral-500">Data & Storage</span>
-              <h4 className="font-bold text-neutral-900 text-sm mt-1">PostgreSQL + Storage</h4>
-              <p className="text-[11px] text-neutral-600 mt-2 font-sans">
-                Firms, Users, Clients, Documents, DocumentVersions, Reviews.
-              </p>
-            </div>
-
-            <div className="group/item relative p-4 rounded-xl border border-neutral-300 bg-neutral-50 hover:border-neutral-900 transition-colors">
-              <CornerStars size="sm" />
-              <span className="text-[10px] font-black uppercase text-neutral-500">Audit & AI</span>
-              <h4 className="font-bold text-neutral-900 text-sm mt-1">Append-Only + AI Agent</h4>
-              <p className="text-[11px] text-neutral-600 mt-2 font-sans">
-                Append-only event ledger & advisory document analyzer.
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-6 pt-6 border-t border-neutral-300 text-center font-sans text-xs text-neutral-700 font-bold">
-            Data Flow: USER REQUEST → AUTHENTICATE → AUTHORIZE → VALIDATE → CHECK TENANT → CHECK STATE → EXECUTE → WRITE AUDIT EVENT → RETURN
-          </div>
-        </div>
-      </section>
-
-      <section id="checklist" className="py-20 px-6 max-w-7xl mx-auto border-b border-neutral-200">
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-500 mb-3">
-            <FileCheck2 className="w-3.5 h-3.5 text-neutral-900" /> Standardized Audit Checklist
-          </div>
-          <h2 className="text-3xl font-black text-neutral-900 tracking-tight">
-            5 Required Compliance Documents
-          </h2>
-          <p className="mt-3 text-sm text-neutral-600 font-medium">
-            Pre-seeded for ABC Traders (Firm A) and XYZ Manufacturing (Firm B).
+          <p className="text-sm text-neutral-500">
+            Pre-seeded for client compliance engagements.
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {checklistDocs.map((doc) => (
-            <div key={doc.name} className="group relative p-4 rounded-xl border border-neutral-300 bg-white hover:border-neutral-900 transition-all duration-200 hover-lift">
-              <CornerStars size="sm" />
-              <div className="flex items-center gap-2 mb-2">
-                <FileText className="w-4 h-4 text-neutral-900 shrink-0" />
-                <h3 className="text-sm font-bold text-neutral-900">{doc.name}</h3>
+            <div key={doc.name} className="p-5 rounded-xl border border-neutral-200 bg-white space-y-1.5 hover-card">
+              <div className="flex items-center gap-2.5">
+                <FileText className="w-4.5 h-4.5 text-neutral-700 shrink-0" />
+                <h3 className="text-sm font-semibold text-neutral-900">{doc.name}</h3>
               </div>
-              <p className="text-xs text-neutral-600 font-medium">{doc.check}</p>
+              <p className="text-xs sm:text-sm text-neutral-500">{doc.check}</p>
             </div>
           ))}
-          <div className="group relative p-4 rounded-xl border border-dashed border-neutral-400 bg-neutral-50 hover:border-neutral-900 flex items-center justify-center text-center transition-colors">
-            <CornerStars size="sm" />
-            <p className="text-xs font-bold text-neutral-700">
-              + Custom Client Documents Supported
-            </p>
-          </div>
         </div>
       </section>
 
-      <section id="personas" className="py-20 px-6 max-w-7xl mx-auto">
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-500 mb-3">
-            <UserCheck className="w-3.5 h-3.5 text-neutral-900" /> Ready for Evaluator Demo
-          </div>
-          <h2 className="text-3xl font-black text-neutral-900 tracking-tight">
-            Pre-Seeded Evaluation Accounts
+      <section id="personas" className="py-20 px-8 max-w-7xl mx-auto border-t border-neutral-200">
+        <div className="mb-12 space-y-1.5">
+          <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
+            Demo Accounts
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900">
+            Evaluation Personas
           </h2>
-          <p className="mt-3 text-sm text-neutral-600 font-medium">
-            Click any persona to launch directly into the workspace with full credentials.
+          <p className="text-sm text-neutral-500">
+            Pre-seeded test users to demonstrate staff uploads, reviewer inspection, and multi-tenant isolation.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {personas.map((p) => (
             <div
               key={p.email}
-              className="group relative p-6 rounded-2xl border-2 border-neutral-300 bg-white hover:border-neutral-900 transition-all duration-200 hover-lift flex flex-col justify-between"
+              className="p-6 sm:p-7 rounded-xl border border-neutral-200 bg-white flex flex-col justify-between space-y-5 hover-card"
             >
-              <CornerStars />
               <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-bold uppercase tracking-wider text-neutral-500">{p.firm}</span>
-                  <span className="text-xs font-mono font-bold text-neutral-600">
-                    {p.role}
-                  </span>
+                <div className="flex items-center justify-between text-xs text-neutral-400 mb-2.5">
+                  <span className="font-medium text-neutral-500">{p.firm}</span>
+                  <span className="font-mono text-neutral-800 font-semibold">{p.role}</span>
                 </div>
-                <h3 className="text-lg font-black text-neutral-900 tracking-tight">{p.name}</h3>
-                <p className="text-xs font-mono text-neutral-500 mt-0.5">{p.email}</p>
-                <p className="text-xs text-neutral-600 mt-4 leading-relaxed font-medium">{p.action}</p>
+                <h3 className="text-base font-bold text-neutral-900">{p.name}</h3>
+                <p className="text-xs font-mono text-neutral-400 mt-0.5">{p.email}</p>
+                <p className="text-sm text-neutral-600 mt-2.5 leading-relaxed">{p.action}</p>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-neutral-200">
+              <div className="pt-3.5 border-t border-neutral-100">
                 <Link
                   href={`/login?email=${encodeURIComponent(p.email)}`}
                   className="w-full block"
                 >
-                  <Button variant="primary" size="sm" className="w-full gap-2 group/btn rounded-xl">
-                    Sign In as {p.name}
-                    <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
+                  <Button variant="outline" size="sm" className="w-full rounded-md justify-between">
+                    <span>Sign In as {p.name}</span>
+                    <ArrowRight className="w-4 h-4" />
                   </Button>
                 </Link>
               </div>
@@ -438,23 +328,18 @@ export default function RootLandingPage() {
         </div>
       </section>
 
-      <footer className="border-t border-neutral-200 bg-white py-12 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-600">
+      <footer className="border-t border-neutral-200 bg-white py-10 px-8">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-neutral-500">
           <div className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded-lg bg-neutral-900 text-white font-black text-xs flex items-center justify-center">
-              A
-            </div>
-            <span className="font-bold text-neutral-900">MINI AUDIT</span>
-            <span>— CA Document Review & Compliance Verification</span>
+            <span className="font-semibold text-neutral-900">MINI AUDIT</span>
+            <span>— Statutory Document Review</span>
           </div>
 
-          <div className="flex items-center gap-6 text-neutral-900 font-bold">
-            <Link href="/login">
-              <Button size="sm" variant="outline" className="gap-1.5 rounded-xl">
-                Get Started →
-              </Button>
-            </Link>
-          </div>
+          <Link href="/login">
+            <Button size="sm" variant="outline" className="rounded-md">
+              Launch App →
+            </Button>
+          </Link>
         </div>
       </footer>
     </div>

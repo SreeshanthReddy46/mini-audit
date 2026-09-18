@@ -2,7 +2,7 @@ import { getStoredToken } from './auth';
 
 function getBaseUrl(): string {
   if (process.env.NEXT_PUBLIC_API_URL) {
-    return process.env.NEXT_PUBLIC_API_URL;
+    return process.env.NEXT_PUBLIC_API_URL.replace(/\/+$/, '');
   }
   if (typeof window !== 'undefined' && window.location.hostname) {
     return `http://${window.location.hostname}:8000`;
@@ -72,6 +72,19 @@ class ApiClient {
   getFileUrl(path: string): string {
     const baseUrl = getBaseUrl();
     return `${baseUrl}${path}`;
+  }
+
+  async getFileBlob(path: string): Promise<Blob> {
+    const baseUrl = getBaseUrl();
+    const res = await fetch(`${baseUrl}${path}`, {
+      method: 'GET',
+      headers: this.getHeaders(),
+      credentials: 'include',
+    });
+    if (!res.ok) {
+      throw new Error('Failed to fetch file');
+    }
+    return res.blob();
   }
 
   async downloadFile(path: string, filename: string): Promise<void> {

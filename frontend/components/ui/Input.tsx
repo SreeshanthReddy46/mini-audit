@@ -12,19 +12,19 @@ export function Input({ label, error, helperText, className = '', id, ...props }
   return (
     <div className="w-full">
       {label && (
-        <label htmlFor={inputId} className="block text-xs font-bold uppercase tracking-wider text-black mb-1.5">
+        <label htmlFor={inputId} className="block text-xs font-semibold uppercase tracking-wider text-neutral-700 mb-2">
           {label}
         </label>
       )}
       <input
         id={inputId}
-        className={`w-full rounded-lg border bg-white px-3.5 py-2 text-sm text-black placeholder-neutral-400 transition-colors focus:border-black focus:outline-none focus:ring-1 focus:ring-black disabled:bg-neutral-100 disabled:text-neutral-500 ${
-          error ? 'border-black focus:border-black focus:ring-black' : 'border-neutral-300'
+        className={`w-full rounded-md border bg-white px-4 py-2.5 text-base sm:text-sm text-neutral-900 placeholder-neutral-400 transition-colors focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900 disabled:bg-neutral-100 disabled:text-neutral-500 ${
+          error ? 'border-neutral-900 focus:border-neutral-900 focus:ring-neutral-900' : 'border-neutral-300'
         } ${className}`}
         {...props}
       />
-      {error && <p className="mt-1 text-xs text-black font-semibold flex items-center gap-1">⚠ {error}</p>}
-      {helperText && !error && <p className="mt-1 text-xs text-neutral-600">{helperText}</p>}
+      {error && <p className="mt-1.5 text-xs text-neutral-900 font-medium">⚠ {error}</p>}
+      {helperText && !error && <p className="mt-1.5 text-xs text-neutral-500">{helperText}</p>}
     </div>
   );
 }

@@ -9,13 +9,16 @@ import { Document } from '../../lib/types';
 import { DocumentStatus } from '../../components/documents/DocumentStatus';
 import { Button } from '../../components/ui/Button';
 import { Loading } from '../../components/ui/Loading';
-import { CornerStars } from '../../components/ui/CornerStars';
-import { Search, AlertCircle, CheckCircle2, Building, ArrowRight } from 'lucide-react';
+import { Search, AlertCircle, CheckCircle2, ArrowRight } from 'lucide-react';
+
+interface DashboardDocument extends Document {
+  clientName?: string;
+}
 
 export default function DashboardPage() {
   const { user } = useAuth();
   const { clients, loading: clientsLoading } = useClients();
-  const [recentDocs, setRecentDocs] = useState<Document[]>([]);
+  const [recentDocs, setRecentDocs] = useState<DashboardDocument[]>([]);
   const [loadingDocs, setLoadingDocs] = useState(true);
 
   useEffect(() => {
@@ -26,10 +29,10 @@ export default function DashboardPage() {
         return;
       }
       try {
-        const all: Document[] = [];
+        const all: DashboardDocument[] = [];
         for (const client of clients) {
           const docs = await api.get<Document[]>(`/api/clients/${client.id}/documents`);
-          all.push(...docs);
+          all.push(...docs.map((d) => ({ ...d, clientName: client.name })));
         }
         setRecentDocs(all);
       } catch (err) {
@@ -44,91 +47,82 @@ export default function DashboardPage() {
     }
   }, [clients, clientsLoading]);
 
-  const underReviewCount = recentDocs.filter((d) => d.status === 'UNDER_REVIEW' || d.status === 'UPLOADED').length;
+  const underReviewCount = recentDocs.filter(
+    (d) => d.status === 'UNDER_REVIEW' || d.status === 'UPLOADED'
+  ).length;
   const correctionCount = recentDocs.filter((d) => d.status === 'CORRECTION_REQUIRED').length;
   const approvedCount = recentDocs.filter((d) => d.status === 'APPROVED').length;
+
+  const currentHour = new Date().getHours();
+  const greeting = currentHour < 12 ? 'Good morning' : currentHour < 18 ? 'Good afternoon' : 'Good evening';
 
   if (clientsLoading || loadingDocs) {
     return <Loading message="Loading workspace dashboard..." />;
   }
 
   return (
-    <div className="space-y-8 bg-white text-neutral-900">
-      <div>
-        <h2 className="text-2xl font-black text-neutral-900 tracking-tight">
-          Welcome back, {user?.name}
-        </h2>
-        <p className="text-xs text-neutral-600 mt-1 font-medium">
-          Active Firm Workspace: <strong className="text-neutral-900 font-bold">{user?.firm_name}</strong> • Role:{' '}
-          <strong className="text-neutral-900 font-bold">{user?.role}</strong>
+    <div className="space-y-9 bg-white text-neutral-900">
+      <div className="pb-4 border-b border-neutral-200">
+        <h1 className="text-3xl font-bold text-neutral-900 tracking-tight">
+          {greeting}, {user?.name}
+        </h1>
+        <p className="text-base text-neutral-500 mt-1.5">
+          {user?.firm_name} · {user?.role === 'REVIEWER' ? 'Certified Reviewer' : 'Audit Staff'}
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div className="group relative rounded-2xl border border-neutral-200 bg-white p-5 shadow-xs hover:border-neutral-900 transition-all duration-200 hover-lift">
-          <CornerStars />
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div className="rounded-xl border border-neutral-200 bg-white p-6 sm:p-7 hover-card cursor-default">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-black uppercase tracking-wider text-neutral-900">Pending Review</span>
-            <div className="w-8 h-8 rounded-xl bg-neutral-900 text-white flex items-center justify-center transition-transform group-hover:scale-105 shadow-2xs">
-              <Search className="w-4 h-4" />
-            </div>
+            <span className="text-base font-semibold text-neutral-700">Pending Review</span>
+            <Search className="w-5 h-5 text-neutral-400" />
           </div>
-          <p className="text-3xl font-black text-neutral-900 mt-3">{underReviewCount}</p>
-          <span className="text-[11px] text-neutral-500 mt-1 block font-medium">Awaiting reviewer evaluation</span>
+          <p className="text-4xl font-bold text-neutral-900 mt-3">{underReviewCount}</p>
+          <span className="text-sm text-neutral-500 mt-1.5 block">Awaiting reviewer evaluation</span>
         </div>
 
-        <div className="group relative rounded-2xl border border-neutral-200 bg-white p-5 shadow-xs hover:border-neutral-900 transition-all duration-200 hover-lift">
-          <CornerStars />
+        <div className="rounded-xl border border-neutral-200 bg-white p-6 sm:p-7 hover-card cursor-default">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-black uppercase tracking-wider text-neutral-900">Correction Required</span>
-            <div className="w-8 h-8 rounded-xl bg-neutral-900 text-white flex items-center justify-center transition-transform group-hover:scale-105 shadow-2xs">
-              <AlertCircle className="w-4 h-4" />
-            </div>
+            <span className="text-base font-semibold text-neutral-700">Corrections Required</span>
+            <AlertCircle className="w-5 h-5 text-neutral-400" />
           </div>
-          <p className="text-3xl font-black text-neutral-900 mt-3">{correctionCount}</p>
-          <span className="text-[11px] text-neutral-500 mt-1 block font-medium">Pending staff re-upload</span>
+          <p className="text-4xl font-bold text-neutral-900 mt-3">{correctionCount}</p>
+          <span className="text-sm text-neutral-500 mt-1.5 block">Action required by staff</span>
         </div>
 
-        <div className="group relative rounded-2xl border border-neutral-200 bg-white p-5 shadow-xs hover:border-neutral-900 transition-all duration-200 hover-lift">
-          <CornerStars />
+        <div className="rounded-xl border border-neutral-200 bg-white p-6 sm:p-7 hover-card cursor-default">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-black uppercase tracking-wider text-neutral-900">Approved</span>
-            <div className="w-8 h-8 rounded-xl bg-neutral-900 text-white flex items-center justify-center transition-transform group-hover:scale-105 shadow-2xs">
-              <CheckCircle2 className="w-4 h-4" />
-            </div>
+            <span className="text-base font-semibold text-neutral-700">Approved Documents</span>
+            <CheckCircle2 className="w-5 h-5 text-neutral-400" />
           </div>
-          <p className="text-3xl font-black text-neutral-900 mt-3">{approvedCount}</p>
-          <span className="text-[11px] text-neutral-500 mt-1 block font-medium">Satisfied compliance checks</span>
+          <p className="text-4xl font-bold text-neutral-900 mt-3">{approvedCount}</p>
+          <span className="text-sm text-neutral-500 mt-1.5 block">Statutory compliance met</span>
         </div>
       </div>
 
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-black uppercase tracking-wider text-neutral-900">
-            Active Firm Clients ({clients.length})
-          </h3>
+          <h2 className="text-lg font-bold text-neutral-900">
+            Active Clients ({clients.length})
+          </h2>
           <Link href="/clients">
-            <Button variant="outline" size="sm" className="gap-1 text-xs rounded-xl">
-              View All Clients <ArrowRight className="w-3.5 h-3.5" />
+            <Button variant="outline" size="sm" className="gap-1.5 rounded-md">
+              View All Clients <ArrowRight className="w-4 h-4" />
             </Button>
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {clients.map((client) => (
             <Link key={client.id} href={`/clients/${client.id}`} className="block group">
-              <div className="relative p-4 rounded-2xl border border-neutral-200 bg-white hover:border-neutral-900 transition-all duration-200 hover-lift flex items-center justify-between shadow-xs">
-                <CornerStars size="sm" />
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-neutral-900 text-white flex items-center justify-center transition-transform group-hover:scale-105 shadow-2xs">
-                    <Building className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-black text-neutral-900">{client.name}</h4>
-                    <p className="text-[11px] text-neutral-500 font-medium">{client.document_count} audit documents</p>
-                  </div>
+              <div className="p-5 sm:p-6 rounded-xl border border-neutral-200 bg-white hover-card flex items-center justify-between">
+                <div>
+                  <h3 className="text-base font-semibold text-neutral-900 group-hover:text-black">
+                    {client.name}
+                  </h3>
+                  <p className="text-sm text-neutral-500 mt-1">{client.document_count} audit documents</p>
                 </div>
-                <ArrowRight className="w-4 h-4 text-neutral-900 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-5 h-5 text-neutral-400 group-hover:text-neutral-900 group-hover:translate-x-1 transition-all" />
               </div>
             </Link>
           ))}
@@ -136,45 +130,44 @@ export default function DashboardPage() {
       </div>
 
       <div className="space-y-4">
-        <h3 className="text-sm font-black uppercase tracking-wider text-neutral-900">
-          Audit Document Queue ({recentDocs.length})
-        </h3>
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-bold text-neutral-900">
+            Recent Documents ({recentDocs.length})
+          </h2>
+        </div>
 
-        <div className="group relative rounded-2xl border border-neutral-200 bg-white overflow-hidden shadow-xs hover:border-neutral-900 transition-all">
-          <CornerStars />
+        <div className="rounded-xl border border-neutral-200 bg-white overflow-hidden hover-card">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-neutral-50 border-b border-neutral-200 text-neutral-800 uppercase tracking-wider text-[11px]">
+            <table className="w-full text-left">
+              <thead className="bg-neutral-50/75 border-b border-neutral-200 text-neutral-600 text-xs font-bold uppercase tracking-wider">
                 <tr>
-                  <th className="py-3.5 px-4 font-bold">Document Name</th>
-                  <th className="py-3.5 px-4 font-bold">Version</th>
-                  <th className="py-3.5 px-4 font-bold">Status</th>
-                  <th className="py-3.5 px-4 font-bold">Uploader</th>
-                  <th className="py-3.5 px-4 text-right font-bold">Action</th>
+                  <th className="py-3.5 px-5">Document</th>
+                  <th className="py-3.5 px-5">Client</th>
+                  <th className="py-3.5 px-5">Status</th>
+                  <th className="py-3.5 px-5">Version</th>
+                  <th className="py-3.5 px-5 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-neutral-100 text-neutral-900">
+              <tbody className="divide-y divide-neutral-100 text-neutral-900 text-sm">
                 {recentDocs.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="py-8 text-center text-neutral-500 font-medium">
+                    <td colSpan={5} className="py-10 text-center text-neutral-500">
                       No documents in queue.
                     </td>
                   </tr>
                 ) : (
                   recentDocs.map((doc) => (
-                    <tr key={doc.id} className="hover:bg-neutral-50/70 transition-colors">
-                      <td className="py-3 px-4 font-bold text-neutral-900">{doc.name}</td>
-                      <td className="py-3 px-4">
-                        <span className="font-mono text-xs font-bold text-neutral-600">v{doc.version}</span>
-                      </td>
-                      <td className="py-3 px-4">
+                    <tr key={doc.id} className="hover:bg-neutral-50/70 transition-colors group">
+                      <td className="py-4 px-5 font-semibold text-neutral-900">{doc.name}</td>
+                      <td className="py-4 px-5 text-neutral-600 font-medium">{doc.clientName || '—'}</td>
+                      <td className="py-4 px-5">
                         <DocumentStatus status={doc.status} />
                       </td>
-                      <td className="py-3 px-4 text-neutral-600 font-medium">{doc.uploader_name || '—'}</td>
-                      <td className="py-3 px-4 text-right">
+                      <td className="py-4 px-5 font-mono text-xs text-neutral-500">v{doc.version}</td>
+                      <td className="py-4 px-5 text-right">
                         <Link href={`/documents/${doc.id}`}>
-                          <Button size="sm" className="text-xs rounded-xl">
-                            View Lifecycle
+                          <Button size="sm" variant="outline" className="rounded-md">
+                            View Document
                           </Button>
                         </Link>
                       </td>

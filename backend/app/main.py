@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
@@ -7,30 +8,54 @@ from app.middleware.request_id import RequestIDMiddleware
 from app.middleware.security_headers import SecurityHeadersMiddleware
 from app.middleware.rate_limit import RateLimitMiddleware
 from app.api import auth, clients, documents, audit
+from app.core.database import init_db, SessionLocal
+from app.models.firm import Firm
+from app.seed import seed_database
 
 setup_logging()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_db()
+    db = SessionLocal()
+    try:
+        if db.query(Firm).count() == 0:
+            seed_database()
+    except Exception as e:
+        logger.warning(f"Startup initialization: {e}")
+    finally:
+        db.close()
+    yield
 
 app = FastAPI(
     title="Mini Audit Document Review System API",
     version="1.0.0",
     description="Multi-tenant Audit Document Review System for CA Firms",
+    lifespan=lifespan,
 )
 
 app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(RequestIDMiddleware)
 app.add_middleware(RateLimitMiddleware, requests_per_minute=500)
 
+cors_origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:3001",
+    "http://127.0.0.1:3001",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
+if settings.CORS_ORIGINS:
+    for origin in settings.CORS_ORIGINS.split(","):
+        cleaned = origin.strip()
+        if cleaned and cleaned not in cors_origins:
+            cors_origins.append(cleaned)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://localhost:3001",
-        "http://127.0.0.1:3001",
-        "http://localhost:8000",
-        "http://127.0.0.1:8000",
-    ],
-    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1)(:[0-9]+)?",
+    allow_origins=cors_origins,
+    allow_origin_regex=r"https?://.*",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

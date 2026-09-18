@@ -2,38 +2,33 @@ import React from 'react';
 import Link from 'next/link';
 import { Client } from '../../lib/types';
 import { Button } from '../ui/Button';
-import { CornerStars } from '../ui/CornerStars';
-import { Building, ArrowRight, FileCheck } from 'lucide-react';
+import { Building, ArrowRight } from 'lucide-react';
 
 export function ClientCard({ client }: { client: Client }) {
   return (
-    <div className="group relative rounded-xl border border-neutral-300 bg-white p-6 shadow-xs hover:border-black transition-all duration-200 hover-lift flex flex-col justify-between">
-      <CornerStars />
+    <div className="rounded-xl border border-neutral-200 bg-white p-6 flex flex-col justify-between hover-card">
       <div>
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-lg bg-black flex items-center justify-center text-white transition-transform group-hover:scale-105">
+        <div className="flex items-center gap-3.5 mb-3">
+          <div className="w-11 h-11 rounded-lg bg-neutral-100 border border-neutral-200 flex items-center justify-center text-neutral-900 shrink-0">
             <Building className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-black line-clamp-1">{client.name}</h3>
-            <p className="text-[11px] text-neutral-500 font-medium">
+            <h3 className="text-base font-bold text-neutral-900 line-clamp-1">{client.name}</h3>
+            <p className="text-xs text-neutral-500 mt-0.5">
               Added {new Date(client.created_at).toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 py-2 px-3 rounded-lg bg-neutral-100 border border-neutral-200 text-xs text-black mb-4">
-          <FileCheck className="w-4 h-4 text-black" />
-          <span>
-            <strong className="font-bold text-black">{client.document_count}</strong> compliance documents
-          </span>
-        </div>
+        <p className="text-sm text-neutral-600 mb-5">
+          {client.document_count} compliance documents in checklist
+        </p>
       </div>
 
       <Link href={`/clients/${client.id}`} className="w-full">
-        <Button variant="outline" size="sm" className="w-full justify-between group/btn border-black hover:bg-black hover:text-white">
-          <span>View Audit Workspace</span>
-          <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+        <Button variant="outline" size="sm" className="w-full justify-between rounded-md py-2.5 px-3.5 group font-medium">
+          <span>View Checklist</span>
+          <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
         </Button>
       </Link>
     </div>

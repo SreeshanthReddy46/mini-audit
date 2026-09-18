@@ -95,23 +95,28 @@ def upload_document(
 @router.get("/api/documents/{document_id}/file")
 def stream_document_file(
     document_id: uuid.UUID,
+    download: bool = False,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """
-    Private file streaming.
-    Authenticates user, verifies tenant boundary, and safely streams file.
-    No public file URLs are ever exposed.
-    """
     doc = get_document_by_id(db, document_id, current_user.firm_id)
     if not doc["file_url"]:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No file has been uploaded for this document.")
 
     file_path = get_file_path(current_user.firm_id, doc["file_url"])
+    ext = file_path.suffix.lower()
+    media_type = "application/pdf" if ext == ".pdf" else "application/octet-stream"
+
+    if download:
+        return FileResponse(
+            path=str(file_path),
+            filename=f"{doc['name']}{file_path.suffix}",
+            media_type="application/octet-stream"
+        )
     return FileResponse(
         path=str(file_path),
-        filename=f"{doc['name']}{file_path.suffix}",
-        media_type="application/octet-stream"
+        media_type=media_type,
+        content_disposition_type="inline"
     )
 
 

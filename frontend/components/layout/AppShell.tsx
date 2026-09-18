@@ -21,23 +21,25 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }, [user, loading, isPublicPage, router]);
 
   if (isPublicPage) {
-    return <main className="min-h-screen bg-white text-black">{children}</main>;
+    return <main className="min-h-screen bg-white text-neutral-900">{children}</main>;
   }
 
   if (loading || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white text-black">
+      <div className="min-h-screen flex items-center justify-center bg-white text-neutral-900">
         <Loading message="Authenticating session..." />
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen bg-white text-black">
+    <div className="flex min-h-screen bg-white text-neutral-900">
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0 bg-white">
         <Header />
-        <main className="flex-1 p-8 max-w-7xl w-full mx-auto bg-white text-black">{children}</main>
+        <main className="flex-1 px-8 lg:px-12 py-8 max-w-[1600px] w-full mx-auto bg-white text-neutral-900">
+          {children}
+        </main>
       </div>
     </div>
   );

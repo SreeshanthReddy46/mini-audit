@@ -1,3 +1,6 @@
+import shutil
+from pathlib import Path
+from app.core.config import settings
 from app.core.database import SessionLocal, init_db
 from app.core.security import get_password_hash
 from app.models import (
@@ -38,6 +41,17 @@ def seed_database():
             db.query(User).delete()
             db.query(Firm).delete()
             db.commit()
+
+            storage_path = Path(settings.STORAGE_DIR)
+            if storage_path.exists():
+                for item in storage_path.iterdir():
+                    if item.is_dir():
+                        shutil.rmtree(item, ignore_errors=True)
+                    else:
+                        try:
+                            item.unlink()
+                        except Exception:
+                            pass
 
         print("Seeding Firm A (ABC & Co.)...")
         firm_a = Firm(name="ABC & Co.")

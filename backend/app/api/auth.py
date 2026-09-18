@@ -7,12 +7,13 @@ from app.models.user import User
 from app.schemas.auth import LoginRequest, TokenResponse, UserResponse
 from app.services.auth_service import authenticate_user, generate_token_for_user
 
+from app.seed import seed_database
+
 router = APIRouter(prefix="/api/auth", tags=["Authentication"])
 
 
 @router.post("/login", response_model=TokenResponse)
 def login(request: LoginRequest, response: Response, db: Session = Depends(get_db)):
-    """Authenticate user, set HttpOnly cookie, and return JWT token."""
     user = authenticate_user(db, request.email, request.password)
     if not user:
         raise HTTPException(
@@ -45,14 +46,16 @@ def login(request: LoginRequest, response: Response, db: Session = Depends(get_d
 
 @router.post("/logout")
 def logout(response: Response):
-    """Clear session cookie."""
     response.delete_cookie(key="access_token", path="/")
+    try:
+        seed_database()
+    except Exception:
+        pass
     return {"message": "Logged out successfully"}
 
 
 @router.get("/me", response_model=UserResponse)
 def get_current_user_profile(current_user: User = Depends(get_current_user)):
-    """Return currently authenticated user information."""
     return UserResponse(
         id=current_user.id,
         name=current_user.name,

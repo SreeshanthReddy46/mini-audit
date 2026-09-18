@@ -62,7 +62,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
     removeStoredToken();
     setUser(null);
-    router.push('/login');
+    window.location.href = '/login';
   };
 
   const switchUser = async (email: string, password = 'password123') => {
